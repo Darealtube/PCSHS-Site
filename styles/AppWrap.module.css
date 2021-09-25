@@ -1,0 +1,31 @@
+.AppBar {
+  display: flex;
+  flex-direction: row;
+  z-index: 10000;
+  width: 100%;
+  align-items: center;
+  background-color: white;
+  color: black;
+}
+
+.Main {
+  margin-top: 80px;
+  margin-left: 24%;
+  margin-right: 24%;
+  height: 100%;
+  overflow: auto;
+}
+
+@media all and (max-width: 1199px) {
+  .Main {
+    margin-left: 40%;
+    margin-right: 0%;
+  }
+}
+
+@media all and (max-width: 899.99px) {
+  .Main {
+    margin-left: 0%;
+    margin-right: 0%;
+  }
+}

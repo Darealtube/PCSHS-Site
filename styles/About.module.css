@@ -1,0 +1,34 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.objective {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 64px;
+}
+
+.objectiveImage {
+  margin-bottom: 16px;
+  height: 50vh;
+  width: 100%;
+  position: relative;
+}
+
+.member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
