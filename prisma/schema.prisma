@@ -2,8 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 generator client {
@@ -11,18 +12,21 @@ generator client {
 }
 
 model Announcement {
-  id      Int    @id @unique @default(autoincrement())
-  title   String
-  content String
-  image   String
+  id       Int     @id @unique @default(autoincrement())
+  title    String
+  content  String
+  image    String
+  authorId String?
+  author   Member? @relation(fields: [authorId], references: [id])
 }
 
 model Member {
-  id       Int    @id @unique @default(autoincrement())
+  id       String  @id @unique @default(cuid())
   name     String
-  position String
-  branch   String
-  role     String
+  image    String?
+  position String[]
+  role     String[]
+  announcements Announcement[]
 }
 
 model Student {
