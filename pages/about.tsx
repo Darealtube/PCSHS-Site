@@ -1,17 +1,9 @@
-import {
-  Container,
-  Typography,
-  Fade,
-  Collapse,
-  Grow,
-  Slide,
-} from "@mui/material";
-import type { NextPage } from "next";
+import { Container, Typography, Fade, Grow } from "@mui/material";
+import type { GetStaticProps, GetStaticPropsResult } from "next";
 import Head from "next/head";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FlagIcon from "@mui/icons-material/Flag";
 import styles from "../styles/About.module.css";
-import PCSHSLogo from "../public/pcshslogo.png";
 import StudentValues from "../public/pcshsPictures/valuespcshs.jpg";
 import HarnessStudents from "../public/pcshsPictures/enhanceArtpcshs.jpg";
 import DeservingStudents from "../public/pcshsPictures/deservingpcshs.jpg";
@@ -19,29 +11,71 @@ import EmphasizeStandards from "../public/pcshsPictures/emphasizestandardspcshs.
 import Facilities from "../public/pcshsPictures/pcshsenvironment.png";
 import Image from "next/image";
 import { Box } from "@mui/system";
-import Timeline from "@mui/lab/Timeline";
-import TimelineItem from "@mui/lab/TimelineItem";
-import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import TimelineConnector from "@mui/lab/TimelineConnector";
-import TimelineContent from "@mui/lab/TimelineContent";
-import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import TimelineDot from "@mui/lab/TimelineDot";
-import DomainIcon from "@mui/icons-material/Domain";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import PeopleIcon from "@mui/icons-material/People";
-import FmdGoodIcon from "@mui/icons-material/FmdGood";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import CallIcon from "@mui/icons-material/Call";
 import RoomIcon from "@mui/icons-material/Room";
 import Principal from "../public/pcshsMembers/principalpcshs.png";
 import VicePrincipal from "../public/pcshsMembers/assistantPrincipalpcshs.png";
-import AdminMembers from "../Components/About/About Lists/AdminMembers";
+import SchoolMembers from "../Components/About/Parts/SchoolMembers";
 import History from "../Components/About/Parts/History";
 import VisibilitySensor from "react-visibility-sensor";
+import prisma from "../lib/prisma";
 
-const About: NextPage = () => {
+const Objectives = [
+  {
+    image: DeservingStudents,
+    objective: "To offer scholarship grants to deserving, gifted students.",
+  },
+  {
+    image: EmphasizeStandards,
+    objective: `To emphasize high standards of learning and high levels of
+  learning skills such as critical and creative thinking and
+  problem solving.`,
+  },
+  {
+    image: Facilities,
+    objective: `To provide state-of-the-art facilities that enhance
+    interactive and hands-on learning experiences.`,
+  },
+  {
+    image: HarnessStudents,
+    objective: `To harness to the fullest the artistic, athletic, managerial
+    and leadership skills of the students.`,
+  },
+  {
+    image: StudentValues,
+    objective: `To inculcate among the students the values and virtues in life
+    necessary in their interrelationships with selves, others,
+    country, and God.`,
+  },
+];
+
+const Contacts = [
+  {
+    icon: <TwitterIcon fontSize="large" />,
+    contact: "@ssgpasigsci",
+  },
+  {
+    icon: <EmailIcon fontSize="large" />,
+    contact: "pasigcitysciencehs05@gmail.com",
+  },
+  {
+    icon: <FacebookIcon fontSize="large" />,
+    contact: "https://www.facebook.com/pcshs.edu",
+  },
+  {
+    icon: <CallIcon fontSize="large" />,
+    contact: "628-2177 / 628-2226 / 83548658",
+  },
+  {
+    icon: <RoomIcon fontSize="large" />,
+    contact: "RAVE Park, Maybunga, Pasig City",
+  },
+];
+
+const About = ({ schoolMembers }: Props) => {
   return (
     <>
       <Head>
@@ -100,116 +134,30 @@ const About: NextPage = () => {
           )}
         </VisibilitySensor>
 
-        <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
-            <Grow in={isVisible} timeout={1200}>
-              <Box className={styles.objective}>
-                <Box className={styles.objectiveImage}>
-                  <Image
-                    src={DeservingStudents}
-                    layout="fill"
-                    objectFit="contain"
-                    placeholder="blur"
-                    alt={"Picture of a student with a medal."}
-                  />
-                </Box>
-                <Typography variant="h5" align="center">
-                  To offer scholarship grants to deserving, gifted students.
-                </Typography>
-              </Box>
-            </Grow>
-          )}
-        </VisibilitySensor>
-
-        <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
-            <Grow in={isVisible} timeout={1200}>
-              <Box className={styles.objective}>
-                <Box className={styles.objectiveImage}>
-                  <Image
-                    src={EmphasizeStandards}
-                    layout="fill"
-                    objectFit="contain"
-                    placeholder="blur"
-                    alt={"Picture of a student with a medal."}
-                  />
-                </Box>
-                <Typography variant="h5" align="center">
-                  To emphasize high standards of learning and high levels of
-                  learning skills such as critical and creative thinking and
-                  problem solving.
-                </Typography>
-              </Box>
-            </Grow>
-          )}
-        </VisibilitySensor>
-
-        <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
-            <Grow in={isVisible} timeout={1200}>
-              <Box className={styles.objective}>
-                <Box className={styles.objectiveImage}>
-                  <Image
-                    src={Facilities}
-                    layout="fill"
-                    objectFit="contain"
-                    placeholder="blur"
-                    alt={"Picture of a student with a medal."}
-                  />
-                </Box>
-                <Typography variant="h5" align="center">
-                  To provide state-of-the-art facilities that enhance
-                  interactive and hands-on learning experiences.
-                </Typography>
-              </Box>
-            </Grow>
-          )}
-        </VisibilitySensor>
-
-        <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
-            <Grow in={isVisible} timeout={1200}>
-              <Box className={styles.objective}>
-                <Box className={styles.objectiveImage}>
-                  <Image
-                    src={HarnessStudents}
-                    layout="fill"
-                    objectFit="contain"
-                    placeholder="blur"
-                    alt={"Picture of a student with a medal."}
-                  />
-                </Box>
-                <Typography variant="h5" align="center">
-                  To harness to the fullest the artistic, athletic, managerial
-                  and leadership skills of the students.
-                </Typography>
-              </Box>
-            </Grow>
-          )}
-        </VisibilitySensor>
-
-        <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
-            <Grow in={isVisible} timeout={1200}>
-              <Box className={styles.objective}>
-                <Box className={styles.objectiveImage}>
-                  <Image
-                    src={StudentValues}
-                    layout="fill"
-                    objectFit="contain"
-                    placeholder="blur"
-                    alt={"Picture of a student with a medal."}
-                  />
-                </Box>
-                <Typography variant="h5" align="center">
-                  To inculcate among the students the values and virtues in life
-                  necessary in their interrelationships with selves, others,
-                  country, and God.
-                </Typography>
-              </Box>
-            </Grow>
-          )}
-        </VisibilitySensor>
+        {Objectives.map(({ objective, image }) => (
+          <Box key={objective}>
+            <VisibilitySensor partialVisibility>
+              {({ isVisible }) => (
+                <Grow in={isVisible} timeout={1200}>
+                  <Box className={styles.objective}>
+                    <Box className={styles.objectiveImage}>
+                      <Image
+                        src={image}
+                        layout="fill"
+                        objectFit="contain"
+                        placeholder="blur"
+                        alt={"Picture of a student with a medal."}
+                      />
+                    </Box>
+                    <Typography variant="h5" align="center">
+                      {objective}
+                    </Typography>
+                  </Box>
+                </Grow>
+              )}
+            </VisibilitySensor>
+          </Box>
+        ))}
 
         <VisibilitySensor partialVisibility>
           {({ isVisible }) => (
@@ -282,7 +230,7 @@ const About: NextPage = () => {
           )}
         </VisibilitySensor>
 
-        <AdminMembers />
+        <SchoolMembers schoolMembers={schoolMembers} />
 
         <VisibilitySensor partialVisibility>
           {({ isVisible }) => (
@@ -298,61 +246,20 @@ const About: NextPage = () => {
           {({ isVisible }) => (
             <Fade in={isVisible} timeout={1500}>
               <Box>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  marginBottom={4}
-                >
-                  <TwitterIcon fontSize="large" />
-                  <Typography variant="h5" align="center" gutterBottom>
-                    @ssgpasigsci
-                  </Typography>
-                </Box>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  marginBottom={4}
-                >
-                  <EmailIcon fontSize="large" />{" "}
-                  <Typography variant="h5" align="center" gutterBottom>
-                    pasigcitysciencehs05@gmail.com
-                  </Typography>
-                </Box>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  marginBottom={4}
-                >
-                  <FacebookIcon fontSize="large" />{" "}
-                  <Typography variant="h5" align="center" gutterBottom>
-                    https://www.facebook.com/pcshs.edu
-                  </Typography>
-                </Box>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  marginBottom={4}
-                >
-                  <CallIcon fontSize="large" />{" "}
-                  <Typography variant="h5" align="center" gutterBottom>
-                    628-2177 / 628-2226 / 83548658
-                  </Typography>
-                </Box>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  marginBottom={4}
-                >
-                  <RoomIcon fontSize="large" />{" "}
-                  <Typography variant="h5" align="center" gutterBottom>
-                    RAVE Park, Maybunga, Pasig City
-                  </Typography>
-                </Box>
+                {Contacts.map(({ contact, icon }) => (
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    marginBottom={4}
+                    key={contact}
+                  >
+                    {icon}
+                    <Typography variant="h5" align="center" gutterBottom>
+                      {contact}
+                    </Typography>
+                  </Box>
+                ))}
               </Box>
             </Fade>
           )}
@@ -363,3 +270,28 @@ const About: NextPage = () => {
 };
 
 export default About;
+
+type SchoolMemberProps = {
+  image: string | null;
+  name: string;
+  position: string[];
+  role: string[];
+}[];
+
+type Props = {
+  schoolMembers: SchoolMemberProps;
+};
+
+export const getStaticProps: GetStaticProps = async (): Promise<
+  GetStaticPropsResult<Props>
+> => {
+  const schoolMembers = await prisma.member.findMany({
+    select: {
+      name: true,
+      image: true,
+      position: true,
+      role: true,
+    },
+  });
+  return { props: { schoolMembers } };
+};

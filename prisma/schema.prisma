@@ -20,21 +20,32 @@ model Announcement {
   author   Member? @relation(fields: [authorId], references: [id])
 }
 
+model SSGAnnouncement {
+  id       Int      @id @unique @default(autoincrement())
+  title    String
+  content  String
+  image    String
+  authorId Int?
+  author   Student? @relation(fields: [authorId], references: [lrn])
+}
+
 model Member {
-  id       String  @id @unique @default(cuid())
-  name     String
-  image    String?
-  position String[]
-  role     String[]
+  id            String         @id @unique @default(cuid())
+  name          String
+  image         String?
+  position      String[]
+  role          String[]
   announcements Announcement[]
 }
 
 model Student {
-  lrn             Int      @id @unique
-  name            String
-  age             String
-  sex             String
-  date_of_birth   DateTime
-  current_grade   String
-  current_section String
+  lrn               Int               @id @unique
+  name              String
+  age               String
+  sex               String
+  date_of_birth     DateTime
+  current_grade     String
+  current_section   String
+  ssg               Boolean
+  ssg_announcements SSGAnnouncement[]
 }
