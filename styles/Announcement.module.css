@@ -1,0 +1,15 @@
+.avatar {
+  border-radius: 50%;
+}
+
+.card {
+  margin-bottom: 16px;
+  border: 1px solid gray;
+  border-radius: 2%;
+}
+
+.promoteBar {
+  margin-top: 80px;
+  width: 100%;
+  height: 100%;
+}

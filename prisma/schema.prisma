@@ -12,21 +12,23 @@ generator client {
 }
 
 model Announcement {
-  id       Int     @id @unique @default(autoincrement())
-  title    String
-  content  String
-  image    String
+  id       String   @id @unique @default(cuid())
+  header   String
+  body     String
+  footer   String
+  image    String?
+  video    String?
   authorId String?
-  author   Member? @relation(fields: [authorId], references: [id])
+  author   Member?  @relation(fields: [authorId], references: [id])
+  type     String
+  date     DateTime @default(now())
 }
 
-model SSGAnnouncement {
-  id       Int      @id @unique @default(autoincrement())
-  title    String
-  content  String
-  image    String
-  authorId Int?
-  author   Student? @relation(fields: [authorId], references: [lrn])
+model PromotionBar {
+  id          String   @id @default("Promotional Bar")
+  promoVid    String?
+  environment String[]
+  dateUpdated DateTime @unique @updatedAt
 }
 
 model Member {
@@ -39,13 +41,11 @@ model Member {
 }
 
 model Student {
-  lrn               Int               @id @unique
-  name              String
-  age               String
-  sex               String
-  date_of_birth     DateTime
-  current_grade     String
-  current_section   String
-  ssg               Boolean
-  ssg_announcements SSGAnnouncement[]
+  lrn             Int      @id @unique
+  name            String
+  age             String
+  sex             String
+  date_of_birth   DateTime
+  current_grade   String
+  current_section String
 }
