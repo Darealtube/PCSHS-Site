@@ -15,11 +15,11 @@ model Announcement {
   id       String   @id @unique @default(cuid())
   header   String
   body     String
-  footer   String
+  footer   String?
   image    String?
   video    String?
   authorId String?
-  author   Member?  @relation(fields: [authorId], references: [id])
+  author   Profile? @relation(fields: [authorId], references: [name])
   type     String
   date     DateTime @default(now())
 }
@@ -31,21 +31,69 @@ model PromotionBar {
   dateUpdated DateTime @unique @updatedAt
 }
 
-model Member {
-  id            String         @id @unique @default(cuid())
-  name          String
-  image         String?
-  position      String[]
-  role          String[]
-  announcements Announcement[]
+model Profile {
+  lrn             String?        @unique
+  name            String         @id @unique
+  email           String?        @unique
+  image           String?
+  password        String         @unique
+  age             String?
+  sex             String?
+  date_of_birth   DateTime?
+  current_grade   String?
+  current_section String?
+  address         String?
+  role            String         @default("Visitor")
+  members         String[]
+  contact         String?
+  announcements   Announcement[]
 }
 
-model Student {
-  lrn             Int      @id @unique
-  name            String
-  age             String
-  sex             String
-  date_of_birth   DateTime
-  current_grade   String
-  current_section String
+// Next Auth Models
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

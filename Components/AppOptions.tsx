@@ -6,6 +6,9 @@ import { Box } from "@mui/system";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import { ReactNode, useState } from "react";
 import dynamic from "next/dynamic";
+import NoUser from "../public/user-empty-avatar.png";
+import Image from "next/image";
+import styles from "../styles/AppWrap.module.css";
 
 const DynamicAboutMenu = dynamic(() => import("./Menus/AboutMenu"));
 const DynamicAdmissionMenu = dynamic(() => import("./Menus/AdmissionMenu"));
@@ -44,7 +47,7 @@ const AppOptions = () => {
 
   return (
     <>
-      <Box sx={{ marginRight: "24px" }}>
+      <Box sx={{ marginRight: "24px", display: "flex", alignItems: "center" }}>
         <Option
           title="About PCSHS"
           name="about"
@@ -63,12 +66,17 @@ const AppOptions = () => {
           onClick={handleOpenMenu}
           icon={<AssignmentIndIcon />}
         />
-        <Option
-          title="Student Profile"
-          name="profile"
-          onClick={handleOpenMenu}
-          icon={<PersonIcon />}
-        />
+
+        <IconButton onClick={handleOpenMenu} size="large" name="profile">
+          <Image
+            src={NoUser}
+            alt="No User Avatar"
+            width={40}
+            height={40}
+            className={styles.avatar}
+            placeholder="blur"
+          />
+        </IconButton>
       </Box>
       <DynamicAboutMenu
         open={openMenu == "about"}

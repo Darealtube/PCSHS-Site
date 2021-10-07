@@ -5,13 +5,14 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import { Box } from "@mui/system";
 import Image from "next/image";
 import styles from "../styles/Announcement.module.css";
 
 type AnnouncementList = {
   header: string;
   body: string;
-  footer: string;
+  footer: string | null;
   image: string | null;
   video: string | null;
   date: string;
@@ -31,12 +32,16 @@ const Announcements = ({ announcements, type = "SSG" }: Props) => {
     <>
       {announcements.map(
         ({ image, video, body, header, footer, author, date }) => (
-          <>
+          <Box key={header}>
             <Card className={styles.card}>
               <CardHeader
                 avatar={
                   <Image
-                    src={author?.image as string}
+                    src={
+                      author?.image
+                        ? (author?.image as string)
+                        : "/user-empty-avatar.png"
+                    }
                     width={40}
                     height={40}
                     alt="Author Image"
@@ -81,7 +86,7 @@ const Announcements = ({ announcements, type = "SSG" }: Props) => {
                 </Typography>
               </CardContent>
             </Card>
-          </>
+          </Box>
         )
       )}
     </>

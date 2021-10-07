@@ -8,12 +8,16 @@
   color: black;
 }
 
+.avatar {
+  border-radius: 50%;
+}
+
 .Main {
-  margin-top: 80px;
   margin-left: 24%;
   margin-right: 24%;
-  height: 100%;
+  height: 100vh;
   overflow: auto;
+  display: flex;
 }
 
 @media all and (max-width: 1199px) {

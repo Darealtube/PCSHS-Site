@@ -10,6 +10,8 @@ import AnnouncementIcon from "@mui/icons-material/Announcement";
 import GradeIcon from "@mui/icons-material/Grade";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/client";
+import LoginIcon from "@mui/icons-material/Login";
 
 type Props = {
   open: boolean;
@@ -18,6 +20,7 @@ type Props = {
 };
 
 const ProfileMenu = ({ open, anchor, closeMenu }: Props) => {
+  const [session] = useSession();
   return (
     <Menu
       open={open}
@@ -26,33 +29,50 @@ const ProfileMenu = ({ open, anchor, closeMenu }: Props) => {
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       transformOrigin={{ vertical: "top", horizontal: "center" }}
     >
-      <MenuList>
-        <Link href="/profile" passHref>
-          <MenuItem component="a">
+      {session ? (
+        <MenuList>
+          <Link href="/profile" passHref>
+            <MenuItem component="a">
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText>Profile</ListItemText>
+            </MenuItem>
+          </Link>
+          <Link href="/profile/grades" passHref>
+            <MenuItem component="a">
+              <ListItemIcon>
+                <GradeIcon />
+              </ListItemIcon>
+              <ListItemText>Grades</ListItemText>
+            </MenuItem>
+          </Link>
+          <Divider />
+          <Link href="/createAnnouncements" passHref>
+            <MenuItem component="a">
+              <ListItemIcon>
+                <AnnouncementIcon />
+              </ListItemIcon>
+              <ListItemText>Create Announcements</ListItemText>
+            </MenuItem>
+          </Link>
+          <MenuItem component="a" onClick={() => signOut()}>
             <ListItemIcon>
-              <PersonIcon />
+              <LoginIcon />
             </ListItemIcon>
-            <ListItemText>Profile</ListItemText>
+            <ListItemText>Log Out</ListItemText>
           </MenuItem>
-        </Link>
-        <Link href="/profile/grades" passHref>
-          <MenuItem component="a">
+        </MenuList>
+      ) : (
+        <MenuList>
+          <MenuItem component="a" onClick={() => signIn()}>
             <ListItemIcon>
-              <GradeIcon />
+              <LoginIcon />
             </ListItemIcon>
-            <ListItemText>Grades</ListItemText>
+            <ListItemText>Sign In</ListItemText>
           </MenuItem>
-        </Link>
-        <Divider />
-        <Link href="/createAnnouncements" passHref>
-          <MenuItem component="a">
-            <ListItemIcon>
-              <AnnouncementIcon />
-            </ListItemIcon>
-            <ListItemText>Create Announcements</ListItemText>
-          </MenuItem>
-        </Link>
-      </MenuList>
+        </MenuList>
+      )}
     </Menu>
   );
 };

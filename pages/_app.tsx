@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import AppWrap from "../Components/AppWrap";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { Provider } from "next-auth/client";
 
 const theme = createTheme();
 
@@ -20,12 +21,14 @@ theme.typography.h3 = {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppWrap>
-          <Component {...pageProps} />
-        </AppWrap>
-      </ThemeProvider>
+      <Provider session={pageProps.session}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <AppWrap>
+            <Component {...pageProps} />
+          </AppWrap>
+        </ThemeProvider>
+      </Provider>
     </>
   );
 }

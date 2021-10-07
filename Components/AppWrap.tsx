@@ -4,6 +4,7 @@ import {
   useMediaQuery,
   useTheme,
   Box,
+  Container,
 } from "@mui/material";
 import { ReactChild } from "react";
 import Image from "next/image";
@@ -43,7 +44,15 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
       </AppBar>
       {!mobile && <LatestAnnouncements />}
       {!tablet && !mobile && <PromotionBar />}
-      <Box className={styles.Main}>{children}</Box>
+      <Box className={styles.Main}>
+        <Container
+          sx={{
+            marginTop: "80px",
+          }}
+        >
+          {children}
+        </Container>
+      </Box>
     </>
   );
 };

@@ -1,0 +1,33 @@
+.signInContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signInPaper {
+  height: 90%;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+}
+
+.logoBox {
+  position: relative;
+  margin-bottom: 32px;
+  width: 160px;
+  height: 160px;
+}
+
+.logo {
+  border-radius: 50%;
+}
+
+.paperContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
