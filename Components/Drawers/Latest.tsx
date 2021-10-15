@@ -4,7 +4,6 @@ import {
   Container,
   useTheme,
   useMediaQuery,
-  Card,
   Box,
   Skeleton,
 } from "@mui/material";

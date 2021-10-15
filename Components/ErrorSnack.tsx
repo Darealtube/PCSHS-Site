@@ -3,14 +3,15 @@ import { Snackbar, Alert } from "@mui/material";
 type Props = {
   open: boolean;
   handleClose: () => void;
+  error: string;
 };
 
-const ErrorSnack = ({ open, handleClose }: Props) => {
+const ErrorSnack = ({ open, handleClose, error }: Props) => {
   return (
     <>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={open} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
-          This is a success message!
+          {error}
         </Alert>
       </Snackbar>
     </>

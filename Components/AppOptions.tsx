@@ -1,7 +1,6 @@
 import { IconButton, Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
-import PersonIcon from "@mui/icons-material/Person";
 import { Box } from "@mui/system";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import { ReactNode, useState } from "react";

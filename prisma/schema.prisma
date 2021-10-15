@@ -12,16 +12,16 @@ generator client {
 }
 
 model Announcement {
-  id       String   @id @unique @default(cuid())
-  header   String
-  body     String
-  footer   String?
-  image    String?
-  video    String?
-  authorId String?
-  author   Profile? @relation(fields: [authorId], references: [name])
-  type     String
-  date     DateTime @default(now())
+  id         String   @id @unique @default(cuid())
+  header     String
+  body       String
+  footer     String?
+  image      String?
+  video      String?
+  authorName String?  @db.Char(40)
+  author     Profile? @relation(fields: [authorName], references: [name])
+  type       String
+  date       DateTime @default(now())
 }
 
 model PromotionBar {
@@ -32,20 +32,20 @@ model PromotionBar {
 }
 
 model Profile {
-  lrn             String?        @unique
-  name            String         @id @unique
+  lrn             String?        @unique @db.Char(12)
+  name            String         @id @unique @db.Char(40)
   email           String?        @unique
   image           String?
   password        String         @unique
-  age             String?
+  about           String?
   sex             String?
-  date_of_birth   DateTime?
+  date_of_birth   String?
   current_grade   String?
   current_section String?
   address         String?
   role            String         @default("Visitor")
   members         String[]
-  contact         String?
+  contact         String?        @db.Char(11)
   announcements   Announcement[]
 }
 

@@ -2,16 +2,7 @@ import { Divider, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { Box } from "@mui/system";
 import Information from "../Information";
-
-type Government = {
-  name: string;
-  image: string | null;
-  address: string | null;
-  contact: string | null;
-  email: string | null;
-  members: string[];
-  role: string;
-} | null;
+import { Government } from "../../../types/PrismaTypes";
 
 const GovernmentProfile = ({ government }: { government: Government }) => {
   return (

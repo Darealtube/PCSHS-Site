@@ -2,22 +2,10 @@ import type { GetStaticProps, GetStaticPropsResult } from "next";
 import Head from "next/head";
 import Announcements from "../Components/Announcements";
 import prisma from "../lib/prisma";
-
-type AnnouncementList = {
-  header: string;
-  body: string;
-  footer: string | null;
-  image: string | null;
-  video: string | null;
-  date: string;
-  author: {
-    image: string | null;
-    name: string;
-  } | null;
-}[];
+import { Announcement } from "../types/PrismaTypes";
 
 type Props = {
-  announcements: AnnouncementList;
+  announcements: Announcement[];
 };
 
 const Home = ({ announcements }: Props) => {

@@ -5,23 +5,7 @@ import prisma from "../../lib/prisma";
 import Head from "next/head";
 import StudentProfile from "../../Components/Profile/Profiles/StudentProfile";
 import GovernmentProfile from "../../Components/Profile/Profiles/GovernmentProfile";
-import VisitorProfile from "../../Components/Profile/Profiles/VisitorProfile";
-
-type ProfileType = {
-  name: string;
-  image: string | null;
-  age: string | null;
-  current_grade: string | null;
-  current_section: string | null;
-  date_of_birth: Date | null;
-  lrn: string | null;
-  sex: string | null;
-  address: string | null;
-  contact: string | null;
-  email: string | null;
-  members: string[];
-  role: string;
-} | null;
+import { Profile as ProfileType } from "../../types/PrismaTypes";
 
 type ProfileProps = {
   session: Session | null;
@@ -38,10 +22,8 @@ const Profile = ({ profile }: ProfileProps) => {
       </Head>
       {profile?.role == "Student" ? (
         <StudentProfile student={profile} />
-      ) : profile?.role == "Government" ? (
-        <GovernmentProfile government={profile} />
       ) : (
-        <VisitorProfile visitor={profile} />
+        <GovernmentProfile government={profile} />
       )}
     </>
   );
@@ -60,7 +42,6 @@ export const getServerSideProps: GetServerSideProps = async (
       },
       select: {
         name: true,
-        age: true,
         current_grade: true,
         current_section: true,
         date_of_birth: true,
@@ -72,8 +53,10 @@ export const getServerSideProps: GetServerSideProps = async (
         email: true,
         members: true,
         role: true,
+        about: true,
       },
     });
+
     return {
       props: {
         session: session,

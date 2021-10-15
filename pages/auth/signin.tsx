@@ -141,7 +141,11 @@ const SignIn = () => {
           </Container>
         </Paper>
       </Box>
-      <DynamicError open={error.open} handleClose={handleErrorClose} />
+      <DynamicError
+        open={error.open}
+        handleClose={handleErrorClose}
+        error={error.message}
+      />
     </>
   );
 };

@@ -13,6 +13,8 @@ import LatestAnnouncements from "./Drawers/Latest";
 import styles from "../styles/AppWrap.module.css";
 import AppOptions from "./AppOptions";
 import PromotionBar from "./Drawers/Promote";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DateAdapter from "@mui/lab/AdapterDayjs";
 
 const AppWrap = ({ children }: { children: ReactChild }) => {
   const theme = useTheme();
@@ -45,13 +47,15 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
       {!mobile && <LatestAnnouncements />}
       {!tablet && !mobile && <PromotionBar />}
       <Box className={styles.Main}>
-        <Container
-          sx={{
-            marginTop: "80px",
-          }}
-        >
-          {children}
-        </Container>
+        <LocalizationProvider dateAdapter={DateAdapter}>
+          <Container
+            sx={{
+              marginTop: "80px",
+            }}
+          >
+            {children}
+          </Container>
+        </LocalizationProvider>
       </Box>
     </>
   );

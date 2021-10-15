@@ -2,22 +2,7 @@ import { Divider, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { Box } from "@mui/system";
 import Information from "../Information";
-
-type Student = {
-  name: string;
-  image: string | null;
-  age: string | null;
-  current_grade: string | null;
-  current_section: string | null;
-  date_of_birth: Date | null;
-  lrn: string | null;
-  sex: string | null;
-  address: string | null;
-  contact: string | null;
-  email: string | null;
-  members: string[];
-  role: string;
-} | null;
+import { Student } from "../../../types/PrismaTypes";
 
 const StudentProfile = ({ student }: { student: Student }) => {
   return (
@@ -59,7 +44,6 @@ const StudentProfile = ({ student }: { student: Student }) => {
                 student?.current_section || "N/A"
               }`}
             />
-            <Information title="Age" info={student?.age as string | null} />
           </Box>
         </Grid>
       </Grid>
@@ -88,9 +72,12 @@ const StudentProfile = ({ student }: { student: Student }) => {
             gutterBottom
             sx={{ marginTop: "32px" }}
           >
-            Credentials
+            About
           </Typography>
           <Divider />
+          <Typography variant="body1" paragraph align="center">
+            {student?.about}
+          </Typography>
         </Grid>
       </Grid>
     </>
