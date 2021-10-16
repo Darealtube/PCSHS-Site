@@ -5,9 +5,10 @@ import { Box } from "@mui/system";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import { ReactNode, useState } from "react";
 import dynamic from "next/dynamic";
-import NoUser from "../public/user-empty-avatar.png";
+import NoImage from "../public/user-empty-avatar.png";
 import Image from "next/image";
 import styles from "../styles/AppWrap.module.css";
+import { useSession } from "next-auth/client";
 
 const DynamicAboutMenu = dynamic(() => import("./Menus/AboutMenu"));
 const DynamicAdmissionMenu = dynamic(() => import("./Menus/AdmissionMenu"));
@@ -33,6 +34,7 @@ const Option = ({ title, name, onClick, icon }: OptionComponentProps) => {
 };
 
 const AppOptions = () => {
+  const [session] = useSession();
   const [openMenu, setOpenMenu] = useState("");
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -67,14 +69,17 @@ const AppOptions = () => {
         />
 
         <IconButton onClick={handleOpenMenu} size="large" name="profile">
-          <Image
-            src={NoUser}
-            alt="No User Avatar"
-            width={40}
-            height={40}
-            className={styles.avatar}
-            placeholder="blur"
-          />
+          {session && (
+            <Image
+              src={
+                session.user?.image ? (session.user?.image as string) : NoImage
+              }
+              alt="User Avatar"
+              width={40}
+              height={40}
+              className={styles.avatar}
+            />
+          )}
         </IconButton>
       </Box>
       <DynamicAboutMenu

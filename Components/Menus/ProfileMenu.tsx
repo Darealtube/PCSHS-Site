@@ -31,6 +31,10 @@ const ProfileMenu = ({ open, anchor, closeMenu }: Props) => {
     >
       {session ? (
         <MenuList>
+          <MenuItem>
+            <ListItemText>Signed in as {session?.user?.name}</ListItemText>
+          </MenuItem>
+          <Divider />
           <Link href="/profile" passHref>
             <MenuItem component="a">
               <ListItemIcon>

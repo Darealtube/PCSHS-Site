@@ -18,7 +18,7 @@ model Announcement {
   footer     String?
   image      String?
   video      String?
-  authorName String?  @db.Char(40)
+  authorName String?  @db.VarChar(40)
   author     Profile? @relation(fields: [authorName], references: [name])
   type       String
   date       DateTime @default(now())
@@ -32,8 +32,8 @@ model PromotionBar {
 }
 
 model Profile {
-  lrn             String?        @unique @db.Char(12)
-  name            String         @id @unique @db.Char(40)
+  lrn             String         @unique @db.VarChar(12)
+  name            String         @unique @db.VarChar(40)
   email           String?        @unique
   image           String?
   password        String         @unique
@@ -43,10 +43,12 @@ model Profile {
   current_grade   String?
   current_section String?
   address         String?
-  role            String         @default("Visitor")
+  role            String
   members         String[]
-  contact         String?        @db.Char(11)
+  contact         String?        @db.VarChar(11)
   announcements   Announcement[]
+
+  @@id([lrn, name])
 }
 
 // Next Auth Models

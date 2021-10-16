@@ -23,6 +23,7 @@ import { DesktopDatePicker } from "@mui/lab";
 import { GradeOptions, SexOptions } from "../../../utils/selectOptions";
 import { getImage } from "../../../utils/getImage";
 import Link from "next/link";
+import Information from "../Information";
 
 const EditStudentProfile = ({
   student,
@@ -136,45 +137,14 @@ const EditStudentProfile = ({
         <Grid item xs={12} sm={8} md={12} xl={8}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                id="name"
-                name="name"
-                placeholder="Name"
-                label="Name"
-                value={student.name}
-                variant="standard"
-                onChange={handleChange}
-                fullWidth
-                error={student.name.length > 40}
-                helperText={
-                  student.name.length > 40 ? (
-                    <Typography>
-                      Please enter no more than 40 characters.
-                    </Typography>
-                  ) : (
-                    " "
-                  )
-                }
-              />
+              <Typography variant="h4" align="center">
+                {student?.name}
+              </Typography>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                id="lrn"
-                name="lrn"
-                placeholder="Learner's Reference Number"
-                label="Learner's Reference Number"
-                value={student.lrn}
-                variant="standard"
-                onChange={handleChange}
-                fullWidth
-                error={student.lrn.length > 12}
-                helperText={
-                  student.lrn.length > 12 ? (
-                    <Typography>Invalid LRN</Typography>
-                  ) : (
-                    " "
-                  )
-                }
+              <Information
+                title="Learner's Reference Number"
+                info={student?.lrn as string | null}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

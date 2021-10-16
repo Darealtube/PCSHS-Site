@@ -141,26 +141,9 @@ const EditGovernmentProfile = ({
           </Box>
         </Grid>
         <Grid item xs={12} sm={8} md={12} xl={8}>
-          <TextField
-            id="name"
-            name="name"
-            placeholder="Name"
-            label="Name"
-            value={government.name}
-            variant="standard"
-            onChange={handleChange}
-            fullWidth
-            error={government.name.length > 40}
-            helperText={
-              government.name.length > 40 ? (
-                <Typography>
-                  Please enter no more than 40 characters.
-                </Typography>
-              ) : (
-                " "
-              )
-            }
-          />
+          <Typography variant="h4" align="center">
+            {government?.name}
+          </Typography>
         </Grid>
       </Grid>
 

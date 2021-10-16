@@ -14,6 +14,11 @@ export default NextAuth({
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
       credentials: {
+        lrn: {
+          label: "Learner's Reference Number",
+          type: "text",
+          placeholder: "Learner's Reference Number",
+        },
         username: {
           label: "Username",
           type: "text",
@@ -22,8 +27,7 @@ export default NextAuth({
         password: { label: "Password", type: "password" },
         type: { label: "Type", type: "text" },
       },
-      async authorize(credentials, _req) {
-        // Add logic here to look up the user from the credentials supplied
+      async authorize(credentials: any) {
         const saltRounds = 10;
         const user = await prisma.profile.findUnique({
           where: {
@@ -35,35 +39,36 @@ export default NextAuth({
         });
 
         if (credentials.type == "Sign In") {
-          if (user) {
-            const passwordCorrect = await bcrypt.compare(
-              credentials.password,
-              user?.password as string
-            );
-            if (!passwordCorrect) {
-              throw new Error("User may not exist or the password is wrong.");
-            } else {
-              return Promise.resolve(user);
-            }
+          const passwordCorrect = await bcrypt.compare(
+            credentials.password,
+            user?.password || ""
+          );
+
+          if ((user && !passwordCorrect) || !user) {
+            throw new Error("User may not exist or the credentials are wrong.");
+          } else {
+            return user;
           }
         } else {
           if (user) {
             throw new Error("User already exists.");
           } else {
-            const student = await prisma.profile.upsert({
-              where: {
+            const profile = await prisma.profile.upsert({
+              where: { name: credentials.username },
+              update: {
                 name: credentials.username,
+                ...{ lrn: credentials.lrn },
               },
-              update: { name: credentials.username },
               create: {
                 name: credentials.username,
                 password: hashedPassword,
+                lrn: credentials.lrn,
+                role: credentials.lrn ? "Student" : "Government",
               },
             });
-            return Promise.resolve(student);
+            return profile;
           }
         }
-        return Promise.resolve(user);
       },
     }),
   ],
@@ -72,16 +77,20 @@ export default NextAuth({
     signIn: "/auth/signin",
   },
   session: {
+    maxAge: 30 * 24 * 60 * 60,
     jwt: true,
   },
   jwt: {
+    encryption: true,
+    encryptionKey: process.env.JWT_ENCRYPTION_KEY,
+    secret: process.env.AUTH_CLIENT_SECRET,
     signingKey: process.env.JWT_SIGNING_KEY,
   },
   callbacks: {
     // Getting the JWT token from API response
     async jwt(token, user) {
       if (user) {
-        token.accessToken = user.token;
+        token.accessToken = user.access_token;
       }
       return token;
     },

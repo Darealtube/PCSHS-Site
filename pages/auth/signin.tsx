@@ -13,7 +13,9 @@ const DynamicError = dynamic(() => import("../../Components/ErrorSnack"));
 
 const SignIn = () => {
   const router = useRouter();
+  const [disabled, setDisabled] = useState(false);
   const [credentials, setCredentials] = useState({
+    lrn: "",
     username: "",
     password: "",
   });
@@ -30,6 +32,7 @@ const SignIn = () => {
   };
 
   const handleSignIn = () => {
+    setDisabled(true);
     signIn("credentials", {
       ...credentials,
       type: "Sign In",
@@ -41,6 +44,7 @@ const SignIn = () => {
           open: true,
           message: values.error,
         });
+        setDisabled(false);
       } else {
         router.replace(values?.url as string);
       }
@@ -48,6 +52,7 @@ const SignIn = () => {
   };
 
   const handleSignUp = () => {
+    setDisabled(true);
     signIn("credentials", {
       ...credentials,
       type: "Sign Up",
@@ -59,6 +64,7 @@ const SignIn = () => {
           open: true,
           message: values.error,
         });
+        setDisabled(false);
       } else {
         router.replace(values?.url as string);
       }
@@ -101,6 +107,16 @@ const SignIn = () => {
               Sign In to Pasig City Science Highschool
             </Typography>
             <TextField
+              id="lrn"
+              label="Learner's Reference Number"
+              variant="outlined"
+              name="lrn"
+              value={credentials.lrn}
+              sx={{ marginBottom: "16px" }}
+              fullWidth
+              onChange={handleChange}
+            />
+            <TextField
               id="username"
               label="Username"
               variant="outlined"
@@ -122,11 +138,15 @@ const SignIn = () => {
               fullWidth
               onChange={handleChange}
             />
+
             <Button
               variant="outlined"
               fullWidth
               sx={{ marginBottom: "16px" }}
               onClick={handleSignIn}
+              disabled={
+                disabled || !credentials.username || !credentials.password
+              }
             >
               Log In
             </Button>
@@ -135,6 +155,9 @@ const SignIn = () => {
               onClick={handleSignUp}
               fullWidth
               sx={{ marginBottom: "16px" }}
+              disabled={
+                disabled || !credentials.username || !credentials.password
+              }
             >
               Sign Up
             </Button>
