@@ -8,3 +8,9 @@ export const GradeOptions = [
 ];
 
 export const SexOptions = ["Male", "Female"];
+
+export const AnnounceTypeOptions = [
+  "School Announcement",
+  "Apply Announcement",
+  "SSG Announcement",
+];

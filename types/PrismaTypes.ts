@@ -41,10 +41,10 @@ export type Announcement = {
   header: string;
   body: string;
   footer: string | null;
-  image: string | null;
+  image: string[] | null;
   video: string | null;
-  date: string;
-  author: {
+  date?: string;
+  author?: {
     image: string | null;
     name: string;
   } | null;

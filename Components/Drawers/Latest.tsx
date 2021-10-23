@@ -8,7 +8,8 @@ import {
   Skeleton,
 } from "@mui/material";
 import useSWR from "swr";
-import Announcements from "../Announcements";
+import { Announcement as AnnouncementType } from "../../types/PrismaTypes";
+import Announcement from "../Announcement";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -72,7 +73,13 @@ const LatestAnnouncements = () => {
         </Typography>
 
         {data ? (
-          <Announcements announcements={data} type={"Apply"} />
+          <>
+            {data.map((announcement: AnnouncementType) => (
+              <Box key={announcement.header}>
+                <Announcement announcement={announcement} type={"Apply"} />
+              </Box>
+            ))}
+          </>
         ) : (
           <CardSkeleton />
         )}

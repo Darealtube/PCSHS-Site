@@ -1,4 +1,4 @@
-export const getImage = (
+export const getPFP = (
   files: FileList,
   onResult: (result: string | null, error?: string) => any
 ) => {

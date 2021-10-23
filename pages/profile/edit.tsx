@@ -9,7 +9,7 @@ import { useReducer } from "react";
 import profileReducer from "../../utils/Reducers/profileReducer";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
-import uploadImage from "../../utils/uploadImage";
+import { uploadImages } from "../../utils/uploadMedia";
 import EditGovernmentProfile from "../../Components/Profile/Edit Profiles/EditGovernment";
 
 const DynamicError = dynamic(() => import("../../Components/ErrorSnack"));
@@ -47,7 +47,7 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
         method: "POST",
         body: JSON.stringify({
           ...trueProfile,
-          image: await uploadImage(prof.image),
+          image: await uploadImages([prof.image]).then((urls) => urls[0]),
         }),
       }
     )

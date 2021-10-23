@@ -16,7 +16,7 @@ model Announcement {
   header     String
   body       String
   footer     String?
-  image      String?
+  image      String[]
   video      String?
   authorName String?  @db.VarChar(40)
   author     Profile? @relation(fields: [authorName], references: [name])
