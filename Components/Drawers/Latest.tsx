@@ -11,8 +11,6 @@ import useSWR from "swr";
 import { Announcement as AnnouncementType } from "../../types/PrismaTypes";
 import Announcement from "../Announcement";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 const CardSkeleton = () => {
   return (
     <>
@@ -52,7 +50,7 @@ const LatestAnnouncements = () => {
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
   const drawerWidth = tablet ? "40%" : "24%";
-  const { data, error } = useSWR("/api/applyAnnouncements", fetcher);
+  const { data, error } = useSWR("/api/applyAnnouncements");
 
   return (
     <Drawer

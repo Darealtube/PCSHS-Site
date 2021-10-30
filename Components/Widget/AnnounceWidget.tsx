@@ -1,7 +1,6 @@
 import {
   Divider,
   Grid,
-  Typography,
   Stack,
   Box,
   TextField,
@@ -12,6 +11,7 @@ import {
   SelectChangeEvent,
   Select,
   MenuItem,
+  Collapse,
 } from "@mui/material";
 import styles from "../../styles/Widget.module.css";
 import ImageIcon from "@mui/icons-material/Image";
@@ -37,9 +37,13 @@ import { getImages, getVideo } from "../../utils/getMedia";
 import Media from "./Media";
 import { uploadImages, uploadVideo } from "../../utils/uploadMedia";
 import { AnnounceTypeOptions } from "../../utils/selectOptions";
+import { useRouter } from "next/dist/client/router";
+import { isEqual } from "lodash";
+import { Announcement } from ".prisma/client";
 
 const DynamicPreview = dynamic(() => import("./PreviewAnnouncement"));
 const DynamicGuide = dynamic(() => import("./MarkdownGuide"));
+const DynamicError = dynamic(() => import("../ErrorSnack"));
 
 const initAnnounce = {
   header: "",
@@ -50,19 +54,36 @@ const initAnnounce = {
   focused: "",
   error: false,
   errorMessage: "",
-  type: "School Announcement",
+  type: "",
+  selected: {
+    start: null,
+    end: null,
+  },
 };
 
-const AnnounceWidget = () => {
-  const imageInput = useRef<HTMLInputElement | null>(null);
-  const videoInput = useRef<HTMLInputElement | null>(null);
+const AnnounceWidget = ({
+  display = false,
+  mutate,
+}: {
+  display?: boolean;
+  mutate: (newData: Announcement) => void;
+}) => {
+  const router = useRouter();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [session] = useSession();
+  const imageInput = useRef<HTMLInputElement | null>(null);
+  const videoInput = useRef<HTMLInputElement | null>(null);
+  const headerInput = useRef<HTMLInputElement | null>(null);
+  const bodyInput = useRef<HTMLInputElement | null>(null);
+  const footerInput = useRef<HTMLInputElement | null>(null);
   const [announcement, dispatch] = useReducer(announceReducer, initAnnounce);
   const [openPreview, setOpenPreview] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
-  const [selected, setSelected] = useState("");
+  const [session] = useSession();
+  const hasError =
+    announcement.header.length > 50 ||
+    announcement.body.length > 1500 ||
+    announcement.footer.length > 800;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -97,6 +118,13 @@ const AnnounceWidget = () => {
 
   const handleGuide = () => {
     setOpenGuide(!openGuide);
+  };
+
+  const handleErrorClose = () => {
+    dispatch({
+      type: "ERROR",
+      payload: "",
+    });
   };
 
   const handleImageClick = () => {
@@ -155,174 +183,294 @@ const AnnounceWidget = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { error, errorMessage, focused, ...trueAnnouncement } = announcement;
+    const { error, errorMessage, focused, selected, ...trueAnnouncement } =
+      announcement;
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/updateProfile`,
+      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/createAnnouncement`,
       {
         method: "POST",
         body: JSON.stringify({
           ...trueAnnouncement,
-          image: await uploadImages(trueAnnouncement.image).then(
-            (urls) => urls[0]
-          ),
-          video: await uploadVideo(trueAnnouncement.video),
+          image: trueAnnouncement.image
+            ? await uploadImages(trueAnnouncement.image)
+            : null,
+          video: trueAnnouncement.video
+            ? await uploadVideo(trueAnnouncement.video)
+            : null,
+          authorName: session?.user?.name,
         }),
       }
     )
-      .then((response) => {
+      .then(async (response) => {
+        const res = await response.json();
         if (!response.ok) {
           throw new Error(response.statusText);
         }
+        dispatch({ type: "RESET" });
+        mutate(res); // Display the announcement immediately.
       })
       .catch((error: Error) =>
         dispatch({ type: "ERROR", payload: error.message })
       );
   };
 
+  const highlightText = (e: any) => {
+    let textarea = e.target;
+    let selection = {
+      start: textarea.selectionStart,
+      end: textarea.selectionEnd,
+    };
+    dispatch({
+      type: "SELECT",
+      field: textarea.name,
+      payload: selection,
+    });
+  };
+
+  // Used for text formatting
+  useEffect(() => {
+    const header = headerInput.current;
+    const body = bodyInput.current;
+    const footer = footerInput.current;
+    header?.addEventListener("select", highlightText);
+    body?.addEventListener("select", highlightText);
+    footer?.addEventListener("select", highlightText);
+    return () => {
+      header?.removeEventListener("select", highlightText);
+      body?.removeEventListener("select", highlightText);
+      footer?.removeEventListener("select", highlightText);
+    };
+  }, []);
+
+  useEffect(() => {
+    let { error, errorMessage, focused, selected, ...trueAnnouncement } =
+      announcement;
+    let {
+      error: initError,
+      errorMessage: initErrMessage,
+      focused: initFocused,
+      selected: initSelected,
+      ...trueInit
+    } = initAnnounce;
+    const confirmationMessage =
+      "Changes you made in making an announcement will not be saved. Redirect?";
+    const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
+      // Browser side
+      (e || window.event).returnValue = confirmationMessage;
+      return confirmationMessage;
+    };
+    const beforeRouteHandler = (url: string) => {
+      // Client Side
+      if (router.pathname !== url && !confirm(confirmationMessage)) {
+        router.events.emit("routeChangeError");
+        dispatch({
+          type: "ERROR",
+          payload: "Redirect halted due to unsaved changes.",
+        });
+      }
+    };
+    if (!isEqual(trueAnnouncement, trueInit)) {
+      window.addEventListener("beforeunload", beforeUnloadHandler);
+      router.events.on("routeChangeStart", beforeRouteHandler);
+    } else {
+      window.removeEventListener("beforeunload", beforeUnloadHandler);
+      router.events.off("routeChangeStart", beforeRouteHandler);
+    }
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnloadHandler);
+      router.events.off("routeChangeStart", beforeRouteHandler);
+    };
+  }, [router, announcement]);
+
   return (
-    <>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={11}>
-          <input
-            type="file"
-            multiple
-            hidden={true}
-            ref={imageInput}
-            onChange={handleImage}
-          />
-          <input
-            type="file"
-            multiple
-            hidden={true}
-            ref={videoInput}
-            onChange={handleVideo}
-          />
-          <TextField
-            id="header"
-            name="header"
-            label="Header"
-            placeholder="Header/Title"
-            fullWidth
-            onChange={handleChange}
-            onFocus={handleFocus}
-            value={announcement.header}
-          />
-          <TextField
-            id="body"
-            name="body"
-            label="Body"
-            placeholder="Body/Content"
-            fullWidth
-            multiline
-            rows={4}
-            sx={{ marginTop: "8px" }}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            value={announcement.body}
-          />
-          {(announcement.image.length != 0 || !!announcement.video) && (
-            <Media
-              images={announcement.image}
-              video={announcement.video}
-              dispatch={dispatch}
+    <Collapse in={display}>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={11}>
+            <input
+              type="file"
+              multiple
+              hidden={true}
+              ref={imageInput}
+              onChange={handleImage}
             />
-          )}
-          <TextField
-            id="footer"
-            name="footer"
-            label="Footer"
-            placeholder="Footer/Credits"
-            fullWidth
-            multiline
-            rows={2}
-            sx={{ marginTop: "8px" }}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            value={announcement.footer}
-          />
-        </Grid>
-        <Grid item xs={12} sm={1}>
-          <Stack
-            direction={mobile ? "row" : "column"}
-            divider={<Divider />}
-            sx={{ height: !mobile ? "300px" : "40px", overflow: "auto" }}
-            className={styles.options}
-            spacing={2}
-          >
-            <IconButton
-              name="IMAGE"
-              onClick={handleImageClick}
-              disabled={!!announcement.video || announcement.image.length == 4}
+            <input
+              type="file"
+              multiple
+              hidden={true}
+              ref={videoInput}
+              onChange={handleVideo}
+            />
+            <TextField
+              id="header"
+              name="header"
+              label="Header"
+              placeholder="Header/Title"
+              fullWidth
+              onChange={handleChange}
+              onFocus={handleFocus}
+              value={announcement.header}
+              ref={headerInput}
+              required
+              error={announcement.header.length > 150}
+            />
+            <TextField
+              id="body"
+              name="body"
+              label="Body"
+              placeholder="Body/Content. Read the markdown guide (question icon) to style your text."
+              fullWidth
+              multiline
+              rows={4}
+              sx={{ marginTop: "8px" }}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              value={announcement.body}
+              ref={bodyInput}
+              required
+              error={announcement.body.length > 1500}
+            />
+            {(announcement.image.length != 0 || !!announcement.video) && (
+              <Media
+                images={announcement.image}
+                video={announcement.video}
+                dispatch={dispatch}
+              />
+            )}
+            <TextField
+              id="footer"
+              name="footer"
+              label="Footer"
+              placeholder="Footer/Credits"
+              fullWidth
+              multiline
+              rows={2}
+              sx={{ marginTop: "8px" }}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              value={announcement.footer}
+              ref={footerInput}
+              error={announcement.footer.length > 800}
+            />
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Stack
+              direction={mobile ? "row" : "column"}
+              divider={<Divider />}
+              sx={{
+                height: !mobile ? "300px" : "40px",
+                overflow: "auto",
+                display: "flex",
+                alignItems: "center",
+              }}
+              className={styles.options}
+              spacing={2}
             >
-              <ImageIcon />
-            </IconButton>
-            <IconButton
-              name="VIDEO"
-              onClick={handleVideoClick}
-              disabled={!!announcement.video || announcement.image.length != 0}
-            >
-              <VideocamIcon />
-            </IconButton>
-            <IconButton name="BOLD" onClick={handleFormat} disabled={!selected}>
-              <FormatBoldIcon />
-            </IconButton>
-            <IconButton name="ITALIC" onClick={handleFormat}>
-              <FormatItalicIcon />
-            </IconButton>
-            <IconButton name="STRIKETHROUGH" onClick={handleFormat}>
-              <FormatUnderlinedIcon />
-            </IconButton>
-            <IconButton name="LINK" onClick={handleFormat}>
-              <InsertLinkIcon />
-            </IconButton>
-          </Stack>
+              <IconButton
+                name="IMAGE"
+                onClick={handleImageClick}
+                disabled={
+                  !!announcement.video || announcement.image.length == 4
+                }
+              >
+                <ImageIcon />
+              </IconButton>
+              <IconButton
+                name="VIDEO"
+                onClick={handleVideoClick}
+                disabled={
+                  !!announcement.video || announcement.image.length != 0
+                }
+              >
+                <VideocamIcon />
+              </IconButton>
+              <IconButton
+                name="BOLD"
+                onClick={handleFormat}
+                disabled={!announcement.focused}
+              >
+                <FormatBoldIcon />
+              </IconButton>
+              <IconButton
+                name="ITALIC"
+                onClick={handleFormat}
+                disabled={!announcement.focused}
+              >
+                <FormatItalicIcon />
+              </IconButton>
+              <IconButton
+                name="STRIKETHROUGH"
+                onClick={handleFormat}
+                disabled={!announcement.focused}
+              >
+                <FormatUnderlinedIcon />
+              </IconButton>
+              <IconButton
+                name="LINK"
+                onClick={handleFormat}
+                disabled={!announcement.focused}
+              >
+                <InsertLinkIcon />
+              </IconButton>
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-      <Box
-        display="flex"
-        flexDirection={mobile ? "column" : "row"}
-        marginTop={1}
-      >
-        <Select
-          id="type"
-          name="type"
-          value={announcement.type}
-          label="Announcement Type"
-          placeholder="Announcement Type"
-          onChange={handleType}
-          fullWidth
+        <Box
+          display="flex"
+          flexDirection={mobile ? "column" : "row"}
+          marginTop={1}
         >
-          {AnnounceTypeOptions.map((type) => (
-            <MenuItem key={type} value={type}>
-              {type}
-            </MenuItem>
-          ))}
-        </Select>
-        <Box>
-          <IconButton onClick={handleGuide} sx={{ marginRight: "8px" }}>
-            <HelpIcon />
-          </IconButton>
-          <IconButton onClick={handlePreview} sx={{ marginRight: "8px" }}>
-            <VisibilityIcon />
-          </IconButton>
-          {mobile ? (
-            <IconButton type="submit">
-              <SendIcon />
+          <Select
+            id="type"
+            name="type"
+            value={announcement.type}
+            label="Announcement Type"
+            placeholder="Announcement Type"
+            onChange={handleType}
+            sx={{ flexGrow: 1 }}
+          >
+            {AnnounceTypeOptions.map((type) => (
+              <MenuItem key={type} value={type}>
+                {type}
+              </MenuItem>
+            ))}
+          </Select>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <IconButton onClick={handleGuide} sx={{ marginRight: "8px" }}>
+              <HelpIcon />
             </IconButton>
-          ) : (
-            <Button type="submit" variant="contained" color="info">
-              Submit
-            </Button>
-          )}
+            <IconButton onClick={handlePreview} sx={{ marginRight: "8px" }}>
+              <VisibilityIcon />
+            </IconButton>
+            {mobile ? (
+              <IconButton type="submit">
+                <SendIcon />
+              </IconButton>
+            ) : (
+              <Button
+                type="submit"
+                variant="contained"
+                color="info"
+                disabled={hasError}
+              >
+                Submit
+              </Button>
+            )}
+          </Box>
         </Box>
-      </Box>
-      <DynamicGuide open={openGuide} handleClose={handleGuide} />
-      <DynamicPreview
-        open={openPreview}
-        handleClose={handlePreview}
-        announcement={announcement}
-      />
-    </>
+        <DynamicGuide open={openGuide} handleClose={handleGuide} />
+        <DynamicPreview
+          open={openPreview}
+          handleClose={handlePreview}
+          announcement={announcement}
+        />
+        <DynamicError
+          open={announcement.error}
+          error={announcement.errorMessage}
+          handleClose={handleErrorClose}
+        />
+      </form>
+    </Collapse>
   );
 };
 

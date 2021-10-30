@@ -46,7 +46,7 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
       </AppBar>
       {!mobile && <LatestAnnouncements />}
       {!tablet && !mobile && <PromotionBar />}
-      <Box className={styles.Main}>
+      <Box className={styles.Main} id="scrollable">
         <LocalizationProvider dateAdapter={DateAdapter}>
           <Container
             sx={{

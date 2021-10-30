@@ -34,10 +34,9 @@ const PreviewAnnouncement = ({
         maxWidth={"md"}
         open={open}
         onClose={handleClose}
+        sx={{ marginTop: "32px",height: "100%" }}
       >
-        <Container>
-          <DialogTitle>Announcement Preview</DialogTitle>
-          <Divider />
+        <Container sx={{ marginTop: "8px", height: "100%" }}>
           <Announcement announcement={announcement} type="SSG" />
         </Container>
       </Dialog>

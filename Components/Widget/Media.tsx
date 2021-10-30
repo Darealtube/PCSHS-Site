@@ -33,7 +33,7 @@ const Media = ({ images, video, dispatch }: Props) => {
     <>
       <Grid container sx={{ height: "40vh", marginTop: "8px" }} spacing={1}>
         {images.map((image) => (
-          <>
+          <React.Fragment key={image}>
             <Grid item xs={images.length > 1 ? 6 : 12}>
               <Box
                 width="100%"
@@ -58,7 +58,7 @@ const Media = ({ images, video, dispatch }: Props) => {
                 />
               </Box>
             </Grid>
-          </>
+          </React.Fragment>
         ))}
         {video && (
           <Box height="100%" width="100%">
