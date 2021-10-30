@@ -91,12 +91,14 @@ export default NextAuth({
     async jwt(token, user) {
       if (user) {
         token.accessToken = user.access_token;
+        token.role = user.role;
       }
       return token;
     },
 
     async session(session, token) {
       session.accessToken = token.accessToken;
+      session.role = token.role;
       return session;
     },
   },

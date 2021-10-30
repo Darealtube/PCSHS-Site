@@ -1,0 +1,14 @@
+.options::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+}
+
+.options::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 10%;
+}
+
+.media {
+  border-radius: 2%;
+}

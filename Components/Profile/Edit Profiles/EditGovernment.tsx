@@ -21,7 +21,7 @@ import {
   ProfileAction,
   ProfileState,
 } from "../../../utils/Reducers/profileReducer";
-import { getImage } from "../../../utils/getImage";
+import { getPFP } from "../../../utils/getpfp";
 import Link from "next/link";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
@@ -60,7 +60,7 @@ const EditGovernmentProfile = ({
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if ((e.currentTarget.files as FileList)?.length != 0) {
-      getImage(e.currentTarget.files as FileList, (result, error) => {
+      getPFP(e.currentTarget.files as FileList, (result, error) => {
         if (error && !result) {
           return dispatch({
             type: "ERROR",

@@ -6,7 +6,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import AnnouncementIcon from "@mui/icons-material/Announcement";
 import GradeIcon from "@mui/icons-material/Grade";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
@@ -52,14 +51,6 @@ const ProfileMenu = ({ open, anchor, closeMenu }: Props) => {
             </MenuItem>
           </Link>
           <Divider />
-          <Link href="/createAnnouncements" passHref>
-            <MenuItem component="a">
-              <ListItemIcon>
-                <AnnouncementIcon />
-              </ListItemIcon>
-              <ListItemText>Create Announcements</ListItemText>
-            </MenuItem>
-          </Link>
           <MenuItem component="a" onClick={() => signOut()}>
             <ListItemIcon>
               <LoginIcon />

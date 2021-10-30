@@ -8,9 +8,8 @@ import {
   Skeleton,
 } from "@mui/material";
 import useSWR from "swr";
-import Announcements from "../Announcements";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { Announcement as AnnouncementType } from "../../types/PrismaTypes";
+import Announcement from "../Announcement";
 
 const CardSkeleton = () => {
   return (
@@ -51,7 +50,7 @@ const LatestAnnouncements = () => {
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
   const drawerWidth = tablet ? "40%" : "24%";
-  const { data, error } = useSWR("/api/applyAnnouncements", fetcher);
+  const { data, error } = useSWR("/api/applyAnnouncements");
 
   return (
     <Drawer
@@ -72,7 +71,13 @@ const LatestAnnouncements = () => {
         </Typography>
 
         {data ? (
-          <Announcements announcements={data} type={"Apply"} />
+          <>
+            {data.map((announcement: AnnouncementType) => (
+              <Box key={announcement.header}>
+                <Announcement announcement={announcement} type={"Apply"} />
+              </Box>
+            ))}
+          </>
         ) : (
           <CardSkeleton />
         )}
