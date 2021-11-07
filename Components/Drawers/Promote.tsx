@@ -28,7 +28,9 @@ const PromotionBar = () => {
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
   const drawerWidth = tablet ? "40%" : "24%";
-  const { data, error } = useSWR("/api/promotion");
+  const { data, error } = useSWR("/api/promotion", {
+    revalidateOnFocus: false,
+  });
 
   return (
     <Drawer

@@ -66,3 +66,12 @@ export type Profile = {
   about: string | null;
   role: string;
 } | null;
+
+export type Event = {
+  id: string;
+  title: string;
+  description: string;
+  day: number;
+  year: number;
+  month: number;
+};

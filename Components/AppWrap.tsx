@@ -18,8 +18,8 @@ import DateAdapter from "@mui/lab/AdapterDayjs";
 
 const AppWrap = ({ children }: { children: ReactChild }) => {
   const theme = useTheme();
-  const tablet = useMediaQuery(theme.breakpoints.only("md"));
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
+  const desktop = useMediaQuery(theme.breakpoints.only("xl"));
   return (
     <>
       <AppBar position="fixed" className={styles.AppBar}>
@@ -45,7 +45,7 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
         <AppOptions />
       </AppBar>
       {!mobile && <LatestAnnouncements />}
-      {!tablet && !mobile && <PromotionBar />}
+      {desktop && <PromotionBar />}
       <Box className={styles.Main} id="scrollable">
         <LocalizationProvider dateAdapter={DateAdapter}>
           <Container

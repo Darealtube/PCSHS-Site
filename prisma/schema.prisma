@@ -51,6 +51,15 @@ model Profile {
   @@id([lrn, name])
 }
 
+model Event {
+  id          String @id @unique @default(cuid())
+  title       String @db.VarChar(50)
+  description String @db.VarChar(400)
+  day         Int
+  month       Int
+  year        Int
+}
+
 // Next Auth Models
 
 model Account {

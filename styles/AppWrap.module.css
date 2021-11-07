@@ -14,7 +14,6 @@
 
 .Main {
   margin-left: 24%;
-  margin-right: 24%;
   height: 100vh;
   overflow: auto;
   display: flex;
@@ -24,6 +23,12 @@
   .Main {
     margin-left: 40%;
     margin-right: 0%;
+  }
+}
+
+@media all and (min-width: 1536px) {
+  .Main {
+    margin-right: 24%;
   }
 }
 
