@@ -5,10 +5,17 @@ type PopoverProps = {
   open: boolean;
   anchor: null | HTMLElement;
   handleClose: () => void;
+  handleOpen: (e: React.MouseEvent<HTMLElement>) => void;
   event: Event;
 };
 
-const EventPopover = ({ open, anchor, handleClose, event }: PopoverProps) => {
+const EventPopover = ({
+  open,
+  anchor,
+  handleClose,
+  handleOpen,
+  event,
+}: PopoverProps) => {
   return (
     <Popover
       sx={{
@@ -24,27 +31,19 @@ const EventPopover = ({ open, anchor, handleClose, event }: PopoverProps) => {
         vertical: "top",
         horizontal: "left",
       }}
-      onClose={handleClose}
       disableRestoreFocus
     >
-      <Card sx={{ maxWidth: 320, maxHeight: 500, overflow: "auto" }}>
+      <Card
+        sx={{ maxWidth: 320, maxHeight: 500, overflow: "auto" }}
+        onMouseEnter={handleOpen}
+        onMouseLeave={handleClose}
+      >
         <CardContent>
           <Typography variant="h4" gutterBottom>
             {event.title}
           </Typography>
           <Divider />
           <Typography variant="body1" gutterBottom>
-            {event.description}
-            {event.description}
-            {event.description}
-            {event.description}
-            {event.description}
-            {event.description}
-            {event.description}
-            {event.description}
-            {event.description}
-            {event.description}
-            {event.description}
             {event.description}
           </Typography>
         </CardContent>

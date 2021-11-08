@@ -67,6 +67,7 @@ const initCalendar = {
 
 const Calendar = () => {
   const theme = useTheme();
+  const tablet = useMediaQuery("(min-width: 900px) and (max-width: 1200px)");
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [calendar, dispatch] = useReducer(calendarReducer, initCalendar);
   const { data: events, mutate } = useSWR(
@@ -167,7 +168,7 @@ const Calendar = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!mobile && (
+     {/*  {!mobile && (
         <>
           <Typography gutterBottom variant="h2" align="center">
             Calendar of Events
@@ -175,9 +176,9 @@ const Calendar = () => {
 
           <Divider />
         </>
-      )}
+      )} */}
 
-      {mobile ? (
+      {mobile || tablet ? (
         <MobileCalendar
           calendar={calendar}
           dispatch={dispatch}
@@ -321,6 +322,7 @@ const Calendar = () => {
       {events && Boolean(eventAnchor) == true && (
         <DynamicEventPopover
           open={Boolean(eventAnchor)}
+          handleOpen={handleEventOpen}
           handleClose={handleEventClose}
           anchor={eventAnchor}
           event={events?.find((event: Event) => event.day == dayHovered)}
