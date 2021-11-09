@@ -9,6 +9,7 @@ import {
 import Announcement from "../Announcement";
 
 type Announcement = {
+  id: string;
   header: string;
   body: string;
   footer: string;
