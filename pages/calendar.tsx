@@ -168,7 +168,7 @@ const Calendar = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-     {/*  {!mobile && (
+      {/*  {!mobile && (
         <>
           <Typography gutterBottom variant="h2" align="center">
             Calendar of Events
@@ -183,6 +183,9 @@ const Calendar = () => {
           calendar={calendar}
           dispatch={dispatch}
           day={_.filter(dayArray, ["day", calendar.day])[0]}
+          add={handleAddMutate}
+          update={handleUpdateMutate}
+          remove={handleDeleteMutate}
         />
       ) : (
         <Paper
