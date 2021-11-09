@@ -229,7 +229,8 @@ const About = ({ schoolMembers }: Props) => {
         )}
       </VisibilitySensor>
 
-      <SchoolMembers schoolMembers={schoolMembers} />
+
+      {/* <SchoolMembers schoolMembers={schoolMembers} /> TEMPORARY UNAVAILABLE */}
 
       <VisibilitySensor partialVisibility>
         {({ isVisible }) => (
@@ -272,8 +273,7 @@ export default About;
 type SchoolMemberProps = {
   image: string | null;
   name: string;
-  position: string[];
-  role: string[];
+  role: string;
 }[];
 
 type Props = {
@@ -283,11 +283,10 @@ type Props = {
 export const getStaticProps: GetStaticProps = async (): Promise<
   GetStaticPropsResult<Props>
 > => {
-  const schoolMembers = await prisma.member.findMany({
+  const schoolMembers = await prisma.profile.findMany({
     select: {
       name: true,
       image: true,
-      position: true,
       role: true,
     },
   });

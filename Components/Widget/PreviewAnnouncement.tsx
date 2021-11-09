@@ -9,6 +9,7 @@ import {
 import Announcement from "../Announcement";
 
 type Announcement = {
+  id: string;
   header: string;
   body: string;
   footer: string;
@@ -34,7 +35,7 @@ const PreviewAnnouncement = ({
         maxWidth={"md"}
         open={open}
         onClose={handleClose}
-        sx={{ marginTop: "32px",height: "100%" }}
+        sx={{ marginTop: "32px", height: "100%" }}
       >
         <Container sx={{ marginTop: "8px", height: "100%" }}>
           <Announcement announcement={announcement} type="SSG" />
