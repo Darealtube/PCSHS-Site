@@ -50,7 +50,9 @@ const LatestAnnouncements = () => {
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
   const drawerWidth = tablet ? "40%" : "24%";
-  const { data, error } = useSWR("/api/applyAnnouncements");
+  const { data, error } = useSWR("/api/applyAnnouncements", {
+    revalidateOnFocus: false,
+  });
 
   return (
     <Drawer

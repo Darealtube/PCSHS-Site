@@ -9,6 +9,7 @@ import NoImage from "../public/user-empty-avatar.png";
 import Image from "next/image";
 import styles from "../styles/AppWrap.module.css";
 import { useSession } from "next-auth/client";
+import Link from "next/link";
 
 const DynamicAboutMenu = dynamic(() => import("./Menus/AboutMenu"));
 const DynamicAdmissionMenu = dynamic(() => import("./Menus/AdmissionMenu"));
@@ -55,12 +56,15 @@ const AppOptions = () => {
           onClick={handleOpenMenu}
           icon={<InfoIcon />}
         />
-        <Option
-          title="Calendar of Events"
-          name="events"
-          onClick={handleOpenMenu}
-          icon={<EventIcon />}
-        />
+
+        <Link href="/calendar" passHref>
+          <Tooltip title="Calendar of Events">
+            <IconButton size="large" name="events" LinkComponent="a">
+              <EventIcon />
+            </IconButton>
+          </Tooltip>
+        </Link>
+
         <Option
           title="Admissions and Applications"
           name="admissions"
