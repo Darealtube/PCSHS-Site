@@ -1,9 +1,9 @@
 import { Dialog, Container } from "@mui/material";
-import { AnnounceState } from "../../utils/Reducers/announceReducer";
+import { Announcement as AnnouncementType } from "../../types/PrismaTypes";
 import Announcement from "../Announcement";
 
 type PreviewProps = {
-  announcement: AnnounceState;
+  announcement: AnnouncementType;
   open: boolean;
   handleClose: () => void;
 };

@@ -38,7 +38,7 @@ export type Visitor = {
 } | null;
 
 export type Announcement = {
-  id: string;
+  id?: string;
   header: string;
   body: string;
   footer: string | null;
