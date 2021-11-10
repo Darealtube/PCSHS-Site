@@ -22,7 +22,7 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
   const desktop = useMediaQuery(theme.breakpoints.only("xl"));
   return (
     <>
-      <AppBar position="fixed" className={styles.AppBar}>
+      <AppBar position="fixed" className={styles.appBar}>
         <Box
           sx={{
             display: "flex",
@@ -46,7 +46,7 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
       </AppBar>
       {!mobile && <LatestAnnouncements />}
       {desktop && <PromotionBar />}
-      <Box className={styles.Main} id="scrollable">
+      <Box className={styles.main} id="scrollable">
         <LocalizationProvider dateAdapter={DateAdapter}>
           <Container
             sx={{

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Announcement" ALTER COLUMN "date" DROP DEFAULT,
+ALTER COLUMN "date" SET DATA TYPE TEXT;

@@ -1,4 +1,4 @@
-.AppBar {
+.appBar {
   display: flex;
   flex-direction: row;
   z-index: 10000;
@@ -12,7 +12,7 @@
   border-radius: 50%;
 }
 
-.Main {
+.main {
   margin-left: 24%;
   height: 100vh;
   overflow: auto;
@@ -20,20 +20,20 @@
 }
 
 @media all and (max-width: 1199px) {
-  .Main {
+  .main {
     margin-left: 40%;
     margin-right: 0%;
   }
 }
 
 @media all and (min-width: 1536px) {
-  .Main {
+  .main {
     margin-right: 24%;
   }
 }
 
 @media all and (max-width: 899.99px) {
-  .Main {
+  .main {
     margin-left: 0%;
     margin-right: 0%;
   }
