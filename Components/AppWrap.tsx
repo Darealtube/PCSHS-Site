@@ -22,7 +22,18 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
   const desktop = useMediaQuery(theme.breakpoints.only("xl"));
   return (
     <>
-      <AppBar position="fixed" className={styles.appBar}>
+      <AppBar
+        position="fixed"
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          zIndex: 10000,
+          width: "100%",
+          alignItems: "center",
+          backgroundColor: "white",
+          color: "black",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
