@@ -15,9 +15,10 @@ import { Announcement as AnnouncementType } from "../types/PrismaTypes";
 import Markdown from "react-markdown";
 import remarkGFM from "remark-gfm";
 import dayjs from "dayjs";
+import { AnnounceState } from "../utils/Reducers/announceReducer";
 
 type Props = {
-  announcement: AnnouncementType;
+  announcement: AnnouncementType | AnnounceState;
   type?: "School" | "SSG" | "Apply";
 };
 

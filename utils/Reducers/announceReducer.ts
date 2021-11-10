@@ -1,4 +1,8 @@
+import { Profile } from "../../types/PrismaTypes";
+
 export type AnnounceState = {
+  author?: Profile;
+  date?: string;
   header: string;
   body: string;
   footer: string;

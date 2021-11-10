@@ -1,24 +1,9 @@
-import {
-  DialogContent,
-  Dialog,
-  DialogTitle,
-  DialogContentText,
-  Divider,
-  Container,
-} from "@mui/material";
+import { Dialog, Container } from "@mui/material";
+import { AnnounceState } from "../../utils/Reducers/announceReducer";
 import Announcement from "../Announcement";
 
-type Announcement = {
-  id: string;
-  header: string;
-  body: string;
-  footer: string;
-  image: string[];
-  video: string;
-};
-
 type PreviewProps = {
-  announcement: Announcement;
+  announcement: AnnounceState;
   open: boolean;
   handleClose: () => void;
 };
@@ -35,7 +20,7 @@ const PreviewAnnouncement = ({
         maxWidth={"md"}
         open={open}
         onClose={handleClose}
-        sx={{ marginTop: "32px",height: "100%" }}
+        sx={{ marginTop: "32px", height: "100%" }}
       >
         <Container sx={{ marginTop: "8px", height: "100%" }}>
           <Announcement announcement={announcement} type="SSG" />
