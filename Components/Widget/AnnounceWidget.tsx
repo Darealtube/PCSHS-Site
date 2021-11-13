@@ -40,10 +40,13 @@ import { AnnounceTypeOptions } from "../../utils/selectOptions";
 import { useRouter } from "next/dist/client/router";
 import { isEqual } from "lodash";
 import { Announcement } from ".prisma/client";
+import { RateLimiter } from "limiter";
 
 const DynamicPreview = dynamic(() => import("./PreviewAnnouncement"));
 const DynamicGuide = dynamic(() => import("./MarkdownGuide"));
 const DynamicError = dynamic(() => import("../ErrorSnack"));
+
+const limiter = new RateLimiter({ tokensPerInterval: 150, interval: "hour" });
 
 const initAnnounce = {
   header: "",
@@ -185,6 +188,10 @@ const AnnounceWidget = ({
     e.preventDefault();
     const { error, errorMessage, focused, selected, ...trueAnnouncement } =
       announcement;
+    // new
+    const remainingRequests = await limiter.removeTokens(1);
+    console.log(remainingRequests);
+    // new
     await fetch(
       `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/createAnnouncement`,
       {
