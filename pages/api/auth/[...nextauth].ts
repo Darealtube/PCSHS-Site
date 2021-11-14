@@ -8,6 +8,7 @@ import { RateLimiter } from "limiter";
 const limiter = new RateLimiter({
   tokensPerInterval: 4,
   interval: "hour",
+  fireImmediately: true,
 });
 
 const rateLimit = async () => {
@@ -50,7 +51,10 @@ export default NextAuth({
           return bcrypt.hash(credentials.password, salt);
         });
 
-        console.log(remaining);
+        if (remaining < 0) {
+          throw new Error("You are being rate limited. Try again in the next hour.")
+        }
+
         if (credentials.type == "Sign In") {
           const passwordCorrect = await bcrypt.compare(
             credentials.password,
