@@ -7,7 +7,8 @@ export default async function getEvents(
   res: NextApiResponse
 ) {
   const params = req.query;
-  await rateLimit();
+  const remaining = await rateLimit();
+  console.log(remaining);
   const events = await prisma.event.findMany({
     where: {
       month: +params.month,
