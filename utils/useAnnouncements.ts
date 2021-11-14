@@ -1,7 +1,6 @@
 import { flatten } from "lodash";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
-import { RateLimitContext } from "../pages/_app";
 import { Announcement } from "../types/PrismaTypes";
 
 const getKey = (pageIndex: number, previousPageData: Announcement[] | null) => {
@@ -17,7 +16,6 @@ const getKey = (pageIndex: number, previousPageData: Announcement[] | null) => {
 };
 
 const useAnnouncements = (limit: number, initialData?: Announcement[][]) => {
-  const rateLimiter = useContext(RateLimitContext);
   const { data, size, setSize, error, mutate } = useSWRInfinite(getKey, {
     fallbackData: initialData,
     revalidateOnFocus: false,
@@ -29,8 +27,7 @@ const useAnnouncements = (limit: number, initialData?: Announcement[][]) => {
   const isEmpty = data?.[0]?.length === 0;
   const noMore = isEmpty || (data && data[data.length - 1]?.length < limit);
 
-  const moreAnnouncements = async () => {
-    await rateLimiter();
+  const moreAnnouncements = () => {
     setSize(size + 1);
   };
 

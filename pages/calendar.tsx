@@ -7,14 +7,13 @@ import {
   GridSize,
   useMediaQuery,
   useTheme,
-  Divider,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Head from "next/head";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import dayjs from "dayjs";
-import { useContext, useMemo, useReducer, useState } from "react";
+import { useMemo, useReducer, useState } from "react";
 import calendarReducer from "../utils/Reducers/calendarReducer";
 import MobileCalendar from "../Components/Calendar/mobileCalendar";
 import EditIcon from "@mui/icons-material/Edit";
@@ -24,7 +23,6 @@ import useSWR from "swr";
 import { Event } from "../types/PrismaTypes";
 import dynamic from "next/dynamic";
 import _ from "lodash";
-import { RateLimitContext } from "./_app";
 
 const DynamicEventPopover = dynamic(
   () => import("../Components/Calendar/EventPopover")
@@ -67,7 +65,6 @@ const initCalendar = {
 };
 
 const Calendar = () => {
-  const rateLimiter = useContext(RateLimitContext);
   const theme = useTheme();
   const tablet = useMediaQuery("(min-width: 900px) and (max-width: 1200px)");
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -124,13 +121,11 @@ const Calendar = () => {
     setEventAnchor(null);
   };
 
-  const handleNextDate = async () => {
-    await rateLimiter();
+  const handleNextDate = () => {
     dispatch({ type: "NEXT_MONTH" });
   };
 
-  const handlePreviousDate = async () => {
-    await rateLimiter();
+  const handlePreviousDate = () => {
     dispatch({ type: "PREVIOUS_MONTH" });
   };
 

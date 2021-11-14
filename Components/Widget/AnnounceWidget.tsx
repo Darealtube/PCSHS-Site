@@ -23,7 +23,6 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import { useSession } from "next-auth/client";
 import React, {
   MutableRefObject,
-  useContext,
   useEffect,
   useReducer,
   useRef,
@@ -41,7 +40,6 @@ import { AnnounceTypeOptions } from "../../utils/selectOptions";
 import { useRouter } from "next/dist/client/router";
 import { isEqual } from "lodash";
 import { Announcement } from ".prisma/client";
-import { RateLimitContext } from "../../pages/_app";
 
 const DynamicPreview = dynamic(() => import("./PreviewAnnouncement"));
 const DynamicGuide = dynamic(() => import("./MarkdownGuide"));
@@ -70,7 +68,6 @@ const AnnounceWidget = ({
   display?: boolean;
   mutate: (newData: Announcement) => void;
 }) => {
-  const rateLimiter = useContext(RateLimitContext);
   const router = useRouter();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -188,7 +185,6 @@ const AnnounceWidget = ({
     e.preventDefault();
     const { error, errorMessage, focused, selected, ...trueAnnouncement } =
       announcement;
-    await rateLimiter();
     await fetch(
       `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/createAnnouncement`,
       {

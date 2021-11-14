@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
+import { rateLimit } from "../../_app";
 
 export default async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const params = req.query;
+  await rateLimit();
   const events = await prisma.event.findMany({
     where: {
       month: +params.month,
