@@ -20,7 +20,6 @@
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.27.1",
     "dayjs": "^1.10.7",
-    "limiter": "^2.1.0",
     "lodash": "^4.17.21",
     "next": "^12.0.1",
     "next-auth": "^3.29.0",

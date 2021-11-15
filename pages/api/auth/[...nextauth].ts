@@ -3,18 +3,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../lib/prisma";
 import Providers from "next-auth/providers";
 import bcrypt from "bcrypt";
-import { RateLimiter } from "limiter";
-
-const limiter = new RateLimiter({
-  tokensPerInterval: 4,
-  interval: "hour",
-  fireImmediately: true,
-});
-
-const rateLimit = async () => {
-  const remainingRequests = await limiter.removeTokens(1);
-  return remainingRequests;
-};
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -41,7 +29,6 @@ export default NextAuth({
       },
       async authorize(credentials: any) {
         const saltRounds = 10;
-        const remaining = await rateLimit();
         const user = await prisma.profile.findUnique({
           where: {
             name: credentials.username,
@@ -50,10 +37,6 @@ export default NextAuth({
         const hashedPassword = await bcrypt.genSalt(saltRounds).then((salt) => {
           return bcrypt.hash(credentials.password, salt);
         });
-
-        if (remaining < 0) {
-          throw new Error("You are being rate limited. Try again in the next hour.")
-        }
 
         if (credentials.type == "Sign In") {
           const passwordCorrect = await bcrypt.compare(

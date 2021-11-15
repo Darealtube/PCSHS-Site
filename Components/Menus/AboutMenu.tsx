@@ -70,15 +70,6 @@ const AboutMenu = ({ open, anchor, closeMenu }: Props) => {
             <ListItemText>Contact Us</ListItemText>
           </MenuItem>
         </Link>
-        <Divider />
-        <Link href="/about#members" passHref>
-          <MenuItem component="a">
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText>Members</ListItemText>
-          </MenuItem>
-        </Link>
       </MenuList>
     </Menu>
   );
