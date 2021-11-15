@@ -1,5 +1,4 @@
-import { Container, Typography, Fade, Grow } from "@mui/material";
-import type { GetStaticProps, GetStaticPropsResult } from "next";
+import { Typography, Fade, Grow } from "@mui/material";
 import Head from "next/head";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FlagIcon from "@mui/icons-material/Flag";
@@ -16,12 +15,8 @@ import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import CallIcon from "@mui/icons-material/Call";
 import RoomIcon from "@mui/icons-material/Room";
-import Principal from "../public/pcshsMembers/principalpcshs.png";
-import VicePrincipal from "../public/pcshsMembers/assistantPrincipalpcshs.png";
-import SchoolMembers from "../Components/About/Parts/SchoolMembers";
 import History from "../Components/About/Parts/History";
 import VisibilitySensor from "react-visibility-sensor";
-import prisma from "../lib/prisma";
 
 const Objectives = [
   {
@@ -75,7 +70,7 @@ const Contacts = [
   },
 ];
 
-const About = ({ schoolMembers }: Props) => {
+const About = () => {
   return (
     <>
       <Head>
@@ -171,70 +166,6 @@ const About = ({ schoolMembers }: Props) => {
       <VisibilitySensor partialVisibility>
         {({ isVisible }) => (
           <Fade in={isVisible} timeout={1500}>
-            <Typography
-              variant="h4"
-              align="center"
-              sx={{ marginBottom: "16px" }}
-            >
-              PCSHS Members
-            </Typography>
-          </Fade>
-        )}
-      </VisibilitySensor>
-
-      <VisibilitySensor partialVisibility>
-        {({ isVisible }) => (
-          <Grow in={isVisible} timeout={1000}>
-            <Box className={styles.member}>
-              <Image
-                src={Principal}
-                width={240}
-                height={240}
-                alt={"PCSHS Principal"}
-                className={styles.avatar}
-              />
-              <Typography variant="h6" align="center">
-                Charlie O. Fababaer
-              </Typography>
-              <Typography variant="body1" align="center">
-                School head
-              </Typography>
-            </Box>
-          </Grow>
-        )}
-      </VisibilitySensor>
-
-      <VisibilitySensor partialVisibility>
-        {({ isVisible }) => (
-          <Grow in={isVisible} timeout={1000}>
-            <Box className={styles.member}>
-              <Image
-                src={VicePrincipal}
-                width={240}
-                height={240}
-                alt={"PCSHS Principal"}
-                className={styles.avatar}
-              />
-              <Typography variant="h6" align="center">
-                Lowell H. de Ramon
-              </Typography>
-              <Typography variant="body1" align="center">
-                Assistant to the Principal
-              </Typography>
-              <Typography variant="body2" align="center">
-                Math Department Head Teacher
-              </Typography>
-            </Box>
-          </Grow>
-        )}
-      </VisibilitySensor>
-
-
-      {/* <SchoolMembers schoolMembers={schoolMembers} /> TEMPORARY UNAVAILABLE */}
-
-      <VisibilitySensor partialVisibility>
-        {({ isVisible }) => (
-          <Fade in={isVisible} timeout={1500}>
             <Typography align="center" variant="h4" gutterBottom>
               Contact Us
             </Typography>
@@ -269,26 +200,3 @@ const About = ({ schoolMembers }: Props) => {
 };
 
 export default About;
-
-type SchoolMemberProps = {
-  image: string | null;
-  name: string;
-  role: string;
-}[];
-
-type Props = {
-  schoolMembers: SchoolMemberProps;
-};
-
-export const getStaticProps: GetStaticProps = async (): Promise<
-  GetStaticPropsResult<Props>
-> => {
-  const schoolMembers = await prisma.profile.findMany({
-    select: {
-      name: true,
-      image: true,
-      role: true,
-    },
-  });
-  return { props: { schoolMembers } };
-};

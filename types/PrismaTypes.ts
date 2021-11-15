@@ -25,18 +25,6 @@ export type Government = {
   about: string | null;
 } | null;
 
-export type Visitor = {
-  name: string;
-  image: string | null;
-  date_of_birth: string | null;
-  sex: string | null;
-  address: string | null;
-  contact: string | null;
-  email: string | null;
-  role: string;
-  about: string | null;
-} | null;
-
 export type Announcement = {
   id?: string;
   header: string;
