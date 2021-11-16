@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip, useTheme, useMediaQuery } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
 import { Box } from "@mui/system";
@@ -37,6 +37,8 @@ const Option = ({ title, name, onClick, icon }: OptionComponentProps) => {
 const AppOptions = () => {
   const [session] = useSession();
   const [openMenu, setOpenMenu] = useState("");
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.only("xl"));
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -50,27 +52,31 @@ const AppOptions = () => {
   return (
     <>
       <Box sx={{ marginRight: "24px", display: "flex", alignItems: "center" }}>
-        <Option
-          title="About PCSHS"
-          name="about"
-          onClick={handleOpenMenu}
-          icon={<InfoIcon />}
-        />
+        {!desktop && (
+          <>
+            <Option
+              title="About PCSHS"
+              name="about"
+              onClick={handleOpenMenu}
+              icon={<InfoIcon />}
+            />
 
-        <Link href="/calendar" passHref>
-          <Tooltip title="Calendar of Events">
-            <IconButton size="large" name="events" LinkComponent="a">
-              <EventIcon />
-            </IconButton>
-          </Tooltip>
-        </Link>
+            <Link href="/calendar" passHref>
+              <Tooltip title="Calendar of Events">
+                <IconButton size="large" name="events" LinkComponent="a">
+                  <EventIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
 
-        <Option
-          title="Admissions and Applications"
-          name="admissions"
-          onClick={handleOpenMenu}
-          icon={<AssignmentIndIcon />}
-        />
+            <Option
+              title="Admissions and Applications"
+              name="admissions"
+              onClick={handleOpenMenu}
+              icon={<AssignmentIndIcon />}
+            />
+          </>
+        )}
 
         <IconButton onClick={handleOpenMenu} size="large" name="profile">
           {session && (

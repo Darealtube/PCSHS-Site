@@ -12,7 +12,7 @@ import PCSHSLogo from "../public/pcshslogo.png";
 import LatestAnnouncements from "./Drawers/Latest";
 import styles from "../styles/AppWrap.module.css";
 import AppOptions from "./AppOptions";
-import PromotionBar from "./Drawers/Promote";
+import MenuBar from "./Drawers/Menu";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 
@@ -56,7 +56,7 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
         <AppOptions />
       </AppBar>
       {!mobile && <LatestAnnouncements />}
-      {desktop && <PromotionBar />}
+      {desktop && <MenuBar />}
       <Box className={styles.main} id="scrollable">
         <LocalizationProvider dateAdapter={DateAdapter}>
           <Container
