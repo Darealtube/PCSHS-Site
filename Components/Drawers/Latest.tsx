@@ -49,7 +49,8 @@ const CardSkeleton = () => {
 const LatestAnnouncements = () => {
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
-  const drawerWidth = tablet ? "40%" : "24%";
+  const desktop = useMediaQuery(theme.breakpoints.only("lg"));
+  const drawerWidth = tablet || desktop ? "40%" : "24%";
   const { data, error } = useSWR("/api/announcement/applyAnnouncements", {
     revalidateOnFocus: false,
   });

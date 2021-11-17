@@ -1,4 +1,10 @@
-import { IconButton, Tooltip, useTheme, useMediaQuery } from "@mui/material";
+import {
+  IconButton,
+  Tooltip,
+  useTheme,
+  useMediaQuery,
+  Typography,
+} from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
 import { Box } from "@mui/system";
@@ -39,6 +45,7 @@ const AppOptions = () => {
   const [openMenu, setOpenMenu] = useState("");
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.only("xl"));
+  const smMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -48,11 +55,13 @@ const AppOptions = () => {
     setMenuAnchor(null);
     setOpenMenu("");
   };
-
+  
   return (
     <>
       <Box sx={{ marginRight: "24px", display: "flex", alignItems: "center" }}>
-        {!desktop && (
+        {smMobile ? (
+          ""
+        ) : !desktop ? (
           <>
             <Option
               title="About PCSHS"
@@ -60,7 +69,6 @@ const AppOptions = () => {
               onClick={handleOpenMenu}
               icon={<InfoIcon />}
             />
-
             <Link href="/calendar" passHref>
               <Tooltip title="Calendar of Events">
                 <IconButton size="large" name="events" LinkComponent="a">
@@ -76,6 +84,10 @@ const AppOptions = () => {
               icon={<AssignmentIndIcon />}
             />
           </>
+        ) : (
+          <Typography variant="h6" sx={{ marginRight: "8px" }}>
+            {session?.user?.name}
+          </Typography>
         )}
 
         <IconButton onClick={handleOpenMenu} size="large" name="profile">
@@ -92,6 +104,7 @@ const AppOptions = () => {
           )}
         </IconButton>
       </Box>
+
       <DynamicAboutMenu
         open={openMenu == "about"}
         closeMenu={handleCloseMenu}

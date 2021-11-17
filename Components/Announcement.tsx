@@ -23,8 +23,10 @@ type Props = {
 
 const Announcement = ({ announcement, type }: Props) => {
   const now = dayjs().format("YYYY-MM-DD");
+  const hasMedia =
+    (announcement?.image as string[]).length > 0 || announcement?.video;
   return (
-    <Fade in={true} timeout={1500}>
+    <Fade in={true} timeout={1500} style={{ marginBottom: "64px" }}>
       <Card className={styles.card}>
         <CardHeader
           avatar={
@@ -48,7 +50,7 @@ const Announcement = ({ announcement, type }: Props) => {
             "days"
           )} days ago. (Philippine Time)`}
         />
-        {(announcement?.image || announcement?.video) && (
+        {hasMedia && (
           <CardMedia
             sx={{
               position: "relative",
