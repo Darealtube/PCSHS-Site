@@ -1,35 +1,14 @@
-import {
-  Typography,
-  Fade,
-  Grow,
-  Container,
-  Grid,
-  CardMedia,
-  Card,
-  CardContent,
-  Slide,
-} from "@mui/material";
+import { Typography, Fade, Container, Grid, Slide } from "@mui/material";
 import Head from "next/head";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import FlagIcon from "@mui/icons-material/Flag";
-import styles from "../styles/About.module.css";
-import StudentValues from "../public/pcshsPictures/valuespcshs.jpg";
-import HarnessStudents from "../public/pcshsPictures/enhanceArtpcshs.jpg";
-import DeservingStudents from "../public/pcshsPictures/deservingpcshs.jpg";
-import EmphasizeStandards from "../public/pcshsPictures/emphasizestandardspcshs.jpg";
-import Facilities from "../public/pcshsPictures/pcshsenvironment.png";
 import Image from "next/image";
 import { Box } from "@mui/system";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import EmailIcon from "@mui/icons-material/Email";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import CallIcon from "@mui/icons-material/Call";
-import RoomIcon from "@mui/icons-material/Room";
 import History from "../Components/About/Parts/History";
 import VisibilitySensor from "react-visibility-sensor";
 import Vision from "../public/pcshsPictures/vision.jpeg";
 import Mission from "../public/pcshsPictures/mission.jpg";
 import { ReactNode } from "react";
+import ContactUs from "../Components/About/Parts/Contact";
+import Objectives from "../Components/About/Parts/Objective";
 
 const Main = ({
   image,
@@ -91,58 +70,6 @@ const Main = ({
   );
 };
 
-const Objectives = [
-  {
-    image: DeservingStudents,
-    objective: "To offer scholarship grants to deserving, gifted students.",
-  },
-  {
-    image: EmphasizeStandards,
-    objective: `To emphasize high standards of learning and high levels of
-  learning skills such as critical and creative thinking and
-  problem solving.`,
-  },
-  {
-    image: Facilities,
-    objective: `To provide state-of-the-art facilities that enhance
-    interactive and hands-on learning experiences.`,
-  },
-  {
-    image: HarnessStudents,
-    objective: `To harness to the fullest the artistic, athletic, managerial
-    and leadership skills of the students.`,
-  },
-  {
-    image: StudentValues,
-    objective: `To inculcate among the students the values and virtues in life
-    necessary in their interrelationships with selves, others,
-    country, and God.`,
-  },
-];
-
-const Contacts = [
-  {
-    icon: <TwitterIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />,
-    contact: "@ssgpasigsci",
-  },
-  {
-    icon: <EmailIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />,
-    contact: "pasigcitysciencehs05@gmail.com",
-  },
-  {
-    icon: <FacebookIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />,
-    contact: "https://www.facebook.com/pcshs.edu",
-  },
-  {
-    icon: <CallIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />,
-    contact: "628-2177 / 628-2226 / 83548658",
-  },
-  {
-    icon: <RoomIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />,
-    contact: "RAVE Park, Maybunga, Pasig City",
-  },
-];
-
 const About = () => {
   return (
     <>
@@ -194,49 +121,8 @@ const About = () => {
           Our Objectives
         </Typography>
 
-        <Grid
-          container
-          spacing={8}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: "120px",
-          }}
-        >
-          {Objectives.map(({ objective, image }) => (
-            <VisibilitySensor partialVisibility key={objective}>
-              {({ isVisible }) => (
-                <Grow in={isVisible} timeout={1200}>
-                  <Grid item xs={12} md={6}>
-                    <Card>
-                      <CardMedia
-                        sx={{
-                          position: "relative",
-                          height: "32vh",
-                          width: "100%",
-                        }}
-                      >
-                        <Image
-                          src={image}
-                          layout="fill"
-                          objectFit="cover"
-                          placeholder="blur"
-                          alt={"Picture of a student with a medal."}
-                        />
-                      </CardMedia>
-                      <CardContent>
-                        <Typography variant="h5" align="center">
-                          {objective}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                </Grow>
-              )}
-            </VisibilitySensor>
-          ))}
-        </Grid>
+        <Objectives />
+
         <Typography align="center" variant="h3" mt={24} mb={8}>
           Our History
         </Typography>
@@ -252,58 +138,7 @@ const About = () => {
         </VisibilitySensor>
       </Container>
 
-      <Box
-        width="100%"
-        height="56vh"
-        sx={{ backgroundColor: "#03045e" }}
-        mt={32}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-      >
-        <Typography variant="h2" gutterBottom color="#e9c46a" mt={8}>
-          Contact Us
-        </Typography>
-
-        <Grid
-          container
-          spacing={1}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            overflow: "hidden",
-          }}
-        >
-          {Contacts.map(({ contact, icon }) => (
-            <VisibilitySensor partialVisibility key={contact}>
-              {({ isVisible }) => (
-                <Slide direction="left" in={isVisible}>
-                  <Grid item xs={12} md={6}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      marginBottom={4}
-                      key={contact}
-                    >
-                      {icon}
-                      <Typography
-                        variant="h5"
-                        align="center"
-                        gutterBottom
-                        color="#e9c46a"
-                      >
-                        {contact}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                </Slide>
-              )}
-            </VisibilitySensor>
-          ))}
-        </Grid>
-      </Box>
+      <ContactUs />
     </>
   );
 };

@@ -4,7 +4,6 @@ import EventIcon from "@mui/icons-material/Event";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import { SyntheticEvent, useState } from "react";
 import { useRouter } from "next/dist/client/router";
-import Link from "next/link";
 
 const NavOptions = ["/about", "/calendar", "/apply"];
 
