@@ -272,12 +272,13 @@ const About = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            overflow: "hidden",
           }}
         >
           {Contacts.map(({ contact, icon }) => (
             <VisibilitySensor partialVisibility key={contact}>
               {({ isVisible }) => (
-                <Slide direction="up" in={isVisible}>
+                <Slide direction="left" in={isVisible}>
                   <Grid item xs={12} md={6}>
                     <Box
                       display="flex"
