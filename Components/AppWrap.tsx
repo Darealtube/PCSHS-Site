@@ -17,14 +17,17 @@ import MenuBar from "./Drawers/Menu";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateAdapter from "@mui/lab/AdapterDayjs";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/dist/client/router";
 
 const DynamicBottomNav = dynamic(() => import("./BottomMenu"));
 
 const AppWrap = ({ children }: { children: ReactChild }) => {
+  const router = useRouter();
   const theme = useTheme();
   const smMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const desktop = useMediaQuery(theme.breakpoints.only("xl"));
+  const aboutPage = router.pathname === "/about";
   return (
     <>
       <AppBar
@@ -72,24 +75,36 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
         </Box>
         <AppOptions />
       </AppBar>
-      {!mobile && <LatestAnnouncements />}
-      {desktop && <MenuBar />}
-      <Box className={styles.main} id="scrollable">
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <Container
-            sx={{
-              marginTop: "80px",
-            }}
-          >
-            {children}
-          </Container>
-          {smMobile && (
-            <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}>
-              <DynamicBottomNav />
-            </Box>
-          )}
-        </LocalizationProvider>
-      </Box>
+      {!aboutPage ? (
+        <>
+          {!mobile && <LatestAnnouncements />}
+          {desktop && <MenuBar />}
+          <Box className={styles.main} id="scrollable">
+            <LocalizationProvider dateAdapter={DateAdapter}>
+              <Container
+                sx={{
+                  marginTop: "80px",
+                }}
+              >
+                {children}
+              </Container>
+              {smMobile && (
+                <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}>
+                  <DynamicBottomNav />
+                </Box>
+              )}
+            </LocalizationProvider>
+          </Box>
+        </>
+      ) : (
+        <Box
+          sx={{
+            marginTop: "60px",
+          }}
+        >
+          {children}
+        </Box>
+      )}
     </>
   );
 };

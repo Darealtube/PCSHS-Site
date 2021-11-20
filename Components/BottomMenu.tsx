@@ -1,15 +1,23 @@
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
-import { Box } from "@mui/system";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
+import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
+
+const NavOptions = ["/about", "/calendar", "/apply"];
 
 const BottomMenu = () => {
-  const [value, setValue] = useState(0);
+  const router = useRouter();
+  const [value, setValue] = useState(NavOptions.indexOf(router.pathname));
 
-  const handleMenu = (_event: any, newValue: number) => {
+  const handleMenu = (
+    event: SyntheticEvent<Element, Event>,
+    newValue: number
+  ) => {
     setValue(newValue);
+    router.push(event.currentTarget.id);
   };
 
   return (
@@ -20,20 +28,25 @@ const BottomMenu = () => {
       sx={{ backgroundColor: "#0077b6" }}
     >
       <BottomNavigationAction
+        id="/about"
         label="About PCSHS"
         icon={<InfoIcon />}
         sx={{
           color: "white",
         }}
       />
+
       <BottomNavigationAction
+        id="/calendar"
         label="Events"
         icon={<EventIcon />}
         sx={{
           color: "white",
         }}
       />
+
       <BottomNavigationAction
+        id="/apply"
         label="Admissions"
         icon={<AssignmentIndIcon />}
         sx={{
