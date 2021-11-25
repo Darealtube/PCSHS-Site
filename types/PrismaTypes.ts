@@ -50,7 +50,6 @@ export type Profile = {
   address: string | null;
   contact: string | null;
   email: string | null;
-  members: string[];
   about: string | null;
   role: string;
 } | null;

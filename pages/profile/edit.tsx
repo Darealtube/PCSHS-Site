@@ -163,7 +163,6 @@ export const getServerSideProps: GetServerSideProps = async (
         address: true,
         contact: true,
         email: true,
-        members: true,
         role: true,
         about: true,
       },
