@@ -1,7 +1,7 @@
 export type ProfileState = {
   name: string;
-  image: string;
   lrn: string;
+  image: string;
   current_grade: string;
   current_section: string;
   date_of_birth: string | null;
@@ -10,12 +10,11 @@ export type ProfileState = {
   contact: string;
   address: string;
   about: string;
-  members: string | string[];
   error: boolean;
   errorMessage: string;
 };
 
-type TypeOptions = "CHANGE" | "ERROR" | "ADD_MEMBER" | "DELETE_MEMBER";
+type TypeOptions = "CHANGE" | "ERROR";
 
 export type ProfileAction = {
   field?: string;
@@ -38,18 +37,6 @@ const profileReducer = (
         ...state,
         error: !state.error,
         errorMessage: action.payload as string,
-      };
-    case "ADD_MEMBER":
-      return {
-        ...state,
-        members: [...state.members, action.payload as string],
-      };
-    case "DELETE_MEMBER":
-      return {
-        ...state,
-        members: (state.members as string[]).filter(
-          (member) => member != action.payload
-        ),
       };
     default:
       return state;

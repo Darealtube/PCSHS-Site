@@ -167,16 +167,6 @@ const Calendar = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/*  {!mobile && (
-        <>
-          <Typography gutterBottom variant="h2" align="center">
-            Calendar of Events
-          </Typography>
-
-          <Divider />
-        </>
-      )} */}
-
       {mobile || tablet ? (
         <MobileCalendar
           calendar={calendar}
@@ -191,7 +181,6 @@ const Calendar = () => {
           elevation={6}
           sx={{
             height: "720px",
-            marginTop: "24px",
             backgroundColor: "#e9ecef",
             marginBottom: "24px",
           }}

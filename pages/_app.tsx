@@ -4,8 +4,24 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { Provider } from "next-auth/client";
 import { SWRConfig } from "swr";
 import React from "react";
+import "../styles/global.css";
 
-const theme = createTheme();
+const theme = createTheme({
+  typography: {
+    fontFamily: "Times New Roman, Times, serif",
+  },
+  components: {
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            backgroundColor: "#ffe8d6",
+          },
+        },
+      },
+    },
+  },
+});
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -7,10 +7,10 @@ const getKey = (pageIndex: number, previousPageData: Announcement[] | null) => {
   // reached the end
   if (previousPageData && !previousPageData) return null;
   // first page, we don't have `previousPageData`
-  if (pageIndex === 0) return `/api/getAnnouncements?limit=1`;
+  if (pageIndex === 0) return `/api/announcement/getAnnouncements?limit=1`;
 
   // add the cursor to the API endpoint
-  return `/api/getAnnouncements?cursor=${
+  return `/api/announcement/getAnnouncements?cursor=${
     previousPageData?.[previousPageData.length - 1].id
   }&limit=1`;
 };

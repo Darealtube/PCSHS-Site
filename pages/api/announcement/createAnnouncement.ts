@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
-import prisma from "../../lib/prisma";
-import { AnnounceState } from "../../utils/Reducers/announceReducer";
+import prisma from "../../../lib/prisma";
+import { AnnounceState } from "../../../utils/Reducers/announceReducer";
 
 const secret = process.env.AUTH_CLIENT_SECRET;
 const signingKey = process.env.JWT_SIGNING_KEY;

@@ -1,4 +1,10 @@
-import { IconButton, Tooltip } from "@mui/material";
+import {
+  IconButton,
+  Tooltip,
+  useTheme,
+  useMediaQuery,
+  Typography,
+} from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
 import { Box } from "@mui/system";
@@ -10,6 +16,7 @@ import Image from "next/image";
 import styles from "../styles/AppWrap.module.css";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
+import NoUser from "../public/user-empty-avatar.png";
 
 const DynamicAboutMenu = dynamic(() => import("./Menus/AboutMenu"));
 const DynamicAdmissionMenu = dynamic(() => import("./Menus/AdmissionMenu"));
@@ -37,6 +44,9 @@ const Option = ({ title, name, onClick, icon }: OptionComponentProps) => {
 const AppOptions = () => {
   const [session] = useSession();
   const [openMenu, setOpenMenu] = useState("");
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.only("xl"));
+  const smMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -50,30 +60,39 @@ const AppOptions = () => {
   return (
     <>
       <Box sx={{ marginRight: "24px", display: "flex", alignItems: "center" }}>
-        <Option
-          title="About PCSHS"
-          name="about"
-          onClick={handleOpenMenu}
-          icon={<InfoIcon />}
-        />
+        {smMobile ? (
+          ""
+        ) : !desktop ? (
+          <>
+            <Option
+              title="About PCSHS"
+              name="about"
+              onClick={handleOpenMenu}
+              icon={<InfoIcon />}
+            />
+            <Link href="/calendar" passHref>
+              <Tooltip title="Calendar of Events">
+                <IconButton size="large" name="events" LinkComponent="a">
+                  <EventIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
 
-        <Link href="/calendar" passHref>
-          <Tooltip title="Calendar of Events">
-            <IconButton size="large" name="events" LinkComponent="a">
-              <EventIcon />
-            </IconButton>
-          </Tooltip>
-        </Link>
-
-        <Option
-          title="Admissions and Applications"
-          name="admissions"
-          onClick={handleOpenMenu}
-          icon={<AssignmentIndIcon />}
-        />
+            <Option
+              title="Admissions and Applications"
+              name="admissions"
+              onClick={handleOpenMenu}
+              icon={<AssignmentIndIcon />}
+            />
+          </>
+        ) : (
+          <Typography variant="h6" sx={{ marginRight: "8px" }}>
+            {session?.user?.name}
+          </Typography>
+        )}
 
         <IconButton onClick={handleOpenMenu} size="large" name="profile">
-          {session && (
+          {session ? (
             <Image
               src={
                 session.user?.image ? (session.user?.image as string) : NoImage
@@ -83,9 +102,19 @@ const AppOptions = () => {
               height={40}
               className={styles.avatar}
             />
+          ) : (
+            <Image
+              src={NoUser}
+              alt="User Avatar"
+              width={40}
+              height={40}
+              className={styles.avatar}
+              placeholder="blur"
+            />
           )}
         </IconButton>
       </Box>
+
       <DynamicAboutMenu
         open={openMenu == "about"}
         closeMenu={handleCloseMenu}

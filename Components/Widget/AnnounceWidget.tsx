@@ -186,7 +186,7 @@ const AnnounceWidget = ({
     const { error, errorMessage, focused, selected, ...trueAnnouncement } =
       announcement;
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/createAnnouncement`,
+      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/announcement/createAnnouncement`,
       {
         method: "POST",
         body: JSON.stringify({

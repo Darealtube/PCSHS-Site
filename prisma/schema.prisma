@@ -24,13 +24,6 @@ model Announcement {
   date       String
 }
 
-model PromotionBar {
-  id          String   @id @default("Promotional Bar")
-  promoVid    String?
-  environment String[]
-  dateUpdated DateTime @unique @updatedAt
-}
-
 model Profile {
   lrn             String         @unique @db.VarChar(12)
   name            String         @unique @db.VarChar(40)
@@ -44,7 +37,6 @@ model Profile {
   current_section String?
   address         String?
   role            String
-  members         String[]
   contact         String?        @db.VarChar(11)
   announcements   Announcement[]
 

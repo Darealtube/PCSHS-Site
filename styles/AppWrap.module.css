@@ -19,7 +19,7 @@
   display: flex;
 }
 
-@media all and (max-width: 1199px) {
+@media all and (max-width: 1535px) {
   .main {
     margin-left: 40%;
     margin-right: 0%;
