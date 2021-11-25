@@ -16,8 +16,10 @@ import VisibilitySensor from "react-visibility-sensor";
 
 const ObjectiveList = [
   {
-    image: DeservingStudents,
-    objective: "To offer scholarship grants to deserving, gifted students.",
+    image: StudentValues,
+    objective: `To inculcate among the students the values and virtues in life
+      necessary in their interrelationships with selves, others,
+      country, and God.`,
   },
   {
     image: EmphasizeStandards,
@@ -36,10 +38,8 @@ const ObjectiveList = [
       and leadership skills of the students.`,
   },
   {
-    image: StudentValues,
-    objective: `To inculcate among the students the values and virtues in life
-      necessary in their interrelationships with selves, others,
-      country, and God.`,
+    image: DeservingStudents,
+    objective: "To offer scholarship grants to deserving, gifted students.",
   },
 ];
 

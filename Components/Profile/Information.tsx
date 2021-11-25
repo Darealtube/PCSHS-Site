@@ -1,4 +1,10 @@
-import { Divider, Typography } from "@mui/material";
+import {
+  Divider,
+  Typography,
+  Grid,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { Box } from "@mui/system";
 
 type InformationProps = {
@@ -7,17 +13,19 @@ type InformationProps = {
 };
 
 const Information = ({ title, info }: InformationProps) => {
+  const theme = useTheme();
+  const sm = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
-      <Box display="flex" flexDirection="column" marginTop={1}>
-        <Typography variant="h6" gutterBottom>
+      <Grid item xs={12}>
+        <Typography variant={sm ? "h6" : "h5"} align="center" gutterBottom>
+          {info}
+        </Typography>
+        <Divider />
+        <Typography variant={sm ? "body1" : "h6"} align="center">
           {title}
         </Typography>
-        <Typography variant="body1" gutterBottom>
-          {info || "Not yet specified"}
-        </Typography>
-      </Box>
-      <Divider />
+      </Grid>
     </>
   );
 };

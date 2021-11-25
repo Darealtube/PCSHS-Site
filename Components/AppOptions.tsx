@@ -16,6 +16,7 @@ import Image from "next/image";
 import styles from "../styles/AppWrap.module.css";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
+import NoUser from "../public/user-empty-avatar.png";
 
 const DynamicAboutMenu = dynamic(() => import("./Menus/AboutMenu"));
 const DynamicAdmissionMenu = dynamic(() => import("./Menus/AdmissionMenu"));
@@ -55,7 +56,7 @@ const AppOptions = () => {
     setMenuAnchor(null);
     setOpenMenu("");
   };
-  
+
   return (
     <>
       <Box sx={{ marginRight: "24px", display: "flex", alignItems: "center" }}>
@@ -91,7 +92,7 @@ const AppOptions = () => {
         )}
 
         <IconButton onClick={handleOpenMenu} size="large" name="profile">
-          {session && (
+          {session ? (
             <Image
               src={
                 session.user?.image ? (session.user?.image as string) : NoImage
@@ -100,6 +101,15 @@ const AppOptions = () => {
               width={40}
               height={40}
               className={styles.avatar}
+            />
+          ) : (
+            <Image
+              src={NoUser}
+              alt="User Avatar"
+              width={40}
+              height={40}
+              className={styles.avatar}
+              placeholder="blur"
             />
           )}
         </IconButton>

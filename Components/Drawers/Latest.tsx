@@ -15,32 +15,13 @@ const CardSkeleton = () => {
   return (
     <>
       <Box sx={{ width: "100%", marginRight: 0.5, my: 5 }}>
-        <Box display="flex" alignItems="center" sx={{ width: "100%" }}>
-          <Skeleton variant="circular" width={40} height={40} />
-          <Box display="flex" flexDirection="column" sx={{ width: "100%" }}>
-            <Skeleton width="100%" />
-            <Skeleton width="60%" />
-          </Box>
-        </Box>
         <Skeleton variant="rectangular" width="100%" height="20vh" />
-        <Box sx={{ pt: 0.5 }}>
-          <Skeleton />
-          <Skeleton width="60%" />
-        </Box>
       </Box>
       <Box sx={{ width: "100%", marginRight: 0.5, my: 5 }}>
-        <Box display="flex" alignItems="center">
-          <Skeleton variant="circular" width={40} height={40} />
-          <Box display="flex" flexDirection="column">
-            <Skeleton width={"24vw"} />
-            <Skeleton width={"8vw"} />
-          </Box>
-        </Box>
         <Skeleton variant="rectangular" width="100%" height="20vh" />
-        <Box sx={{ pt: 0.5 }}>
-          <Skeleton />
-          <Skeleton width="60%" />
-        </Box>
+      </Box>
+      <Box sx={{ width: "100%", marginRight: 0.5, my: 5 }}>
+        <Skeleton variant="rectangular" width="100%" height="20vh" />
       </Box>
     </>
   );

@@ -84,7 +84,12 @@ const About = () => {
         muted
         loop
         id="myVideo"
-        style={{ width: "100%", height: "100vh", objectFit: "cover" }}
+        style={{
+          width: "100%",
+          height: "100vh",
+          objectFit: "cover",
+          filter: "brightness(50%)",
+        }}
       >
         <source
           src="https://video.wixstatic.com/video/99a79f_546d779f086f41469f6612347b2c6581/1080p/mp4/file.mp4"

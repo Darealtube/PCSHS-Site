@@ -37,7 +37,6 @@ model Profile {
   current_section String?
   address         String?
   role            String
-  members         String[]
   contact         String?        @db.VarChar(11)
   announcements   Announcement[]
 
