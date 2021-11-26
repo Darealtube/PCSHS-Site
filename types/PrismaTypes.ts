@@ -9,7 +9,6 @@ export type Student = {
   address: string | null;
   contact: string | null;
   email: string | null;
-  members: string[];
   about: string | null;
   role: string;
 } | null;
@@ -20,7 +19,6 @@ export type Government = {
   address: string | null;
   contact: string | null;
   email: string | null;
-  members: string[];
   role: string;
   about: string | null;
 } | null;
