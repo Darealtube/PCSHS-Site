@@ -28,6 +28,7 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const desktop = useMediaQuery(theme.breakpoints.only("xl"));
   const aboutPage = router.pathname === "/about";
+  const applyPage = router.pathname.startsWith("/apply");
   return (
     <>
       <AppBar
@@ -75,7 +76,30 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
         </Box>
         <AppOptions />
       </AppBar>
-      {!aboutPage ? (
+      {aboutPage ? (
+        <>
+          <Box
+            sx={{
+              marginTop: "60px",
+            }}
+          >
+            {children}
+          </Box>
+        </>
+      ) : applyPage ? (
+        <>
+          {!mobile && <LatestAnnouncements />}
+          <Box className={styles.applyMain}>
+            <Box
+              sx={{
+                marginTop: "80px",
+              }}
+            >
+              {children}
+            </Box>
+          </Box>
+        </>
+      ) : (
         <>
           {!mobile && <LatestAnnouncements />}
           {desktop && <MenuBar />}
@@ -96,14 +120,6 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
             </LocalizationProvider>
           </Box>
         </>
-      ) : (
-        <Box
-          sx={{
-            marginTop: "60px",
-          }}
-        >
-          {children}
-        </Box>
       )}
     </>
   );

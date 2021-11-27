@@ -73,7 +73,7 @@ const Objectives = () => {
                       layout="fill"
                       objectFit="cover"
                       placeholder="blur"
-                      alt={"Picture of a student with a medal."}
+                      alt={"Picture of an objective"}
                     />
                   </CardMedia>
                   <CardContent>

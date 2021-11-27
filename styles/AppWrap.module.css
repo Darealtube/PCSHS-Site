@@ -19,10 +19,20 @@
   display: flex;
 }
 
+.applyMain {
+  margin-left: 24%;
+  height: 100vh;
+  display: flex;
+  overflow: auto;
+}
+
 @media all and (max-width: 1535px) {
   .main {
     margin-left: 40%;
     margin-right: 0%;
+  }
+  .applyMain {
+    margin-left: 40%;
   }
 }
 
@@ -36,5 +46,8 @@
   .main {
     margin-left: 0%;
     margin-right: 0%;
+  }
+  .applyMain {
+    margin-left: 0%;
   }
 }

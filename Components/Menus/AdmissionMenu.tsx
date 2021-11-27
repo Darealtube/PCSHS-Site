@@ -26,7 +26,7 @@ const AdmissionMenu = ({ open, anchor, closeMenu }: Props) => {
       transformOrigin={{ vertical: "top", horizontal: "center" }}
     >
       <MenuList>
-        <Link href="/admission" passHref>
+        <Link href="/apply/admission" passHref>
           <MenuItem component="a">
             <ListItemIcon>
               <AssignmentIcon />
@@ -34,15 +34,7 @@ const AdmissionMenu = ({ open, anchor, closeMenu }: Props) => {
             <ListItemText>Admission</ListItemText>
           </MenuItem>
         </Link>
-        <Link href="/curriculum" passHref>
-          <MenuItem component="a">
-            <ListItemIcon>
-              <AutoStoriesIcon />
-            </ListItemIcon>
-            <ListItemText>Curriculum</ListItemText>
-          </MenuItem>
-        </Link>
-        <Link href="/apply" passHref>
+        <Link href="/apply/process" passHref>
           <MenuItem component="a">
             <ListItemIcon>
               <PersonAddIcon />

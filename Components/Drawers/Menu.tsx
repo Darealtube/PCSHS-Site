@@ -171,17 +171,12 @@ const MenuBar = () => {
               <PCSHSMenuItem
                 title="Admission"
                 icon={<AssignmentIcon />}
-                link="/admission"
-              />
-              <PCSHSMenuItem
-                title="Curriculum"
-                icon={<AutoStoriesIcon />}
-                link="/curriculum"
+                link="/apply/admission"
               />
               <PCSHSMenuItem
                 title="Apply"
                 icon={<PersonAddIcon />}
-                link="/apply"
+                link="/apply/process"
               />
             </List>
           </Collapse>
