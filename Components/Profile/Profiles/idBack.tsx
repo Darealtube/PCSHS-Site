@@ -6,7 +6,17 @@ import { Profile } from "../../../types/PrismaTypes";
 const IDBack = ({ profile }: { profile: Profile }) => {
   return (
     <>
-      <Paper elevation={2} className={styles.idBack} component={Container}>
+      <Paper
+        elevation={2}
+        className={styles.idBack}
+        sx={{
+          backgroundImage: "url(/pcshsPictures/vision.jpeg)",
+          backgroundSize: "cover",
+          backgroundColor: "#ffe8d6",
+          backgroundBlendMode: "screen",
+        }}
+        component={Container}
+      >
         <Grid
           container
           spacing={2}

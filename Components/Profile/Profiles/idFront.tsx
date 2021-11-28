@@ -17,7 +17,17 @@ const IDFront = ({ profile }: { profile: Profile }) => {
   const sm = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
-      <Paper elevation={2} className={styles.idFront} component={Container}>
+      <Paper
+        elevation={2}
+        className={styles.idFront}
+        sx={{
+          backgroundImage: "url(/pcshsPictures/vision.jpeg)",
+          backgroundSize: "cover",
+          backgroundColor: "#ffe8d6",
+          backgroundBlendMode: "screen",
+        }}
+        component={Container}
+      >
         <Typography align="center" variant={sm ? "h6" : "h4"} gutterBottom>
           Pasig City Science Highschool
         </Typography>

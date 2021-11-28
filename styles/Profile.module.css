@@ -14,10 +14,6 @@
 }
 
 .idFront {
-  background-image: url(../public/pcshsPictures/vision.jpeg);
-  background-size: cover;
-  background-color: #ffe8d6;
-  background-blend-mode: screen;
   padding-top: 16px;
   padding-bottom: 16px;
   position: absolute;
@@ -27,10 +23,6 @@
 }
 
 .idBack {
-  background-image: url(../public/pcshsPictures/vision.jpeg);
-  background-size: cover;
-  background-color: #ffe8d6;
-  background-blend-mode: screen;
   padding-top: 16px;
   padding-bottom: 16px;
   position: absolute;
