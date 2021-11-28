@@ -12,17 +12,15 @@ import { Box } from "@mui/system";
 import Head from "next/head";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import dayjs from "dayjs";
-import { useMemo, useReducer, useState } from "react";
-import calendarReducer from "../utils/Reducers/calendarReducer";
+import { useState } from "react";
 import MobileCalendar from "../Components/Calendar/mobileCalendar";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import useSWR from "swr";
 import { Event } from "../types/PrismaTypes";
 import dynamic from "next/dynamic";
 import _ from "lodash";
+import useCalendar from "../utils/useCalendar";
 
 const DynamicEventPopover = dynamic(
   () => import("../Components/Calendar/EventPopover")
@@ -54,46 +52,17 @@ const Months = [
   "December",
 ];
 
-const initCalendar = {
-  day: dayjs().date(),
-  dayofWeek: dayjs().day(),
-  month: dayjs().month() + 1,
-  year: dayjs().year(),
-  dayStart: dayjs().startOf("month").day(),
-  dayEnd: dayjs().endOf("month").day(),
-  daysInMonth: dayjs().daysInMonth(),
-};
-
 const Calendar = () => {
   const theme = useTheme();
   const tablet = useMediaQuery("(min-width: 900px) and (max-width: 1200px)");
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
-  const [calendar, dispatch] = useReducer(calendarReducer, initCalendar);
-  const { data: events, mutate } = useSWR(
-    `/api/event/getEvents?month=${calendar.month}&year=${calendar.year}`
-  );
+  const { calendar, dispatch, dayArray, events, mutate } = useCalendar();
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [dayClicked, setDayClicked] = useState<number | string | null>(null);
   const [dayHovered, setDayHovered] = useState<number | null>(null);
   const [eventAnchor, setEventAnchor] = useState<null | HTMLElement>(null);
-
-  const dayArray: Event[] = useMemo(() => {
-    let array: Event[] = [];
-    for (let i = 1; i <= calendar.daysInMonth; i++) {
-      array.push({
-        day: i,
-        month: calendar.month,
-        year: calendar.year,
-        description: "",
-        id: "",
-        title: "",
-      });
-    }
-    let daywithEvents = _.sortBy(_.unionBy(events, array, "day"), "day");
-    return daywithEvents;
-  }, [calendar, events]);
 
   const handleAddMutate = (newEvent: Event) => {
     mutate([...events, newEvent]);
@@ -260,7 +229,7 @@ const Calendar = () => {
                     size="small"
                     onClick={day.id ? handleRemoveEvent : handleAddEvent}
                     value={day.day}
-                    id={day.id ? day.id : undefined}
+                    id={day.id ?? undefined}
                   >
                     {day.id ? <RemoveIcon /> : <AddIcon />}
                   </IconButton>

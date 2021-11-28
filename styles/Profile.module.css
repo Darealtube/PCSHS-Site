@@ -14,7 +14,7 @@
 }
 
 .idFront {
-  background-image: url(/pcshsPictures/vision.jpeg);
+  background-image: url(../public/pcshsPictures/vision.jpeg);
   background-size: cover;
   background-color: #ffe8d6;
   background-blend-mode: screen;
@@ -23,10 +23,11 @@
   position: absolute;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
 }
 
 .idBack {
-  background-image: url(/pcshsPictures/vision.jpeg);
+  background-image: url(../public/pcshsPictures/vision.jpeg);
   background-size: cover;
   background-color: #ffe8d6;
   background-blend-mode: screen;
@@ -35,6 +36,7 @@
   position: absolute;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
   transform: rotateY(180deg);
   height: auto;
   max-height: 100%;
