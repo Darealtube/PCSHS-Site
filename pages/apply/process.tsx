@@ -3,6 +3,8 @@ import { Box } from "@mui/system";
 import Head from "next/head";
 import VisibilitySensor from "react-visibility-sensor";
 import PSAT from "../../public/pcshsPictures/PSATest.jpg";
+import Study from "../../public/pcshsPictures/study.jpg";
+import Submit from "../../public/pcshsPictures/submit.png";
 import Review from "../../public/pcshsPictures/review.jpg";
 import Image from "next/image";
 import Procedure from "../../Components/Apply/Procedure";
@@ -113,7 +115,7 @@ const ApplyProcess = () => {
         </VisibilitySensor>
 
         <Container>
-          <Procedure image={Review}>
+          <Procedure image={Study}>
             <Typography variant="h3" align="center" gutterBottom>
               Before the Test
             </Typography>
@@ -142,7 +144,7 @@ const ApplyProcess = () => {
             </Typography>
           </Procedure>
 
-          <Procedure image={Review}>
+          <Procedure image={Submit}>
             <Typography variant="h3" align="center" gutterBottom>
               Submit the Test
             </Typography>
