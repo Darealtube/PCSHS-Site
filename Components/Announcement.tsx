@@ -7,6 +7,8 @@ import {
   Box,
   Container,
   Fade,
+  CardActionArea,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import Image from "next/image";
@@ -15,6 +17,7 @@ import { Announcement as AnnouncementType } from "../types/PrismaTypes";
 import Markdown from "react-markdown";
 import remarkGFM from "remark-gfm";
 import dayjs from "dayjs";
+import Link from "next/link";
 
 type Props = {
   announcement: AnnouncementType;
@@ -99,10 +102,17 @@ const Announcement = ({ announcement, type }: Props) => {
             </Container>
           </CardMedia>
         )}
-        <CardContent>
-          <Markdown plugins={[remarkGFM]}>{announcement?.header}</Markdown>
-          <Markdown plugins={[remarkGFM]}>{announcement?.body}</Markdown>
-        </CardContent>
+        <Link passHref href={`/announcements/${announcement?.id}`}>
+          <CardActionArea component="a">
+            <CardContent>
+              <Typography variant="h4">
+                <Markdown plugins={[remarkGFM]}>
+                  {announcement?.header}
+                </Markdown>
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Link>
       </Card>
     </Fade>
   );
