@@ -1,4 +1,11 @@
-import { Dialog, Container, Box, Grid, Typography } from "@mui/material";
+import {
+  Dialog,
+  Container,
+  Box,
+  Grid,
+  Typography,
+  Divider,
+} from "@mui/material";
 import { Announcement as AnnouncementType } from "../../types/PrismaTypes";
 import Image from "next/image";
 import React from "react";
@@ -78,7 +85,6 @@ const PreviewAnnouncement = ({
             )}
           </Box>
 
-           
           <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
             Published by {session?.user?.name} on {dayjs().format("YYYY-MM-DD")}
           </Typography>
@@ -86,6 +92,8 @@ const PreviewAnnouncement = ({
           <Typography variant="h4">
             <Markdown plugins={[remarkGFM]}>{announcement?.header}</Markdown>
           </Typography>
+
+          <Divider />
 
           <Typography variant="h6">
             <Markdown plugins={[remarkGFM]}>{announcement?.body}</Markdown>

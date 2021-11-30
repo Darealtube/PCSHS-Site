@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../lib/prisma";
+import prisma from "../../../../lib/prisma";
 
-export default async function applyAnnouncements(
+export default async function getOneAnnouncement(
   req: NextApiRequest,
   res: NextApiResponse
 ) {

@@ -13,8 +13,6 @@ export default async function applyAnnouncements(
     select: {
       id: true,
       header: true,
-      body: true,
-      footer: true,
       image: true,
       video: true,
       date: true,

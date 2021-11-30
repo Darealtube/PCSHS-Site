@@ -6,7 +6,7 @@ import { AnnounceAction } from "../../utils/Reducers/announceReducer";
 
 type Props = {
   images: string[];
-  video: string;
+  video: string | null;
   dispatch: React.Dispatch<AnnounceAction>;
 };
 

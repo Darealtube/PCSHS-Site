@@ -3,7 +3,7 @@ export type AnnounceState = {
   body: string;
   footer: string;
   image: string[];
-  video: string;
+  video: string | null;
   error: boolean;
   errorMessage: string;
   type: string;

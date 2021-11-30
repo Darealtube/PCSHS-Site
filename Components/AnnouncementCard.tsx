@@ -13,14 +13,14 @@ import {
 import React from "react";
 import Image from "next/image";
 import styles from "../styles/Announcement.module.css";
-import { Announcement as AnnouncementType } from "../types/PrismaTypes";
+import { CardAnnouncement } from "../types/PrismaTypes";
 import Markdown from "react-markdown";
 import remarkGFM from "remark-gfm";
 import dayjs from "dayjs";
 import Link from "next/link";
 
 type Props = {
-  announcement: AnnouncementType;
+  announcement: CardAnnouncement;
   type?: "School" | "SSG" | "Apply";
 };
 

@@ -1,15 +1,15 @@
 import type { GetStaticProps, GetStaticPropsResult } from "next";
 import Head from "next/head";
 import prisma from "../lib/prisma";
-import { Announcement as AnnouncementType } from "../types/PrismaTypes";
+import { CardAnnouncement } from "../types/PrismaTypes";
 import { Box, CircularProgress } from "@mui/material";
-import Announcement from "../Components/Announcement";
+import Announcement from "../Components/AnnouncementCard";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useAnnouncements from "../utils/useAnnouncements";
 
 type Props = {
-  initAnnouncements: AnnouncementType[];
+  initAnnouncements: CardAnnouncement[];
 };
 
 const AnnouncementList = ({ initAnnouncements }: Props) => {
@@ -72,8 +72,6 @@ export const getStaticProps: GetStaticProps = async (): Promise<
     select: {
       id: true,
       header: true,
-      body: true,
-      footer: true,
       image: true,
       video: true,
       date: true,
@@ -91,5 +89,5 @@ export const getStaticProps: GetStaticProps = async (): Promise<
     ],
     take: 1,
   });
-  return { props: { initAnnouncements: announcements } };
+  return { props: { initAnnouncements: announcements }, revalidate: 10 };
 };
