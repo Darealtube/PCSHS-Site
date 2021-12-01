@@ -8,8 +8,8 @@ import {
   Skeleton,
 } from "@mui/material";
 import useSWR from "swr";
-import { Announcement as AnnouncementType } from "../../types/PrismaTypes";
-import Announcement from "../Announcement";
+import { CardAnnouncement } from "../../types/PrismaTypes";
+import Announcement from "../AnnouncementCard";
 
 const CardSkeleton = () => {
   return (
@@ -56,7 +56,7 @@ const LatestAnnouncements = () => {
 
         {data ? (
           <>
-            {data.map((announcement: AnnouncementType) => (
+            {data.map((announcement: CardAnnouncement) => (
               <Box key={announcement.header}>
                 <Announcement announcement={announcement} type={"Apply"} />
               </Box>

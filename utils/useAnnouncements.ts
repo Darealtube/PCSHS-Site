@@ -1,9 +1,12 @@
 import { flatten } from "lodash";
 import { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
-import { Announcement } from "../types/PrismaTypes";
+import { CardAnnouncement } from "../types/PrismaTypes";
 
-const getKey = (pageIndex: number, previousPageData: Announcement[] | null) => {
+const getKey = (
+  pageIndex: number,
+  previousPageData: CardAnnouncement[] | null
+) => {
   // reached the end
   if (previousPageData && !previousPageData) return null;
   // first page, we don't have `previousPageData`
@@ -15,7 +18,10 @@ const getKey = (pageIndex: number, previousPageData: Announcement[] | null) => {
   }&limit=1`;
 };
 
-const useAnnouncements = (limit: number, initialData?: Announcement[][]) => {
+const useAnnouncements = (
+  limit: number,
+  initialData?: CardAnnouncement[][]
+) => {
   const { data, size, setSize, error, mutate } = useSWRInfinite(getKey, {
     fallbackData: initialData,
     revalidateOnFocus: false,
@@ -31,8 +37,8 @@ const useAnnouncements = (limit: number, initialData?: Announcement[][]) => {
     setSize(size + 1);
   };
 
-  const mutateAnnouncements = (newData: Announcement) => {
-    mutate([...(data as Announcement[][]), ...[[newData]]]);
+  const mutateAnnouncements = (newData: CardAnnouncement) => {
+    mutate([...(data as CardAnnouncement[][]), ...[[newData]]]);
   };
 
   return {

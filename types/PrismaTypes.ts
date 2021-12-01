@@ -23,18 +23,31 @@ export type Government = {
   about: string | null;
 } | null;
 
+export type CardAnnouncement = {
+  id?: string;
+  header: string;
+  video: string | null;
+  image: string[];
+  date: string;
+  author: {
+    image: string | null;
+    name: string;
+  } | null;
+};
+
 export type Announcement = {
   id?: string;
   header: string;
   body: string;
-  footer: string | null;
-  image: string[] | null;
+  footer: string;
+  image: string[];
   video: string | null;
   date?: string;
   author?: {
     image: string | null;
     name: string;
   } | null;
+  type: string;
 };
 
 export type Profile = {

@@ -1,8 +1,5 @@
 import {
-  DialogContent,
   Dialog,
-  DialogTitle,
-  DialogContentText,
   Divider,
   Container,
   Paper,
