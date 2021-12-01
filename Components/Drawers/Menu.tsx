@@ -22,7 +22,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import HistoryIcon from "@mui/icons-material/History";
 import CallIcon from "@mui/icons-material/Call";
-import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import EditIcon from "@mui/icons-material/Edit";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -30,6 +30,7 @@ import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
 import { Box } from "@mui/system";
+import { useSession } from "next-auth/client";
 
 type ItemProps = {
   title: string;
@@ -77,6 +78,7 @@ const PCSHSMenu = ({ onClick, open, title, icon }: MenuProps) => {
 };
 
 const MenuBar = () => {
+  const [session] = useSession();
   const router = useRouter();
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
@@ -195,6 +197,27 @@ const MenuBar = () => {
             </ListItemButton>
           </a>
         </List>
+
+        {session?.role == "Government" && (
+          <>
+            <Link passHref href="/announcements/create">
+              <ListItemButton
+                component="a"
+                sx={
+                  router.pathname == "/announcements/create"
+                    ? { backgroundColor: "#94d2bd" }
+                    : {}
+                }
+                divider
+              >
+                <ListItemIcon>
+                  <EditIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create Announcement" />
+              </ListItemButton>
+            </Link>
+          </>
+        )}
       </Container>
 
       <Box

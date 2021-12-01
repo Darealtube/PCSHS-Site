@@ -17,6 +17,7 @@ import styles from "../styles/AppWrap.module.css";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
 import NoUser from "../public/user-empty-avatar.png";
+import EditIcon from "@mui/icons-material/Edit";
 
 const DynamicAboutMenu = dynamic(() => import("./Menus/AboutMenu"));
 const DynamicAdmissionMenu = dynamic(() => import("./Menus/AdmissionMenu"));
@@ -60,6 +61,16 @@ const AppOptions = () => {
   return (
     <>
       <Box sx={{ marginRight: "24px", display: "flex", alignItems: "center" }}>
+        {session?.role == "Government" && (
+          <Tooltip title="Create Announcement">
+            <Link passHref href="/announcements/create">
+              <IconButton component="a" sx={{ mr: 2 }}>
+                <EditIcon />
+              </IconButton>
+            </Link>
+          </Tooltip>
+        )}
+
         {smMobile ? (
           ""
         ) : !desktop ? (
