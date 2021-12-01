@@ -32,7 +32,6 @@ const DeleteDialog = ({ handleClose, handleError, open }: DialogProps) => {
           throw new Error(response.statusText);
         } else {
           handleClose();
-          mutate("/api/announcement/getAnnouncements");
           router.push(`/`);
         }
       })

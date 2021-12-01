@@ -13,7 +13,7 @@ type Props = {
 };
 
 const AnnouncementList = ({ initAnnouncements }: Props) => {
-  const { announcements, moreAnnouncements, noMore } = useAnnouncements(1, [
+  const { announcements, moreAnnouncements, noMore } = useAnnouncements(10, [
     [...initAnnouncements],
   ]);
   return (
@@ -87,7 +87,7 @@ export const getStaticProps: GetStaticProps = async (): Promise<
         id: "desc",
       },
     ],
-    take: 1,
+    take: 10,
   });
   return { props: { initAnnouncements: announcements }, revalidate: 10 };
 };
