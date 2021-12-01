@@ -31,6 +31,7 @@ import prisma from "../../../lib/prisma";
 import { GetStaticProps } from "next";
 import { Announcement } from "../../../types/PrismaTypes";
 import Fallback from "../../../Components/Announcement/Fallback";
+import useSWR from "swr";
 
 const DynamicPreview = dynamic(
   () => import("../../../Components/Announcement/PreviewAnnouncement")
@@ -46,7 +47,10 @@ type InitialProps = {
 };
 
 const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
-  const init = { ...initAnnouncement, error: false, errorMessage: "" };
+  const { data } = useSWR(`/api/announcement/${id}/`, {
+    fallbackData: initAnnouncement,
+  });
+  const init = { ...(data as Announcement), error: false, errorMessage: "" };
   const router = useRouter();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
