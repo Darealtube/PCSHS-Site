@@ -57,9 +57,10 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
   const [openGuide, setOpenGuide] = useState(false);
   const [session] = useSession();
   const hasError =
-    announcement.header.length > 50 ||
-    announcement.body.length > 1500 ||
-    announcement.footer.length > 800;
+    !router.isFallback &&
+    (announcement.header.length > 50 ||
+      announcement.body.length > 1500 ||
+      announcement.footer.length > 800);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
