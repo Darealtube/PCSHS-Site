@@ -31,6 +31,7 @@ import prisma from "../../../lib/prisma";
 import { GetStaticProps } from "next";
 import { Announcement } from "../../../types/PrismaTypes";
 import Fallback from "../../../Components/Announcement/Fallback";
+import useSWR from "swr";
 
 const DynamicPreview = dynamic(
   () => import("../../../Components/Announcement/PreviewAnnouncement")
@@ -46,7 +47,10 @@ type InitialProps = {
 };
 
 const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
-  const init = { ...initAnnouncement, error: false, errorMessage: "" };
+  const { data } = useSWR(`/api/announcement/${id}/`, {
+    fallbackData: initAnnouncement,
+  });
+  const init = { ...(data as Announcement), error: false, errorMessage: "" };
   const router = useRouter();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -151,13 +155,13 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
         body: JSON.stringify({
           ...trueAnnouncement,
           image:
-            trueAnnouncement.image == initAnnouncement.image
+            trueAnnouncement.image == data?.image
               ? trueAnnouncement.image
               : trueAnnouncement.image
               ? await uploadImages(trueAnnouncement.image)
               : null,
           video:
-            trueAnnouncement.video == initAnnouncement.video
+            trueAnnouncement.video == data?.video
               ? trueAnnouncement.video
               : trueAnnouncement.video
               ? await uploadVideo(trueAnnouncement.video)
@@ -241,8 +245,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
         </Box>
 
         <Typography variant="subtitle1" sx={{ flexGrow: 1 }} gutterBottom>
-          Published by {initAnnouncement?.author?.name} on{" "}
-          {initAnnouncement?.date}
+          Published by {data?.author?.name} on {data?.date}
         </Typography>
 
         <TextField
