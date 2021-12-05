@@ -7,15 +7,19 @@ const getKey = (
   pageIndex: number,
   previousPageData: CardAnnouncement[] | null
 ) => {
+  const lastCursor = previousPageData?.[previousPageData.length - 1].id;
   // reached the end
-  if (previousPageData && !previousPageData) return null;
-  // first page, we don't have `previousPageData`
-  if (pageIndex === 0) return `/api/announcement/getAnnouncements?limit=10`;
+  if (previousPageData && !previousPageData.length) {
+    return null;
+  }
+
+  if (pageIndex === 0) {
+    return `/api/announcement/getAnnouncements?limit=2`;
+  }
 
   // add the cursor to the API endpoint
-  return `/api/announcement/getAnnouncements?cursor=${
-    previousPageData?.[previousPageData.length - 1].id
-  }&limit=10`;
+  // EXECUTED IN moreAnnouncement
+  return `/api/announcement/getAnnouncements?cursor=${lastCursor}&limit=2`;
 };
 
 const useAnnouncements = (
@@ -25,6 +29,7 @@ const useAnnouncements = (
   const { data, size, setSize, error, mutate } = useSWRInfinite(getKey, {
     fallbackData: initialData,
     revalidateOnFocus: false,
+    revalidateOnMount: false,
   });
   const announcements = useMemo(
     () => flatten(data ? [...[], ...data] : []),
@@ -32,7 +37,6 @@ const useAnnouncements = (
   );
   const isEmpty = data?.[0]?.length === 0;
   const noMore = isEmpty || (data && data[data.length - 1]?.length < limit);
-
   const moreAnnouncements = () => {
     setSize(size + 1);
   };

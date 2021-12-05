@@ -26,7 +26,6 @@ export default async function editAnnouncement(
           id: req.query.id as string,
         },
       });
-
       res.status(200).end();
     } catch (error) {
       res.statusMessage =
