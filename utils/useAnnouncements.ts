@@ -1,40 +1,42 @@
 import { flatten } from "lodash";
-import { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import { CardAnnouncement } from "../types/PrismaTypes";
 
-const getKey = (
-  pageIndex: number,
-  previousPageData: CardAnnouncement[] | null
-) => {
-  const lastCursor = previousPageData?.[previousPageData.length - 1].id;
-  // reached the end
-  if (previousPageData && !previousPageData.length) {
-    return null;
-  }
-
-  if (pageIndex === 0) {
-    return `/api/announcement/getAnnouncements?limit=2`;
-  }
-
-  // add the cursor to the API endpoint
-  // EXECUTED IN moreAnnouncement
-  return `/api/announcement/getAnnouncements?cursor=${lastCursor}&limit=2`;
+type useAnnouncementProps = {
+  limit: number;
+  type: string;
+  initialData?: CardAnnouncement[][];
 };
 
-const useAnnouncements = (
-  limit: number,
-  initialData?: CardAnnouncement[][]
-) => {
-  const { data, size, setSize, error, mutate } = useSWRInfinite(getKey, {
-    fallbackData: initialData,
-    revalidateOnFocus: false,
-    revalidateOnMount: false,
-  });
-  const announcements = useMemo(
-    () => flatten(data ? [...[], ...data] : []),
-    [data]
+const useAnnouncements = ({
+  limit,
+  type,
+  initialData,
+}: useAnnouncementProps) => {
+  const { data, size, setSize, error, mutate } = useSWRInfinite(
+    (pageIndex: number, previousPageData: CardAnnouncement[] | null) => {
+      const lastCursor = previousPageData?.[previousPageData.length - 1].id;
+      // reached the end
+      if (previousPageData && !previousPageData.length) {
+        return null;
+      }
+
+      if (pageIndex === 0) {
+        return `/api/announcement/getAnnouncements?type=${type}&limit=${limit}`;
+      }
+
+      // add the cursor to the API endpoint
+      // EXECUTED IN moreAnnouncement
+      return `/api/announcement/getAnnouncements?type=${type}&cursor=${lastCursor}&limit=${limit}`;
+    },
+    {
+      fallbackData: initialData,
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+    }
   );
+
+  const announcements = flatten(data ? [...[], ...data] : []);
   const isEmpty = data?.[0]?.length === 0;
   const noMore = isEmpty || (data && data[data.length - 1]?.length < limit);
   const moreAnnouncements = () => {

@@ -21,12 +21,12 @@ export default async function editAnnouncement(
 
   if (token) {
     try {
-      await prisma.announcement.delete({
+      const deletedAnnouncement = await prisma.announcement.delete({
         where: {
           id: req.query.id as string,
         },
       });
-      res.status(200).end();
+      res.status(200).json({ type: deletedAnnouncement.type });
     } catch (error) {
       res.statusMessage =
         "Something wrong occured. The post might have already been deleted, or it might be something else.";

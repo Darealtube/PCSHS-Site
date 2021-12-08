@@ -2,7 +2,7 @@ import type { GetStaticProps, GetStaticPropsResult } from "next";
 import Head from "next/head";
 import prisma from "../lib/prisma";
 import { CardAnnouncement } from "../types/PrismaTypes";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import Announcement from "../Components/AnnouncementCard";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -48,15 +48,16 @@ const AnnouncementList = ({
             <Announcement announcement={announcement} type="SSG" />
           </React.Fragment>
         ))}
-      <Button onClick={moreAnnouncements}>MORE</Button>
     </InfiniteScroll>
   );
 };
 
 const Home = ({ initAnnouncements }: Props) => {
-  const { announcements, moreAnnouncements, noMore } = useAnnouncements(2, [
-    [...initAnnouncements],
-  ]);
+  const { announcements, moreAnnouncements, noMore } = useAnnouncements({
+    limit: 10,
+    type: "normal",
+    initialData: [[...initAnnouncements]],
+  });
   return (
     <>
       <Head>
@@ -103,7 +104,7 @@ export const getStaticProps: GetStaticProps = async (): Promise<
         id: "desc",
       },
     ],
-    take: 2,
+    take: 10,
   });
   return { props: { initAnnouncements: announcements }, revalidate: 10 };
 };

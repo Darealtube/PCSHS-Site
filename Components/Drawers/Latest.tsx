@@ -6,10 +6,14 @@ import {
   useMediaQuery,
   Box,
   Skeleton,
+  CircularProgress,
 } from "@mui/material";
-import useSWR from "swr";
+import React from "react";
 import { CardAnnouncement } from "../../types/PrismaTypes";
 import Announcement from "../AnnouncementCard";
+import InfiniteScroll from "react-infinite-scroll-component";
+import useAnnouncements from "../../utils/useAnnouncements";
+import { flatten } from "lodash";
 
 const CardSkeleton = () => {
   return (
@@ -27,13 +31,59 @@ const CardSkeleton = () => {
   );
 };
 
+type ListProps = {
+  announcements: CardAnnouncement[];
+  moreAnnouncements: () => void;
+  noMore: boolean | undefined;
+};
+
+const AnnouncementList = ({
+  announcements,
+  moreAnnouncements,
+  noMore,
+}: ListProps) => {
+  return (
+    <InfiniteScroll
+      next={moreAnnouncements}
+      dataLength={announcements.length}
+      loader={
+        <Box
+          width="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          marginBottom={2}
+        >
+          <CircularProgress color="inherit" />
+        </Box>
+      }
+      hasMore={!noMore}
+      scrollableTarget={"drawerScrollable"}
+      scrollThreshold={0.9}
+    >
+      <Container sx={{ marginTop: "80px", width: "100%", height: "100%" }}>
+        <Typography align="center" variant="h5" gutterBottom>
+          Latest Announcements
+        </Typography>
+        {announcements &&
+          announcements.map((announcement) => (
+            <React.Fragment key={announcement.id}>
+              <Announcement announcement={announcement} type="Apply" />
+            </React.Fragment>
+          ))}
+      </Container>
+    </InfiniteScroll>
+  );
+};
+
 const LatestAnnouncements = () => {
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
   const desktop = useMediaQuery(theme.breakpoints.only("lg"));
   const drawerWidth = tablet || desktop ? "40%" : "24%";
-  const { data, error } = useSWR("/api/announcement/applyAnnouncements", {
-    revalidateOnFocus: false,
+  const { announcements, moreAnnouncements, noMore } = useAnnouncements({
+    limit: 10,
+    type: "apply",
   });
 
   return (
@@ -48,24 +98,19 @@ const LatestAnnouncements = () => {
       }}
       variant="permanent"
       anchor="left"
+      PaperProps={{
+        id: "drawerScrollable",
+      }}
     >
-      <Container sx={{ marginTop: "80px", width: "100%", height: "100%" }}>
-        <Typography align="center" variant="h5" gutterBottom>
-          Latest Announcements
-        </Typography>
-
-        {data ? (
-          <>
-            {data.map((announcement: CardAnnouncement) => (
-              <Box key={announcement.header}>
-                <Announcement announcement={announcement} type={"Apply"} />
-              </Box>
-            ))}
-          </>
-        ) : (
-          <CardSkeleton />
-        )}
-      </Container>
+      {announcements ? (
+        <AnnouncementList
+          announcements={flatten(announcements)}
+          noMore={noMore}
+          moreAnnouncements={moreAnnouncements}
+        />
+      ) : (
+        <CardSkeleton />
+      )}
     </Drawer>
   );
 };

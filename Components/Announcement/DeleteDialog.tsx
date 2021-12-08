@@ -7,10 +7,14 @@ import {
   Button,
 } from "@mui/material";
 import { useRouter } from "next/dist/client/router";
-import { mutate, useSWRConfig } from "swr";
-import { CardAnnouncement } from "../../types/PrismaTypes";
+import { useSWRConfig } from "swr";
+import deleteAnnouncement from "../../utils/deleteAnnouncement";
 
-const ANNOUNCEMENTS_CACHE = "$inf$/api/announcement/getAnnouncements?limit=2";
+// $Inf$ because mutate() works directly with the Cache map built-in. This is the URL in which the getAnnouncements infinite list is in.
+const ANNOUNCEMENTS_CACHE =
+  "$inf$/api/announcement/getAnnouncements?type=normal&limit=10";
+const APPLY_ANNOUNCEMENTS_CACHE =
+  "$inf$/api/announcement/getAnnouncements?type=apply&limit=10";
 
 type DialogProps = {
   handleClose: () => void;
@@ -30,34 +34,20 @@ const DeleteDialog = ({ handleClose, handleError, open }: DialogProps) => {
         method: "DELETE",
       }
     )
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
         } else {
+          const res = await response.json();
           handleClose();
-          const announceCache = cache.get(ANNOUNCEMENTS_CACHE);
-
-          if (announceCache) {
-            mutate(
-              ANNOUNCEMENTS_CACHE,
-              async (announcement: CardAnnouncement[][]) => {
-                const modArray = announcement.find((announcement) =>
-                  announcement
-                    .map((a) => a.id)
-                    .includes(router.query.id as string)
-                );
-                const modIndex = announcement.findIndex((a) => a === modArray);
-                const newData = modArray?.filter(
-                  (announcement) => announcement.id != router.query.id
-                );
-                announcement[modIndex] = newData as CardAnnouncement[];
-
-                return announcement;
-              },
-              false
-            );
-          }
-
+          deleteAnnouncement({
+            cacheURL:
+              res.type == "Apply Announcement"
+                ? APPLY_ANNOUNCEMENTS_CACHE
+                : ANNOUNCEMENTS_CACHE,
+            announcementID: router.query.id as string,
+            cache: cache,
+          });
           router.push(`/`);
         }
       })
