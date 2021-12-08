@@ -5,9 +5,18 @@ export default async function applyAnnouncements(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (!(req.query.type == "apply" || req.query.type == "normal")) {
+    return res.status(400).end();
+  }
+
+  const announcementType =
+    req.query.type == "apply"
+      ? { type: "Apply Announcement" }
+      : { OR: [{ type: "SSG Announcement" }, { type: "School Announcement" }] };
+
   const announcements = await prisma.announcement.findMany({
     where: {
-      OR: [{ type: "SSG Announcement" }, { type: "School Announcement" }],
+      ...announcementType,
       id: { lt: req.query.cursor as string },
     },
     select: {

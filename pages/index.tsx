@@ -8,14 +8,21 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useAnnouncements from "../utils/useAnnouncements";
 
+type ListProps = {
+  announcements: CardAnnouncement[];
+  moreAnnouncements: () => void;
+  noMore: boolean | undefined;
+};
+
 type Props = {
   initAnnouncements: CardAnnouncement[];
 };
 
-const AnnouncementList = ({ initAnnouncements }: Props) => {
-  const { announcements, moreAnnouncements, noMore } = useAnnouncements(10, [
-    [...initAnnouncements],
-  ]);
+const AnnouncementList = ({
+  announcements,
+  moreAnnouncements,
+  noMore,
+}: ListProps) => {
   return (
     <InfiniteScroll
       next={moreAnnouncements}
@@ -33,6 +40,7 @@ const AnnouncementList = ({ initAnnouncements }: Props) => {
       }
       hasMore={!noMore}
       scrollableTarget={"scrollable"}
+      scrollThreshold={0.9}
     >
       {announcements &&
         announcements.map((announcement) => (
@@ -45,6 +53,11 @@ const AnnouncementList = ({ initAnnouncements }: Props) => {
 };
 
 const Home = ({ initAnnouncements }: Props) => {
+  const { announcements, moreAnnouncements, noMore } = useAnnouncements({
+    limit: 10,
+    type: "normal",
+    initialData: [[...initAnnouncements]],
+  });
   return (
     <>
       <Head>
@@ -54,7 +67,11 @@ const Home = ({ initAnnouncements }: Props) => {
       </Head>
 
       {initAnnouncements && (
-        <AnnouncementList initAnnouncements={initAnnouncements} />
+        <AnnouncementList
+          announcements={announcements}
+          noMore={noMore}
+          moreAnnouncements={moreAnnouncements}
+        />
       )}
     </>
   );

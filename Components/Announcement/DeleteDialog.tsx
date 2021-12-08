@@ -7,7 +7,14 @@ import {
   Button,
 } from "@mui/material";
 import { useRouter } from "next/dist/client/router";
-import { mutate } from "swr";
+import { useSWRConfig } from "swr";
+import deleteAnnouncement from "../../utils/deleteAnnouncement";
+
+// $Inf$ because mutate() works directly with the Cache map built-in. This is the URL in which the getAnnouncements infinite list is in.
+const ANNOUNCEMENTS_CACHE =
+  "$inf$/api/announcement/getAnnouncements?type=normal&limit=10";
+const APPLY_ANNOUNCEMENTS_CACHE =
+  "$inf$/api/announcement/getAnnouncements?type=apply&limit=10";
 
 type DialogProps = {
   handleClose: () => void;
@@ -17,7 +24,7 @@ type DialogProps = {
 
 const DeleteDialog = ({ handleClose, handleError, open }: DialogProps) => {
   const router = useRouter();
-
+  const { cache } = useSWRConfig();
   const handleDelete = async () => {
     await fetch(
       `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/announcement/${
@@ -27,11 +34,20 @@ const DeleteDialog = ({ handleClose, handleError, open }: DialogProps) => {
         method: "DELETE",
       }
     )
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
         } else {
+          const res = await response.json();
           handleClose();
+          deleteAnnouncement({
+            cacheURL:
+              res.type == "Apply Announcement"
+                ? APPLY_ANNOUNCEMENTS_CACHE
+                : ANNOUNCEMENTS_CACHE,
+            announcementID: router.query.id as string,
+            cache: cache,
+          });
           router.push(`/`);
         }
       })
