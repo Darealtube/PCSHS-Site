@@ -14,6 +14,7 @@ import remarkGFM from "remark-gfm";
 import Link from "next/link";
 import Fallback from "../../../Components/Announcement/Fallback";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/client";
 
 const DynamicDeleteDialog = dynamic(
   () => import("../../../Components/Announcement/DeleteDialog")
@@ -35,6 +36,7 @@ const AnnouncementID = ({ announcement, id }: InitialProps) => {
     error: false,
     errorMessage: "",
   });
+  const [session] = useSession();
 
   const handleDelete = () => {
     setDeleteOpen(!deleteOpen);
@@ -108,14 +110,18 @@ const AnnouncementID = ({ announcement, id }: InitialProps) => {
           Published by {data?.author?.name} on {data?.date}
         </Typography>
 
-        <Link href={`/announcements/${id}/edit`} passHref>
-          <IconButton component="a">
-            <EditIcon />
-          </IconButton>
-        </Link>
-        <IconButton onClick={handleDelete}>
-          <DeleteForeverIcon />
-        </IconButton>
+        {session?.role == "Government" && (
+          <>
+            <Link href={`/announcements/${id}/edit`} passHref>
+              <IconButton component="a">
+                <EditIcon />
+              </IconButton>
+            </Link>
+            <IconButton onClick={handleDelete}>
+              <DeleteForeverIcon />
+            </IconButton>{" "}
+          </>
+        )}
       </Box>
 
       <Typography variant="h4">

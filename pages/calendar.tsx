@@ -21,6 +21,7 @@ import { Event } from "../types/PrismaTypes";
 import dynamic from "next/dynamic";
 import _ from "lodash";
 import useCalendar from "../utils/Hooks/useCalendar";
+import { useSession } from "next-auth/client";
 
 const DynamicEventPopover = dynamic(
   () => import("../Components/Calendar/EventPopover")
@@ -53,6 +54,7 @@ const Months = [
 ];
 
 const Calendar = () => {
+  const [session] = useSession();
   const theme = useTheme();
   const tablet = useMediaQuery("(min-width: 900px) and (max-width: 1200px)");
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -225,22 +227,26 @@ const Calendar = () => {
                   onMouseEnter={day.id ? handleEventOpen : undefined}
                   onMouseLeave={day.id ? handleEventClose : undefined}
                 >
-                  <IconButton
-                    size="small"
-                    onClick={day.id ? handleRemoveEvent : handleAddEvent}
-                    value={day.day}
-                    id={day.id ?? undefined}
-                  >
-                    {day.id ? <RemoveIcon /> : <AddIcon />}
-                  </IconButton>
-                  {day.id && (
-                    <IconButton
-                      size="small"
-                      value={day.id ? day.id : undefined}
-                      onClick={day.id ? handleUpdateEvent : undefined}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                  {session?.role == "Governement" && (
+                    <>
+                      <IconButton
+                        size="small"
+                        onClick={day.id ? handleRemoveEvent : handleAddEvent}
+                        value={day.day}
+                        id={day.id ?? undefined}
+                      >
+                        {day.id ? <RemoveIcon /> : <AddIcon />}
+                      </IconButton>
+                      {day.id && (
+                        <IconButton
+                          size="small"
+                          value={day.id ? day.id : undefined}
+                          onClick={day.id ? handleUpdateEvent : undefined}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      )}
+                    </>
                   )}
                   <Typography variant="h4" align="center">
                     {day.day}
