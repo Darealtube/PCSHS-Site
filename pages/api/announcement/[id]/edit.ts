@@ -20,7 +20,7 @@ export default async function editAnnouncement(
     encryption,
   });
 
-  if (token) {
+  if (token?.role && token?.role == "Government") {
     try {
       const announcement: Announcement = JSON.parse(req.body);
       const { author, id, ...finalAnnouncement } = announcement;
@@ -37,7 +37,7 @@ export default async function editAnnouncement(
       res.status(400).end();
     }
   } else {
-    res.statusMessage = "Unauthorized Access. Please Log In first.";
-    res.status(401).end();
+    res.statusMessage = "Forbidden Access.";
+    res.status(403).end();
   }
 }

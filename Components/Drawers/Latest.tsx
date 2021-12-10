@@ -12,7 +12,7 @@ import React from "react";
 import { CardAnnouncement } from "../../types/PrismaTypes";
 import Announcement from "../AnnouncementCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import useAnnouncements from "../../utils/useAnnouncements";
+import useAnnouncements from "../../utils/Hooks/useAnnouncements";
 import { flatten } from "lodash";
 
 const CardSkeleton = () => {

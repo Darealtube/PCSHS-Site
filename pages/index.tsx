@@ -6,7 +6,7 @@ import { Box, CircularProgress } from "@mui/material";
 import Announcement from "../Components/AnnouncementCard";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import useAnnouncements from "../utils/useAnnouncements";
+import useAnnouncements from "../utils/Hooks/useAnnouncements";
 
 type ListProps = {
   announcements: CardAnnouncement[];

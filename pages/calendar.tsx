@@ -20,7 +20,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { Event } from "../types/PrismaTypes";
 import dynamic from "next/dynamic";
 import _ from "lodash";
-import useCalendar from "../utils/useCalendar";
+import useCalendar from "../utils/Hooks/useCalendar";
 
 const DynamicEventPopover = dynamic(
   () => import("../Components/Calendar/EventPopover")

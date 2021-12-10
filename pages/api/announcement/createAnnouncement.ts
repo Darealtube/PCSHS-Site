@@ -21,7 +21,7 @@ const createAnnouncement = async (
     encryption,
   });
 
-  if (token) {
+  if (token?.role && token?.role == "Government") {
     try {
       const announcement: AnnounceState = JSON.parse(req.body);
       const newAnnouncement = await prisma.announcement.create({
@@ -38,9 +38,8 @@ const createAnnouncement = async (
       res.status(400).end();
     }
   } else {
-    res.statusMessage =
-      "Unauthorized Access. You do not have administrative privilages.";
-    res.status(401).end();
+    res.statusMessage = "Forbidden Access.";
+    res.status(403).end();
   }
 };
 

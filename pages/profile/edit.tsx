@@ -8,7 +8,7 @@ import { useReducer, useState } from "react";
 import profileReducer from "../../utils/Reducers/profileReducer";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
-import { uploadImages } from "../../utils/uploadMedia";
+import { uploadImages } from "../../utils/mediaOps/uploadMedia";
 import EditIDFront from "../../Components/Profile/Edit Profiles/EditIDFront";
 import EditIDBack from "../../Components/Profile/Edit Profiles/EditIDBack";
 import { Button } from "@mui/material";

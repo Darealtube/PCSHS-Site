@@ -16,7 +16,7 @@ const deleteEvents = async (req: NextApiRequest, res: NextApiResponse) => {
     encryption,
   });
 
-  if (token) {
+  if (token?.role && token?.role == "Government") {
     try {
       const id = JSON.parse(req.body);
       const newEvent = await prisma.event.delete({
@@ -30,9 +30,8 @@ const deleteEvents = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(400).end();
     }
   } else {
-    res.statusMessage =
-      "Unauthorized Access. You do not have administrative privilages.";
-    res.status(401).end();
+    res.statusMessage = "Forbidden Access.";
+    res.status(403).end();
   }
 };
 

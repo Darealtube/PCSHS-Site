@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import { useMemo, useReducer } from "react";
 import useSWR from "swr";
-import calendarReducer from "./Reducers/calendarReducer";
+import calendarReducer from "../Reducers/calendarReducer";
 import { sortBy, unionBy } from "lodash";
-import { Event } from "../types/PrismaTypes";
+import { Event } from "../../types/PrismaTypes";
 
 const initCalendar = {
   day: dayjs().date(),

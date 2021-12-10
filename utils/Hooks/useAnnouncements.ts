@@ -1,6 +1,6 @@
 import { flatten } from "lodash";
 import useSWRInfinite from "swr/infinite";
-import { CardAnnouncement } from "../types/PrismaTypes";
+import { CardAnnouncement } from "../../types/PrismaTypes";
 
 type useAnnouncementProps = {
   limit: number;

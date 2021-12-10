@@ -24,7 +24,7 @@ import {
   ProfileAction,
   ProfileState,
 } from "../../../utils/Reducers/profileReducer";
-import { getPFP } from "../../../utils/getpfp";
+import { getPFP } from "../../../utils/mediaOps/getpfp";
 import { useSession } from "next-auth/client";
 
 const EditIDFront = ({
