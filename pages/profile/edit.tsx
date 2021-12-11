@@ -4,7 +4,7 @@ import { getSession } from "next-auth/client";
 import prisma from "../../lib/prisma";
 import Head from "next/head";
 import { Profile } from "../../types/PrismaTypes";
-import { useReducer, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import profileReducer from "../../utils/Reducers/profileReducer";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
@@ -19,8 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Link from "next/link";
 import { isEqual } from "lodash";
-
-const DynamicError = dynamic(() => import("../../Components/ErrorSnack"));
+import { ErrorContext } from "../_app";
 
 type ProfileProps = {
   session: Session | null;
@@ -28,6 +27,7 @@ type ProfileProps = {
 };
 
 const EditProfile = ({ profile }: { profile: Profile }) => {
+  const handleError = useContext(ErrorContext);
   const initState = {
     name: profile?.name || "",
     lrn: profile?.lrn || "",
@@ -40,8 +40,6 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
     contact: profile?.contact || "",
     address: profile?.address || "",
     about: profile?.about || "",
-    error: false,
-    errorMessage: "",
   };
   const router = useRouter();
   const [flipped, setFlipped] = useState(false);
@@ -50,13 +48,12 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const { error, errorMessage, ...trueProfile } = prof;
     await fetch(
       `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/updateProfile`,
       {
         method: "POST",
         body: JSON.stringify({
-          ...trueProfile,
+          ...prof,
           image: await uploadImages([prof.image]).then((urls) => urls[0]),
         }),
       }
@@ -68,16 +65,7 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
           router.replace("/profile/");
         }
       })
-      .catch((error: Error) =>
-        dispatch({ type: "ERROR", payload: error.message })
-      );
-  };
-
-  const handleError = () => {
-    dispatch({
-      type: "ERROR",
-      payload: "",
-    });
+      .catch((err: Error) => handleError(err.message));
   };
 
   const handleFlip = () => {
@@ -131,12 +119,6 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
       </Box>
 
       <Box height="40px" />
-
-      <DynamicError
-        open={prof.error}
-        error={prof.errorMessage}
-        handleClose={handleError}
-      />
     </>
   );
 };

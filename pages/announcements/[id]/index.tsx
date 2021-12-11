@@ -19,7 +19,6 @@ import { useSession } from "next-auth/client";
 const DynamicDeleteDialog = dynamic(
   () => import("../../../Components/Announcement/DeleteDialog")
 );
-const DynamicError = dynamic(() => import("../../../Components/ErrorSnack"));
 
 type InitialProps = {
   announcement: Announcement;
@@ -32,28 +31,10 @@ const AnnouncementID = ({ announcement, id }: InitialProps) => {
     fallbackData: announcement,
   });
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [error, setError] = useState({
-    error: false,
-    errorMessage: "",
-  });
   const [session] = useSession();
 
   const handleDelete = () => {
     setDeleteOpen(!deleteOpen);
-  };
-
-  const handleErrorClose = () => {
-    setError({
-      error: false,
-      errorMessage: "",
-    });
-  };
-
-  const handleErrorOpen = (errorMessage: string) => {
-    setError({
-      error: true,
-      errorMessage,
-    });
   };
 
   if (router.isFallback) {
@@ -140,16 +121,7 @@ const AnnouncementID = ({ announcement, id }: InitialProps) => {
 
       <Divider />
 
-      <DynamicDeleteDialog
-        handleClose={handleDelete}
-        handleError={handleErrorOpen}
-        open={deleteOpen}
-      />
-      <DynamicError
-        open={error.error}
-        error={error.errorMessage}
-        handleClose={handleErrorClose}
-      />
+      <DynamicDeleteDialog handleClose={handleDelete} open={deleteOpen} />
     </>
   );
 };

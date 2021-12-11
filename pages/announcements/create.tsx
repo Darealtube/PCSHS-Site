@@ -15,7 +15,13 @@ import {
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
-import { useRef, useReducer, useState, MutableRefObject } from "react";
+import {
+  useRef,
+  useReducer,
+  useState,
+  MutableRefObject,
+  useContext,
+} from "react";
 import Media from "../../Components/Announcement/Media";
 import { getImages, getVideo } from "../../utils/mediaOps/getMedia";
 import announceReducer from "../../utils/Reducers/announceReducer";
@@ -28,11 +34,11 @@ import dynamic from "next/dynamic";
 import SendIcon from "@mui/icons-material/Send";
 import HelpIcon from "@mui/icons-material/Help";
 import VideocamIcon from "@mui/icons-material/Videocam";
+import { ErrorContext } from "../_app";
 
 const DynamicPreview = dynamic(
   () => import("../../Components/Announcement/PreviewAnnouncement")
 );
-const DynamicError = dynamic(() => import("../../Components/ErrorSnack"));
 const DynamicGuide = dynamic(
   () => import("../../Components/Announcement/MarkdownGuide")
 );
@@ -49,6 +55,7 @@ const initAnnounce = {
 };
 
 const CreateAnnouncement = () => {
+  const handleError = useContext(ErrorContext);
   const router = useRouter();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -79,24 +86,11 @@ const CreateAnnouncement = () => {
     setOpenGuide(!openGuide);
   };
 
-  const handleErrorClose = () => {
-    dispatch({
-      type: "ERROR",
-      payload: "",
-    });
-  };
-
   const handleImageClick = () => {
-    if (announcement.error) {
-      dispatch({ type: "ERROR", payload: "" });
-    }
     (imageInput as MutableRefObject<HTMLInputElement>).current.click();
   };
 
   const handleVideoClick = () => {
-    if (announcement.error) {
-      dispatch({ type: "ERROR", payload: "" });
-    }
     (videoInput as MutableRefObject<HTMLInputElement>).current.click();
   };
 
@@ -142,7 +136,6 @@ const CreateAnnouncement = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { error, errorMessage, ...trueAnnouncement } = announcement;
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
@@ -150,12 +143,12 @@ const CreateAnnouncement = () => {
       {
         method: "POST",
         body: JSON.stringify({
-          ...trueAnnouncement,
-          image: trueAnnouncement.image
-            ? await uploadImages(trueAnnouncement.image)
+          ...announcement,
+          image: announcement.image
+            ? await uploadImages(announcement.image)
             : null,
-          video: trueAnnouncement.video
-            ? await uploadVideo(trueAnnouncement.video)
+          video: announcement.video
+            ? await uploadVideo(announcement.video)
             : null,
           authorName: session?.user?.name,
         }),
@@ -168,9 +161,7 @@ const CreateAnnouncement = () => {
           router.push("/");
         }
       })
-      .catch((error: Error) =>
-        dispatch({ type: "ERROR", payload: error.message })
-      );
+      .catch((err: Error) => handleError(err.message));
   };
 
   if (session?.role != "Government") {
@@ -369,11 +360,6 @@ const CreateAnnouncement = () => {
         open={openPreview}
         handleClose={handlePreview}
         announcement={announcement}
-      />
-      <DynamicError
-        open={announcement.error}
-        error={announcement.errorMessage}
-        handleClose={handleErrorClose}
       />
       <DynamicGuide open={openGuide} handleClose={handleGuide} />
     </>

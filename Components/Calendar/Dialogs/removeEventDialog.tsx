@@ -6,7 +6,8 @@ import {
   Button,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
+import { ErrorContext } from "../../../pages/_app";
 
 type DialogProps = {
   open: boolean;
@@ -21,6 +22,7 @@ const RemoveEventDialog = ({
   handleDeleteMutate,
   id,
 }: DialogProps) => {
+  const handleError = useContext(ErrorContext);
   const handleDelete = async () => {
     await fetch(
       `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/event/deleteEvents`,
@@ -36,7 +38,7 @@ const RemoveEventDialog = ({
         handleDeleteMutate(id);
         handleClose();
       })
-      .catch((error: Error) => console.log(error));
+      .catch((err: Error) => handleError(err.message));
   };
 
   return (

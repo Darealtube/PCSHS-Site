@@ -7,7 +7,8 @@ import {
   Button,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ErrorContext } from "../../../pages/_app";
 import { Event } from "../../../types/PrismaTypes";
 
 type DialogProps = {
@@ -23,6 +24,7 @@ const UpdateEventDialog = ({
   handleMutate,
   day,
 }: DialogProps) => {
+  const handleError = useContext(ErrorContext);
   const [event, setEvent] = useState({
     id: day?.id,
     title: day?.title,
@@ -56,7 +58,7 @@ const UpdateEventDialog = ({
         handleMutate(res);
         handleClose();
       })
-      .catch((error: Error) => console.log(error));
+      .catch((err: Error) => handleError(err.message));
   };
 
   return (

@@ -7,7 +7,9 @@ import {
   Button,
 } from "@mui/material";
 import { useRouter } from "next/dist/client/router";
+import { useContext } from "react";
 import { useSWRConfig } from "swr";
+import { ErrorContext } from "../../pages/_app";
 import deleteAnnouncement from "../../utils/deleteAnnouncement";
 
 // $Inf$ because mutate() works directly with the Cache map built-in. This is the URL in which the getAnnouncements infinite list is in.
@@ -18,11 +20,11 @@ const APPLY_ANNOUNCEMENTS_CACHE =
 
 type DialogProps = {
   handleClose: () => void;
-  handleError: (errorMessage: string) => void;
   open: boolean;
 };
 
-const DeleteDialog = ({ handleClose, handleError, open }: DialogProps) => {
+const DeleteDialog = ({ handleClose, open }: DialogProps) => {
+  const handleError = useContext(ErrorContext);
   const router = useRouter();
   const { cache } = useSWRConfig();
   const handleDelete = async () => {
@@ -51,7 +53,7 @@ const DeleteDialog = ({ handleClose, handleError, open }: DialogProps) => {
           router.push(`/`);
         }
       })
-      .catch((error: Error) => handleError(error.message));
+      .catch((err: Error) => handleError(err.message));
   };
 
   return (

@@ -10,11 +10,9 @@ export type ProfileState = {
   contact: string;
   address: string;
   about: string;
-  error: boolean;
-  errorMessage: string;
 };
 
-type TypeOptions = "CHANGE" | "ERROR";
+type TypeOptions = "CHANGE";
 
 export type ProfileAction = {
   field?: string;
@@ -31,12 +29,6 @@ const profileReducer = (
       return {
         ...state,
         [action.field as string]: action.payload,
-      };
-    case "ERROR":
-      return {
-        ...state,
-        error: !state.error,
-        errorMessage: action.payload as string,
       };
     default:
       return state;

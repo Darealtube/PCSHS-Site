@@ -15,7 +15,13 @@ import {
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
-import { useRef, useReducer, useState, MutableRefObject } from "react";
+import {
+  useRef,
+  useReducer,
+  useState,
+  MutableRefObject,
+  useContext,
+} from "react";
 import Media from "../../../Components/Announcement/Media";
 import { getImages, getVideo } from "../../../utils/mediaOps/getMedia";
 import announceReducer from "../../../utils/Reducers/announceReducer";
@@ -32,11 +38,11 @@ import { GetStaticProps } from "next";
 import { Announcement } from "../../../types/PrismaTypes";
 import Fallback from "../../../Components/Announcement/Fallback";
 import useSWR from "swr";
+import { ErrorContext } from "../../_app";
 
 const DynamicPreview = dynamic(
   () => import("../../../Components/Announcement/PreviewAnnouncement")
 );
-const DynamicError = dynamic(() => import("../../../Components/ErrorSnack"));
 const DynamicGuide = dynamic(
   () => import("../../../Components/Announcement/MarkdownGuide")
 );
@@ -47,6 +53,7 @@ type InitialProps = {
 };
 
 const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
+  const handleError = useContext(ErrorContext);
   const { data } = useSWR(`/api/announcement/${id}/`, {
     fallbackData: initAnnouncement,
   });
@@ -82,24 +89,11 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
     setOpenGuide(!openGuide);
   };
 
-  const handleErrorClose = () => {
-    dispatch({
-      type: "ERROR",
-      payload: "",
-    });
-  };
-
   const handleImageClick = () => {
-    if (announcement.error) {
-      dispatch({ type: "ERROR", payload: "" });
-    }
     (imageInput as MutableRefObject<HTMLInputElement>).current.click();
   };
 
   const handleVideoClick = () => {
-    if (announcement.error) {
-      dispatch({ type: "ERROR", payload: "" });
-    }
     (videoInput as MutableRefObject<HTMLInputElement>).current.click();
   };
 
@@ -145,7 +139,6 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { error, errorMessage, ...trueAnnouncement } = announcement;
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
@@ -153,18 +146,18 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
       {
         method: "PUT",
         body: JSON.stringify({
-          ...trueAnnouncement,
+          ...announcement,
           image:
-            trueAnnouncement.image == data?.image
-              ? trueAnnouncement.image
-              : trueAnnouncement.image
-              ? await uploadImages(trueAnnouncement.image)
+            announcement.image == data?.image
+              ? announcement.image
+              : announcement.image
+              ? await uploadImages(announcement.image)
               : null,
           video:
-            trueAnnouncement.video == data?.video
-              ? trueAnnouncement.video
-              : trueAnnouncement.video
-              ? await uploadVideo(trueAnnouncement.video)
+            announcement.video == data?.video
+              ? announcement.video
+              : announcement.video
+              ? await uploadVideo(announcement.video)
               : null,
           authorName: session?.user?.name,
         }),
@@ -177,9 +170,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
           router.push(`/announcements/${id}/`);
         }
       })
-      .catch((error: Error) =>
-        dispatch({ type: "ERROR", payload: error.message })
-      );
+      .catch((err: Error) => handleError(err.message));
   };
 
   if (router.isFallback) {
@@ -382,11 +373,6 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
         open={openPreview}
         handleClose={handlePreview}
         announcement={announcement}
-      />
-      <DynamicError
-        open={announcement.error}
-        error={announcement.errorMessage}
-        handleClose={handleErrorClose}
       />
       <DynamicGuide open={openGuide} handleClose={handleGuide} />
     </>

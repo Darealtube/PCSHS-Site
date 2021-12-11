@@ -5,13 +5,13 @@ import PCSHSLogo from "../../public/pcshslogo.png";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../../styles/SignIn.module.css";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
-
-const DynamicError = dynamic(() => import("../../Components/ErrorSnack"));
+import { ErrorContext } from "../_app";
 
 const SignIn = () => {
+  const handleError = useContext(ErrorContext);
   const router = useRouter();
   const [session] = useSession();
   const [disabled, setDisabled] = useState(false);
@@ -19,10 +19,6 @@ const SignIn = () => {
     lrn: "",
     username: "",
     password: "",
-  });
-  const [error, setError] = useState({
-    open: false,
-    message: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,10 +37,7 @@ const SignIn = () => {
       redirect: false,
     }).then((values) => {
       if (values?.error) {
-        setError({
-          open: true,
-          message: values.error,
-        });
+        handleError(values?.error);
         setDisabled(false);
       } else {
         router.replace(values?.url as string);
@@ -61,21 +54,11 @@ const SignIn = () => {
       redirect: false,
     }).then((values) => {
       if (values?.error) {
-        setError({
-          open: true,
-          message: values.error,
-        });
+        handleError(values?.error);
         setDisabled(false);
       } else {
         router.replace(values?.url as string);
       }
-    });
-  };
-
-  const handleErrorClose = () => {
-    setError({
-      ...error,
-      open: false,
     });
   };
 
@@ -182,11 +165,6 @@ const SignIn = () => {
           </Container>
         </Paper>
       </Box>
-      <DynamicError
-        open={error.open}
-        handleClose={handleErrorClose}
-        error={error.message}
-      />
     </>
   );
 };

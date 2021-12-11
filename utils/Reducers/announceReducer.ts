@@ -4,12 +4,10 @@ export type AnnounceState = {
   footer: string;
   image: string[];
   video: string | null;
-  error: boolean;
-  errorMessage: string;
   type: string;
 };
 
-type AnnounceOptions = "CHANGE" | "ERROR";
+type AnnounceOptions = "CHANGE";
 
 export type AnnounceAction = {
   field?: keyof AnnounceState;
@@ -26,12 +24,6 @@ const announceReducer = (
       return {
         ...state,
         [action.field as string]: action.payload,
-      };
-    case "ERROR":
-      return {
-        ...state,
-        error: !state.error,
-        errorMessage: action.payload as string,
       };
     default:
       return state;

@@ -19,13 +19,14 @@ import PCSHSLogo from "../../../public/pcshslogo.png";
 import styles from "../../../styles/Profile.module.css";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { GradeOptions, SexOptions } from "../../../utils/selectOptions";
-import { Dispatch, MutableRefObject, useRef } from "react";
+import { Dispatch, MutableRefObject, useContext, useRef } from "react";
 import {
   ProfileAction,
   ProfileState,
 } from "../../../utils/Reducers/profileReducer";
 import { getPFP } from "../../../utils/mediaOps/getpfp";
 import { useSession } from "next-auth/client";
+import { ErrorContext } from "../../../pages/_app";
 
 const EditIDFront = ({
   profile,
@@ -34,6 +35,7 @@ const EditIDFront = ({
   profile: ProfileState;
   dispatch: Dispatch<ProfileAction>;
 }) => {
+  const handleError = useContext(ErrorContext);
   const theme = useTheme();
   const sm = useMediaQuery(theme.breakpoints.down("sm"));
   const imageInput = useRef<HTMLInputElement | null>(null);
@@ -56,9 +58,6 @@ const EditIDFront = ({
   };
 
   const handleImageClick = () => {
-    if (profile?.error) {
-      dispatch({ type: "ERROR", payload: "" });
-    }
     (imageInput as MutableRefObject<HTMLInputElement>).current.click();
   };
 
@@ -66,10 +65,7 @@ const EditIDFront = ({
     if ((e.currentTarget.files as FileList)?.length != 0) {
       getPFP(e.currentTarget.files as FileList, (result, error) => {
         if (error && !result) {
-          return dispatch({
-            type: "ERROR",
-            payload: error,
-          });
+          handleError(error);
         }
 
         return dispatch({
