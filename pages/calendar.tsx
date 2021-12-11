@@ -227,7 +227,7 @@ const Calendar = () => {
                   onMouseEnter={day.id ? handleEventOpen : undefined}
                   onMouseLeave={day.id ? handleEventClose : undefined}
                 >
-                  {session?.role == "Governement" && (
+                  {session?.role == "Government" && (
                     <>
                       <IconButton
                         size="small"
