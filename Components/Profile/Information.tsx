@@ -5,7 +5,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Box } from "@mui/system";
 
 type InformationProps = {
   title: string;

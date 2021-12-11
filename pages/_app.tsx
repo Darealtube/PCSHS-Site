@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import AppWrap from "../Components/AppWrap";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 import { SWRConfig } from "swr";
 import React, { useState } from "react";
 import "../styles/global.css";
@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Provider session={pageProps.session}>
+      <SessionProvider session={pageProps.session}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <ErrorContext.Provider value={handleError}>
@@ -71,7 +71,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </SWRConfig>
           </ErrorContext.Provider>
         </ThemeProvider>
-      </Provider>
+      </SessionProvider>
     </>
   );
 }
