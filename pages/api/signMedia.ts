@@ -3,19 +3,13 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 
 const secret = process.env.AUTH_CLIENT_SECRET;
-const signingKey = process.env.JWT_SIGNING_KEY;
-const encryptionKey = process.env.JWT_ENCRYPTION_KEY;
-const encryption = true;
 
 const cloudinaryHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Must be UNIX format
 
   const token = await getToken({
     req,
-    secret,
-    signingKey,
-    encryptionKey,
-    encryption,
+    secret: secret as string,
   });
 
   const timestamp = Math.round(new Date().getTime() / 1000);
