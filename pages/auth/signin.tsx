@@ -6,8 +6,8 @@ import Image from "next/image";
 import styles from "../../styles/SignIn.module.css";
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/dist/client/router";
-import { ErrorContext } from "../_app";
 import { signIn, useSession } from "next-auth/react";
+import { ErrorContext } from "../../Components/ErrorProvider";
 
 const SignIn = () => {
   const handleError = useContext(ErrorContext);
