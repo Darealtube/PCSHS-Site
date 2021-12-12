@@ -1,13 +1,13 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../lib/prisma";
-import Providers from "next-auth/providers";
 import bcrypt from "bcrypt";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    Providers.Credentials({
+    CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "School Credentials",
       // The credentials is used to generate a suitable form on the sign in page.
@@ -78,25 +78,21 @@ export default NextAuth({
   },
   session: {
     maxAge: 30 * 24 * 60 * 60,
-    jwt: true,
+    strategy: "jwt",
   },
   jwt: {
-    encryption: true,
-    encryptionKey: process.env.JWT_ENCRYPTION_KEY,
     secret: process.env.AUTH_CLIENT_SECRET,
-    signingKey: process.env.JWT_SIGNING_KEY,
   },
   callbacks: {
     // Getting the JWT token from API response
-    async jwt(token, user) {
+    jwt({ token, user }) {
       if (user) {
         token.accessToken = user.access_token;
         token.role = user.role;
       }
       return token;
     },
-
-    async session(session, token) {
+    session({ session, token }) {
       session.accessToken = token.accessToken;
       session.role = token.role as string;
       return session;

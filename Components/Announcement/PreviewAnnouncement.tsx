@@ -10,7 +10,7 @@ import { Announcement as AnnouncementType } from "../../types/PrismaTypes";
 import Image from "next/image";
 import React from "react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import Markdown from "react-markdown";
 import remarkGFM from "remark-gfm";
 
@@ -25,7 +25,7 @@ const PreviewAnnouncement = ({
   open,
   handleClose,
 }: PreviewProps) => {
-  const [session] = useSession();
+  const { data: session } = useSession();
   return (
     <>
       <Dialog

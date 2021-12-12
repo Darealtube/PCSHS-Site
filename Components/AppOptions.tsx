@@ -14,7 +14,7 @@ import dynamic from "next/dynamic";
 import NoImage from "../public/user-empty-avatar.png";
 import Image from "next/image";
 import styles from "../styles/AppWrap.module.css";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import NoUser from "../public/user-empty-avatar.png";
 import EditIcon from "@mui/icons-material/Edit";
@@ -43,7 +43,7 @@ const Option = ({ title, name, onClick, icon }: OptionComponentProps) => {
 };
 
 const AppOptions = () => {
-  const [session] = useSession();
+  const { data: session } = useSession();
   const [openMenu, setOpenMenu] = useState("");
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.only("xl"));

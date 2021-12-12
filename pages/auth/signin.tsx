@@ -1,19 +1,18 @@
 import { Container, Paper, TextField, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import { signIn, useSession } from "next-auth/client";
 import PCSHSLogo from "../../public/pcshslogo.png";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../../styles/SignIn.module.css";
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/dist/client/router";
-import dynamic from "next/dynamic";
 import { ErrorContext } from "../_app";
+import { signIn, useSession } from "next-auth/react";
 
 const SignIn = () => {
   const handleError = useContext(ErrorContext);
   const router = useRouter();
-  const [session] = useSession();
+  const { data: session } = useSession();
   const [disabled, setDisabled] = useState(false);
   const [credentials, setCredentials] = useState({
     lrn: "",
@@ -30,34 +29,34 @@ const SignIn = () => {
 
   const handleSignIn = () => {
     setDisabled(true);
-    signIn("credentials", {
+    signIn<"credentials">("credentials", {
       ...credentials,
       type: "Sign In",
       callbackUrl: "/",
       redirect: false,
-    }).then((values) => {
-      if (values?.error) {
-        handleError(values?.error);
+    }).then((value) => {
+      if (value?.error) {
+        handleError(value?.error);
         setDisabled(false);
       } else {
-        router.replace(values?.url as string);
+        router.replace(value?.url as string);
       }
     });
   };
 
   const handleSignUp = () => {
     setDisabled(true);
-    signIn("credentials", {
+    signIn<"credentials">("credentials", {
       ...credentials,
       type: "Sign Up",
       callbackUrl: "/",
       redirect: false,
-    }).then((values) => {
-      if (values?.error) {
-        handleError(values?.error);
+    }).then((value) => {
+      if (value?.error) {
+        handleError(value?.error);
         setDisabled(false);
       } else {
-        router.replace(values?.url as string);
+        router.replace(value?.url as string);
       }
     });
   };

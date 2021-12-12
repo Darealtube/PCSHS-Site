@@ -3,9 +3,6 @@ import { getToken } from "next-auth/jwt";
 import prisma from "../../../../lib/prisma";
 
 const secret = process.env.AUTH_CLIENT_SECRET;
-const signingKey = process.env.JWT_SIGNING_KEY;
-const encryptionKey = process.env.JWT_ENCRYPTION_KEY;
-const encryption = true;
 
 export default async function editAnnouncement(
   req: NextApiRequest,
@@ -13,10 +10,7 @@ export default async function editAnnouncement(
 ) {
   const token = await getToken({
     req,
-    secret,
-    signingKey,
-    encryptionKey,
-    encryption,
+    secret: secret as string,
   });
 
   if (token?.role && token?.role == "Government") {

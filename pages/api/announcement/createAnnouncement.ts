@@ -4,9 +4,6 @@ import prisma from "../../../lib/prisma";
 import { AnnounceState } from "../../../utils/Reducers/announceReducer";
 
 const secret = process.env.AUTH_CLIENT_SECRET;
-const signingKey = process.env.JWT_SIGNING_KEY;
-const encryptionKey = process.env.JWT_ENCRYPTION_KEY;
-const encryption = true;
 
 const createAnnouncement = async (
   req: NextApiRequest,
@@ -15,10 +12,7 @@ const createAnnouncement = async (
   const date = new Date();
   const token = await getToken({
     req,
-    secret,
-    signingKey,
-    encryptionKey,
-    encryption,
+    secret: secret as string,
   });
 
   if (token?.role && token?.role == "Government") {

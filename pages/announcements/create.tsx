@@ -12,7 +12,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import {
@@ -64,7 +64,7 @@ const CreateAnnouncement = () => {
   const [announcement, dispatch] = useReducer(announceReducer, initAnnounce);
   const [openPreview, setOpenPreview] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
-  const [session] = useSession();
+  const { data: session } = useSession();
   const hasError =
     announcement.header.length > 50 ||
     announcement.body.length > 1500 ||

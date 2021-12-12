@@ -21,7 +21,7 @@ import { Event } from "../types/PrismaTypes";
 import dynamic from "next/dynamic";
 import _ from "lodash";
 import useCalendar from "../utils/Hooks/useCalendar";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 const DynamicEventPopover = dynamic(
   () => import("../Components/Calendar/EventPopover")
@@ -54,7 +54,7 @@ const Months = [
 ];
 
 const Calendar = () => {
-  const [session] = useSession();
+  const { data: session } = useSession();
   const theme = useTheme();
   const tablet = useMediaQuery("(min-width: 900px) and (max-width: 1200px)");
   const mobile = useMediaQuery(theme.breakpoints.only("xs"));

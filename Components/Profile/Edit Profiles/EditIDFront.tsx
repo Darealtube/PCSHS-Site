@@ -25,7 +25,7 @@ import {
   ProfileState,
 } from "../../../utils/Reducers/profileReducer";
 import { getPFP } from "../../../utils/mediaOps/getpfp";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { ErrorContext } from "../../../pages/_app";
 
 const EditIDFront = ({
@@ -39,7 +39,7 @@ const EditIDFront = ({
   const theme = useTheme();
   const sm = useMediaQuery(theme.breakpoints.down("sm"));
   const imageInput = useRef<HTMLInputElement | null>(null);
-  const [session] = useSession();
+  const { data: session } = useSession();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({

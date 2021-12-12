@@ -9,7 +9,7 @@ import {
 import GradeIcon from "@mui/icons-material/Grade";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/client";
+import { signIn, signOut, useSession } from "next-auth/react";
 import LoginIcon from "@mui/icons-material/Login";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 };
 
 const ProfileMenu = ({ open, anchor, closeMenu }: Props) => {
-  const [session] = useSession();
+  const { data: session } = useSession();
   return (
     <Menu
       open={open}

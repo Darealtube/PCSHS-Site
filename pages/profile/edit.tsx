@@ -1,13 +1,12 @@
 import { GetServerSideProps, GetStaticPropsResult } from "next";
 import { Session } from "next-auth";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 import Head from "next/head";
 import { Profile } from "../../types/PrismaTypes";
 import { useContext, useReducer, useState } from "react";
 import profileReducer from "../../utils/Reducers/profileReducer";
 import { useRouter } from "next/dist/client/router";
-import dynamic from "next/dynamic";
 import { uploadImages } from "../../utils/mediaOps/uploadMedia";
 import EditIDFront from "../../Components/Profile/Edit Profiles/EditIDFront";
 import EditIDBack from "../../Components/Profile/Edit Profiles/EditIDBack";

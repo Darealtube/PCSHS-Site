@@ -14,7 +14,7 @@ import remarkGFM from "remark-gfm";
 import Link from "next/link";
 import Fallback from "../../../Components/Announcement/Fallback";
 import dynamic from "next/dynamic";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 const DynamicDeleteDialog = dynamic(
   () => import("../../../Components/Announcement/DeleteDialog")
@@ -31,7 +31,7 @@ const AnnouncementID = ({ announcement, id }: InitialProps) => {
     fallbackData: announcement,
   });
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [session] = useSession();
+  const { data: session } = useSession();
 
   const handleDelete = () => {
     setDeleteOpen(!deleteOpen);

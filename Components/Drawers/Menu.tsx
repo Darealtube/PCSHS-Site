@@ -30,7 +30,7 @@ import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
 import { Box } from "@mui/system";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 type ItemProps = {
   title: string;
@@ -78,7 +78,7 @@ const PCSHSMenu = ({ onClick, open, title, icon }: MenuProps) => {
 };
 
 const MenuBar = () => {
-  const [session] = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
