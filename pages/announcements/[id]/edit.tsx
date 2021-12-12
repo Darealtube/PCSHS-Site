@@ -7,9 +7,6 @@ import {
   Button,
   useTheme,
   useMediaQuery,
-  SelectChangeEvent,
-  Select,
-  MenuItem,
   Typography,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
@@ -27,7 +24,6 @@ import { getImages, getVideo } from "../../../utils/mediaOps/getMedia";
 import announceReducer from "../../../utils/Reducers/announceReducer";
 import { uploadImages, uploadVideo } from "../../../utils/mediaOps/uploadMedia";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import { AnnounceTypeOptions } from "../../../utils/selectOptions";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import dynamic from "next/dynamic";
 import SendIcon from "@mui/icons-material/Send";
@@ -38,7 +34,7 @@ import { GetStaticProps } from "next";
 import { Announcement } from "../../../types/PrismaTypes";
 import Fallback from "../../../Components/Announcement/Fallback";
 import useSWR from "swr";
-import { ErrorContext } from "../../_app";
+import { ErrorContext } from "../../../Components/ErrorProvider";
 
 const DynamicPreview = dynamic(
   () => import("../../../Components/Announcement/PreviewAnnouncement")
@@ -57,13 +53,15 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
   const { data } = useSWR(`/api/announcement/${id}/`, {
     fallbackData: initAnnouncement,
   });
-  const init = { ...(data as Announcement), error: false, errorMessage: "" };
   const router = useRouter();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const imageInput = useRef<HTMLInputElement | null>(null);
   const videoInput = useRef<HTMLInputElement | null>(null);
-  const [announcement, dispatch] = useReducer(announceReducer, init);
+  const [announcement, dispatch] = useReducer(
+    announceReducer,
+    data as Announcement
+  );
   const [openPreview, setOpenPreview] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
   const { data: session } = useSession();
@@ -127,14 +125,6 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
       });
       e.currentTarget.value = "";
     }
-  };
-
-  const handleType = (e: SelectChangeEvent) => {
-    dispatch({
-      type: "CHANGE",
-      payload: e.target.value,
-      field: "type",
-    });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -310,21 +300,9 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
           sx={{ display: "flex", alignItems: "center" }}
         >
           <Grid item xs={12} sm={6}>
-            <Select
-              id="type"
-              name="type"
-              value={announcement.type}
-              label="Announcement Type"
-              placeholder="Announcement Type"
-              onChange={handleType}
-              sx={{ width: "100%" }}
-            >
-              {AnnounceTypeOptions.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
+            <Typography variant="h5" align="center">
+              Type: {data?.type}
+            </Typography>
           </Grid>
           <Grid
             item

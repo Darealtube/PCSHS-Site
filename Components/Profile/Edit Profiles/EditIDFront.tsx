@@ -26,7 +26,7 @@ import {
 } from "../../../utils/Reducers/profileReducer";
 import { getPFP } from "../../../utils/mediaOps/getpfp";
 import { useSession } from "next-auth/react";
-import { ErrorContext } from "../../../pages/_app";
+import { ErrorContext } from "../../ErrorProvider";
 
 const EditIDFront = ({
   profile,

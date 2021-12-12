@@ -34,7 +34,7 @@ import dynamic from "next/dynamic";
 import SendIcon from "@mui/icons-material/Send";
 import HelpIcon from "@mui/icons-material/Help";
 import VideocamIcon from "@mui/icons-material/Videocam";
-import { ErrorContext } from "../_app";
+import { ErrorContext } from "../../Components/ErrorProvider";
 
 const DynamicPreview = dynamic(
   () => import("../../Components/Announcement/PreviewAnnouncement")
@@ -49,8 +49,6 @@ const initAnnounce = {
   footer: "",
   image: [],
   video: null,
-  error: false,
-  errorMessage: "",
   type: "",
 };
 

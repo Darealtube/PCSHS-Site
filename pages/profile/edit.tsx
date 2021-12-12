@@ -18,7 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Link from "next/link";
 import { isEqual } from "lodash";
-import { ErrorContext } from "../_app";
+import { ErrorContext } from "../../Components/ErrorProvider";
 
 type ProfileProps = {
   session: Session | null;

@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext, useState } from "react";
-import { ErrorContext } from "../../../pages/_app";
 import { Event } from "../../../types/PrismaTypes";
+import { ErrorContext } from "../../ErrorProvider";
 
 type DialogProps = {
   open: boolean;

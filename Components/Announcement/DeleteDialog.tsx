@@ -9,8 +9,8 @@ import {
 import { useRouter } from "next/dist/client/router";
 import { useContext } from "react";
 import { useSWRConfig } from "swr";
-import { ErrorContext } from "../../pages/_app";
 import deleteAnnouncement from "../../utils/deleteAnnouncement";
+import { ErrorContext } from "../ErrorProvider";
 
 // $Inf$ because mutate() works directly with the Cache map built-in. This is the URL in which the getAnnouncements infinite list is in.
 const ANNOUNCEMENTS_CACHE =

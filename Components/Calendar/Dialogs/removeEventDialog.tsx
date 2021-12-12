@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext } from "react";
-import { ErrorContext } from "../../../pages/_app";
+import { ErrorContext } from "../../ErrorProvider";
 
 type DialogProps = {
   open: boolean;

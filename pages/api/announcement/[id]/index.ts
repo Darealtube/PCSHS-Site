@@ -23,6 +23,7 @@ export default async function getOneAnnouncement(
           name: true,
         },
       },
+      type: true,
     },
   });
 
