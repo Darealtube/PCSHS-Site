@@ -18,13 +18,13 @@ const History = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Year 2004
       </Typography>
-      <Timeline position="alternate" sx={{ marginBottom: "64px" }}>
+      <Timeline position="alternate" sx={{ paddingBottom: "64px" }}>
         <TimelineItem>
           <TimelineOppositeContent
             sx={{ m: "auto 0" }}
             align="right"
             variant="body2"
-            color="text.secondary"
+            color="white"
           >
             October 7, 2004
           </TimelineOppositeContent>
@@ -57,7 +57,7 @@ const History = () => {
           <TimelineOppositeContent
             sx={{ m: "auto 0" }}
             variant="body2"
-            color="text.secondary"
+            color="white"
           >
             Year 2005
           </TimelineOppositeContent>
@@ -88,7 +88,7 @@ const History = () => {
           <TimelineOppositeContent
             sx={{ m: "auto 0" }}
             variant="body2"
-            color="text.secondary"
+            color="white"
           >
             Summer of 2006
           </TimelineOppositeContent>

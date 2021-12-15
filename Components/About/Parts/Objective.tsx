@@ -52,7 +52,7 @@ const Objectives = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: "120px",
+        paddingBottom: "120px",
       }}
     >
       {ObjectiveList.map(({ objective, image }) => (
@@ -60,7 +60,7 @@ const Objectives = () => {
           {({ isVisible }) => (
             <Grow in={isVisible} timeout={1200}>
               <Grid item xs={12} md={6}>
-                <Card>
+                <Card elevation={16}>
                   <CardMedia
                     sx={{
                       position: "relative",

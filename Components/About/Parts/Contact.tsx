@@ -45,7 +45,6 @@ const ContactUs = () => {
         width="100%"
         height="560px"
         sx={{ backgroundColor: "#03045e" }}
-        mt={32}
         display="flex"
         flexDirection="column"
         alignItems="center"

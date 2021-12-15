@@ -17,6 +17,9 @@
   height: 100vh;
   overflow: auto;
   display: flex;
+  background-image: url(/homebg.png);
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .applyMain {
@@ -24,6 +27,7 @@
   height: 100vh;
   display: flex;
   overflow: auto;
+  background-image: url(/public/homebg.png);
 }
 
 @media all and (max-width: 1535px) {

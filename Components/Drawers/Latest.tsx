@@ -100,6 +100,11 @@ const LatestAnnouncements = () => {
       anchor="left"
       PaperProps={{
         id: "drawerScrollable",
+        sx: {
+          backgroundImage: "url(/homebg.png)",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+        },
       }}
     >
       {announcements ? (

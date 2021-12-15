@@ -25,7 +25,7 @@ const Main = ({
         <Grid
           container
           spacing={1}
-          sx={{ marginTop: "120px" }}
+          sx={{ paddingTop: "120px", paddingBottom: "120px" }}
           direction={reverse ? "row-reverse" : "row"}
         >
           <Slide direction="right" in={isVisible} mountOnEnter unmountOnExit>
@@ -98,50 +98,90 @@ const About = () => {
         Your browser does not support HTML5 video.
       </video>
 
-      <Container>
-        <Main image={Vision}>
-          <Typography variant="h3" align="center" sx={{ marginBottom: "16px" }}>
-            Our Vision
+      <Box
+        sx={{
+          backgroundImage: "url(/pcshslogo.png)",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        <Box sx={{ backdropFilter: "brightness(50%)" }}>
+          <Container>
+            <Main image={Vision}>
+              <Typography
+                variant="h3"
+                align="center"
+                sx={{ marginBottom: "16px" }}
+              >
+                Our Vision
+              </Typography>
+              <Typography paragraph align="center" variant="h5">
+                PASIG CITY SCIENCE HIGH SCHOOL (PCSHS) is envisioned to be a
+                world class institution that is globally and locally competitive
+                and responsive to the ever-changing needs of the times,
+                especially in the fields of Science and Technology.
+              </Typography>
+            </Main>
+
+            <Main image={Mission} reverse={true}>
+              <Typography
+                variant="h3"
+                align="center"
+                sx={{ marginBottom: "16px" }}
+              >
+                Our Mission
+              </Typography>
+              <Typography paragraph align="center" variant="h5">
+                PCSHS&apos; mission is to fully develop well-rounded, science
+                and technology-oriented students, nurturing and gender-sensitive
+                persons, and future leaders with a vision for excellence.
+              </Typography>
+            </Main>
+          </Container>
+        </Box>
+      </Box>
+
+      <Box>
+        <Container>
+          <Typography
+            align="center"
+            variant="h3"
+            pt={24}
+            mb={16}
+            sx={{ color: "black" }}
+          >
+            Our Objectives
           </Typography>
-          <Typography paragraph align="center" variant="h5">
-            PASIG CITY SCIENCE HIGH SCHOOL (PCSHS) is envisioned to be a world
-            class institution that is globally and locally competitive and
-            responsive to the ever-changing needs of the times, especially in
-            the fields of Science and Technology.
-          </Typography>
-        </Main>
 
-        <Main image={Mission} reverse={true}>
-          <Typography variant="h3" align="center" sx={{ marginBottom: "16px" }}>
-            Our Mission
-          </Typography>
-          <Typography paragraph align="center" variant="h5">
-            PCSHS’ mission is to fully develop well-rounded, science and
-            technology-oriented students, nurturing and gender-sensitive
-            persons, and future leaders with a vision for excellence.
-          </Typography>
-        </Main>
+          <Objectives />
+        </Container>
+      </Box>
 
-        <Typography align="center" variant="h3" mt={24} mb={16}>
-          Our Objectives
-        </Typography>
+      <Box
+        sx={{
+          backgroundImage: "url(/pcshsPictures/vision.jpeg)",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        <Box sx={{ backdropFilter: "brightness(50%)" }}>
+          <Container>
+            <Typography align="center" variant="h3" pt={24} mb={8}>
+              Our History
+            </Typography>
 
-        <Objectives />
-
-        <Typography align="center" variant="h3" mt={24} mb={8}>
-          Our History
-        </Typography>
-
-        <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
-            <Fade in={isVisible} timeout={1000}>
-              <Box>
-                <History />
-              </Box>
-            </Fade>
-          )}
-        </VisibilitySensor>
-      </Container>
+            <VisibilitySensor partialVisibility>
+              {({ isVisible }) => (
+                <Fade in={isVisible} timeout={1000}>
+                  <Box>
+                    <History />
+                  </Box>
+                </Fade>
+              )}
+            </VisibilitySensor>
+          </Container>
+        </Box>
+      </Box>
 
       <ContactUs />
     </>
