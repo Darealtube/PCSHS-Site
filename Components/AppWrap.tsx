@@ -81,7 +81,7 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
           <Box
             sx={{
               marginTop: "60px",
-              color: "white"
+              color: "white",
             }}
           >
             {children}
@@ -109,6 +109,8 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
               <Container
                 sx={{
                   marginTop: "80px",
+                  backdropFilter: "blur(4px)",
+                  height: "max-content",
                 }}
               >
                 {children}

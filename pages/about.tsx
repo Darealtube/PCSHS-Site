@@ -105,7 +105,7 @@ const About = () => {
           backgroundAttachment: "fixed",
         }}
       >
-        <Box sx={{ backdropFilter: "brightness(50%)" }}>
+        <Box sx={{ backdropFilter: "brightness(25%)" }}>
           <Container>
             <Main image={Vision}>
               <Typography
@@ -164,7 +164,7 @@ const About = () => {
           backgroundAttachment: "fixed",
         }}
       >
-        <Box sx={{ backdropFilter: "brightness(50%)" }}>
+        <Box sx={{ backdropFilter: "brightness(25%)" }}>
           <Container>
             <Typography align="center" variant="h3" pt={24} mb={8}>
               Our History
