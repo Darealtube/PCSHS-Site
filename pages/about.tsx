@@ -173,7 +173,7 @@ const About = () => {
             <VisibilitySensor partialVisibility>
               {({ isVisible }) => (
                 <Fade in={isVisible} timeout={1000}>
-                  <Box>
+                  <Box overflow="auto">
                     <History />
                   </Box>
                 </Fade>

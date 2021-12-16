@@ -9,7 +9,19 @@ import ErrorProvider from "../Components/ErrorProvider";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Times New Roman, Times, serif",
+    fontFamily: "Open Sans, sans-serif",
+    h1: {
+      fontWeight: 1200,
+    },
+    h2: {
+      fontWeight: 1000,
+    },
+    h3: {
+      fontWeight: 800,
+    },
+    h4: {
+      fontWeight: 600,
+    },
   },
   components: {
     MuiBottomNavigationAction: {

@@ -62,13 +62,13 @@ const AppOptions = () => {
     <>
       <Box sx={{ marginRight: "24px", display: "flex", alignItems: "center" }}>
         {session?.role == "Government" && (
-          <Tooltip title="Create Announcement">
-            <Link passHref href="/announcements/create">
-              <IconButton component="a" sx={{ mr: 2 }}>
+          <Link passHref href="/announcements/create">
+            <Tooltip title="Create Announcement">
+              <IconButton sx={{ mr: 2 }} LinkComponent="a">
                 <EditIcon />
               </IconButton>
-            </Link>
-          </Tooltip>
+            </Tooltip>
+          </Link>
         )}
 
         {smMobile ? (

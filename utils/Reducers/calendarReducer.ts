@@ -37,15 +37,6 @@ const calendarReducer = (
   const isStartofWeek = state.dayofWeek == 0;
   switch (action.type) {
     case "NEXT_MONTH":
-      const daysInMonth = dayjs(
-        `${state.year}-${state.month + 1}-01`
-      ).daysInMonth();
-      const dayArray = [];
-
-      for (let i = 0; i < daysInMonth; i++) {
-        dayArray.push(i);
-      }
-
       return {
         ...state,
         day: 1,
