@@ -66,7 +66,12 @@ const ContactUs = () => {
               }}
             >
               {Contacts.map(({ contact, icon }) => (
-                <Slide direction="left" in={isVisible} key={contact}>
+                <Slide
+                  direction="left"
+                  in={isVisible}
+                  key={contact}
+                  timeout={1000}
+                >
                   <Grid item xs={12} md={6}>
                     <Box
                       display="flex"

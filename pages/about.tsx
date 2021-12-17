@@ -28,7 +28,7 @@ const Main = ({
           sx={{ paddingTop: "120px", paddingBottom: "120px" }}
           direction={reverse ? "row-reverse" : "row"}
         >
-          <Slide direction="right" in={isVisible} mountOnEnter unmountOnExit>
+          <Slide direction="right" in={isVisible} mountOnEnter unmountOnExit timeout={1000}>
             <Grid
               item
               xs={12}
@@ -49,7 +49,7 @@ const Main = ({
             </Grid>
           </Slide>
 
-          <Fade timeout={1000} in={isVisible}>
+          <Fade timeout={2000} in={isVisible}>
             <Grid
               item
               xs={12}
