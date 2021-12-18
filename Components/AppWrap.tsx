@@ -6,7 +6,7 @@ import {
   Box,
   Container,
 } from "@mui/material";
-import { ReactChild } from "react";
+import { ReactChild, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PCSHSLogo from "../public/pcshslogo.png";
@@ -22,13 +22,18 @@ import { useRouter } from "next/dist/client/router";
 const DynamicBottomNav = dynamic(() => import("./BottomMenu"));
 
 const AppWrap = ({ children }: { children: ReactChild }) => {
+  const [openLatest, setOpenLatest] = useState(false);
   const router = useRouter();
   const theme = useTheme();
   const smMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
-  const desktop = useMediaQuery(theme.breakpoints.only("xl"));
   const aboutPage = router.pathname === "/about";
   const applyPage = router.pathname.startsWith("/apply");
+
+  const handleLatest = () => {
+    setOpenLatest(!openLatest);
+  };
+
   return (
     <>
       <AppBar
@@ -89,7 +94,7 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
         </>
       ) : applyPage ? (
         <>
-          {!mobile && <LatestAnnouncements />}
+          <LatestAnnouncements open={openLatest} handleOpen={handleLatest} />
           <Box className={styles.applyMain}>
             <Box
               sx={{
@@ -102,8 +107,8 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
         </>
       ) : (
         <>
-          {!mobile && <LatestAnnouncements />}
-          {desktop && <MenuBar />}
+          <LatestAnnouncements open={openLatest} handleOpen={handleLatest} />
+          <MenuBar />
           <Box className={styles.main} id="scrollable">
             <LocalizationProvider dateAdapter={DateAdapter}>
               <Container

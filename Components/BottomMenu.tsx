@@ -45,7 +45,7 @@ const BottomMenu = () => {
       />
 
       <BottomNavigationAction
-        id="/apply/admissions"
+        id="/apply/admission"
         label="Admissions"
         icon={<AssignmentIndIcon />}
         sx={{

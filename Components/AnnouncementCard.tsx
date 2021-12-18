@@ -29,7 +29,7 @@ const Announcement = ({ announcement, type }: Props) => {
   const hasMedia =
     (announcement?.image as string[]).length > 0 || announcement?.video;
   return (
-    <Fade in={true} timeout={1500} style={{ marginBottom: "64px" }}>
+    <Fade in={true} timeout={500} style={{ marginBottom: "64px" }}>
       <Card className={styles.card}>
         <CardHeader
           avatar={

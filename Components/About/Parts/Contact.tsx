@@ -12,6 +12,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import CallIcon from "@mui/icons-material/Call";
 import RoomIcon from "@mui/icons-material/Room";
 import VisibilitySensor from "react-visibility-sensor";
+import styles from "../../../styles/About.module.css";
 
 const Contacts = [
   {
@@ -41,14 +42,7 @@ const ContactUs = () => {
   const smCP = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
-      <Box
-        width="100%"
-        height="560px"
-        sx={{ backgroundColor: "#03045e" }}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-      >
+      <Box className={styles.contactUs} id="contacts">
         <Typography variant="h2" gutterBottom color="#e9c46a" mt={8}>
           Contact Us
         </Typography>

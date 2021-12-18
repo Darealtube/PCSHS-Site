@@ -36,17 +36,14 @@ const History = () => {
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent sx={{ py: "12px", px: 2 }}>
-            <Typography variant="h5" component="span">
-              Founding
-            </Typography>
             {!smCP ? (
-              <Typography variant="h6" paragraph>
+              <Typography variant="h5" paragraph>
                 Pasig City Science Highschool was founded with the support and
                 determination of former Mayor Soledad C. Eusebio, Hon. Mayor
                 Vicente P. Eusebio, and the members of the City Council.
               </Typography>
             ) : (
-              <Typography variant="h6" paragraph>
+              <Typography variant="body1" paragraph>
                 PCSHS was founded with the support of
                 the former mayor and the City Council.
               </Typography>
@@ -69,16 +66,13 @@ const History = () => {
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent sx={{ py: "12px", px: 2 }}>
-            <Typography variant="h5" component="span">
-              School Systems
-            </Typography>
             {!smCP ? (
-              <Typography variant="h6" paragraph>
+              <Typography variant="h5" paragraph>
                 Faculties enrolled, entrance exams administered, grading
                 standards set, and scholarship programs.
               </Typography>
             ) : (
-              <Typography variant="h6" paragraph>
+              <Typography variant="body1" paragraph>
                 Faculties and school systems were set.
               </Typography>
             )}
@@ -100,16 +94,13 @@ const History = () => {
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent sx={{ py: "12px", px: 2 }}>
-            <Typography variant="h5" component="span">
-              General Improvements
-            </Typography>
             {!smCP ? (
-              <Typography variant="h6" paragraph>
+              <Typography variant="h5" paragraph>
                 Upgraded facilities, establishing the dream school, and the
                 creation of the PCSHS Logo and Hymn.
               </Typography>
             ) : (
-              <Typography variant="h6" paragraph>
+              <Typography variant="body1" paragraph>
                 Facilities revamped and the PCSHS Logo and Hymn was born.
               </Typography>
             )}

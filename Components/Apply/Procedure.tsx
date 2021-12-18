@@ -15,7 +15,7 @@ const Procedure = ({
 }) => {
   return (
     <>
-      <Grid container spacing={4} mb={28} direction={direction}>
+      <Grid container spacing={4} pb={14} direction={direction}>
         <VisibilitySensor partialVisibility>
           {({ isVisible }) => (
             <>
@@ -31,7 +31,7 @@ const Procedure = ({
                 </Grid>
               </Fade>
 
-              <Grow in={isVisible} timeout={2000}>
+              <Grow in={isVisible} timeout={800}>
                 <Grid
                   item
                   xs={12}

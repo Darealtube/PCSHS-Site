@@ -1,4 +1,4 @@
-import { Typography, Fade, Container, Grid, Slide } from "@mui/material";
+import { Typography, Fade, Container, Grid } from "@mui/material";
 import Head from "next/head";
 import Image from "next/image";
 import { Box } from "@mui/system";
@@ -9,14 +9,17 @@ import Mission from "../public/pcshsPictures/mission.jpg";
 import { ReactNode } from "react";
 import ContactUs from "../Components/About/Parts/Contact";
 import Objectives from "../Components/About/Parts/Objective";
+import styles from "../styles/About.module.css";
 
 const Main = ({
   image,
   children,
   reverse = false,
+  id,
 }: {
   image: string | StaticImageData;
   children: ReactNode;
+  id?: string;
   reverse?: boolean;
 }) => {
   return (
@@ -27,8 +30,9 @@ const Main = ({
           spacing={1}
           sx={{ paddingTop: "120px", paddingBottom: "120px" }}
           direction={reverse ? "row-reverse" : "row"}
+          id={id}
         >
-          <Slide direction="right" in={isVisible} mountOnEnter unmountOnExit timeout={1000}>
+          <Fade timeout={2000} in={isVisible}>
             <Grid
               item
               xs={12}
@@ -47,20 +51,10 @@ const Main = ({
                 height="420"
               />
             </Grid>
-          </Slide>
+          </Fade>
 
           <Fade timeout={2000} in={isVisible}>
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <Grid item xs={12} md={6} className={styles.main}>
               {children}
             </Grid>
           </Fade>
@@ -79,18 +73,7 @@ const About = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <video
-        autoPlay
-        muted
-        loop
-        id="myVideo"
-        style={{
-          width: "100%",
-          height: "100vh",
-          objectFit: "cover",
-          filter: "brightness(50%)",
-        }}
-      >
+      <video autoPlay muted loop id="myVideo" className={styles.pcshsVideo}>
         <source
           src="https://video.wixstatic.com/video/99a79f_546d779f086f41469f6612347b2c6581/1080p/mp4/file.mp4"
           type="video/mp4"
@@ -98,16 +81,10 @@ const About = () => {
         Your browser does not support HTML5 video.
       </video>
 
-      <Box
-        sx={{
-          backgroundImage: "url(/pcshslogo.png)",
-          backgroundSize: "cover",
-          backgroundAttachment: "fixed",
-        }}
-      >
-        <Box sx={{ backdropFilter: "brightness(25%)" }}>
+      <Box className={styles.mainBgImage}>
+        <Box className={styles.blurBox}>
           <Container>
-            <Main image={Vision}>
+            <Main image={Vision} id="vision">
               <Typography
                 variant="h3"
                 align="center"
@@ -123,7 +100,7 @@ const About = () => {
               </Typography>
             </Main>
 
-            <Main image={Mission} reverse={true}>
+            <Main image={Mission} reverse={true} id="mission">
               <Typography
                 variant="h3"
                 align="center"
@@ -141,7 +118,7 @@ const About = () => {
         </Box>
       </Box>
 
-      <Box>
+      <Box id="objectives">
         <Container>
           <Typography
             align="center"
@@ -157,14 +134,8 @@ const About = () => {
         </Container>
       </Box>
 
-      <Box
-        sx={{
-          backgroundImage: "url(/pcshsPictures/vision.jpeg)",
-          backgroundSize: "cover",
-          backgroundAttachment: "fixed",
-        }}
-      >
-        <Box sx={{ backdropFilter: "brightness(25%)" }}>
+      <Box className={styles.historyBgImage} id="history">
+        <Box className={styles.blurBox}>
           <Container>
             <Typography align="center" variant="h3" pt={24} mb={8}>
               Our History
