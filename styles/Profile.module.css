@@ -31,7 +31,6 @@
   -moz-backface-visibility: hidden;
   transform: rotateY(180deg);
   height: auto;
-  max-height: 100%;
   overflow: auto;
 }
 

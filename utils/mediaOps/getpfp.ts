@@ -13,7 +13,7 @@ export const getPFP = (
     image.onload = () => {
       height = image.height;
       width = image.width;
-      if (height && width != 288) {
+      if (height != 288 && width != 288) {
         onResult(null, "Please insert a 288 x 288 image.");
       } else {
         onResult(reader.result as string | null);

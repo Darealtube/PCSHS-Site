@@ -7,6 +7,7 @@ import {
   Box,
   Skeleton,
   CircularProgress,
+  SwipeableDrawer,
 } from "@mui/material";
 import React from "react";
 import { CardAnnouncement } from "../../types/PrismaTypes";
@@ -76,8 +77,15 @@ const AnnouncementList = ({
   );
 };
 
-const LatestAnnouncements = () => {
+const LatestAnnouncements = ({
+  open,
+  handleOpen,
+}: {
+  open: boolean;
+  handleOpen: () => void;
+}) => {
   const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const tablet = useMediaQuery(theme.breakpoints.only("md"));
   const desktop = useMediaQuery(theme.breakpoints.only("lg"));
   const drawerWidth = tablet || desktop ? "40%" : "24%";
@@ -85,6 +93,43 @@ const LatestAnnouncements = () => {
     limit: 10,
     type: "apply",
   });
+
+  if (mobile) {
+    return (
+      <SwipeableDrawer
+        sx={{
+          width: "90%",
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: "90%",
+            boxSizing: "border-box",
+          },
+        }}
+        anchor="left"
+        PaperProps={{
+          id: "drawerScrollable",
+          sx: {
+            backgroundImage: "url(/homebg.png)",
+            backgroundSize: "cover",
+            backgroundAttachment: "fixed",
+          },
+        }}
+        onClose={handleOpen}
+        onOpen={handleOpen}
+        open={open}
+      >
+        {announcements ? (
+          <AnnouncementList
+            announcements={flatten(announcements)}
+            noMore={noMore}
+            moreAnnouncements={moreAnnouncements}
+          />
+        ) : (
+          <CardSkeleton />
+        )}
+      </SwipeableDrawer>
+    );
+  }
 
   return (
     <Drawer

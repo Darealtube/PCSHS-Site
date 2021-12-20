@@ -1,34 +1,32 @@
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 32px;
-}
-
-.avatar {
-  border-radius: 50%;
-}
-
-.objective {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.pcshsVideo {
   width: 100%;
-  margin-bottom: 64px;
+  height: 100vh;
+  object-fit: cover;
+  filter: brightness(50%);
 }
 
-.objectiveImage {
-  margin-bottom: 16px;
-  height: 50vh;
+.contactUs {
   width: 100%;
-  position: relative;
-}
-
-.member {
+  height: 560px;
+  background-color: #03045e;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 24px;
+}
+
+.mainBgImage {
+  background-image: url(/pcshslogo.png);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.historyBgImage {
+  background-image: url(/pcshsPictures/vision.jpeg);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.blurBox {
+  backdrop-filter: brightness(25%);
+  -webkit-backdrop-filter: brightness(25%);
 }

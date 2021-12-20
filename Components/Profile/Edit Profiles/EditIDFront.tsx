@@ -66,6 +66,7 @@ const EditIDFront = ({
       getPFP(e.currentTarget.files as FileList, (result, error) => {
         if (error && !result) {
           handleError(error);
+          return null;
         }
 
         return dispatch({
@@ -138,8 +139,8 @@ const EditIDFront = ({
             <Image
               src={profile?.image as string}
               alt="2x2 Profile Image"
-              width={288}
-              height={288}
+              width={sm ? 144 : 288}
+              height={sm ? 144 : 288}
             />
             <input
               type="file"

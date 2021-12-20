@@ -2,8 +2,6 @@ import {
   Drawer,
   Divider,
   Container,
-  useTheme,
-  useMediaQuery,
   List,
   ListItemText,
   ListItemButton,
@@ -11,7 +9,7 @@ import {
   Collapse,
   Typography,
 } from "@mui/material";
-import styles from "../../styles/Announcement.module.css";
+import styles from "../../styles/AppWrap.module.css";
 import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -45,7 +43,7 @@ interface MenuProps extends ItemProps {
 
 const PCSHSMenuItem = ({ title, icon, link }: ItemProps) => {
   const router = useRouter();
-  const focused = router.pathname == link;
+  const focused = router.asPath == link;
   return (
     <>
       <Link passHref href={link as string}>
@@ -80,9 +78,7 @@ const PCSHSMenu = ({ onClick, open, title, icon }: MenuProps) => {
 const MenuBar = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  const theme = useTheme();
-  const tablet = useMediaQuery(theme.breakpoints.only("md"));
-  const drawerWidth = tablet ? "40%" : "24%";
+  const drawerWidth = "24%";
   const [aboutOpen, setAboutOpen] = useState(true);
   const [admitOpen, setAdmitOpen] = useState(true);
 
@@ -104,6 +100,7 @@ const MenuBar = () => {
           boxSizing: "border-box",
         },
       }}
+      className={styles.menuSidebar}
       variant="permanent"
       anchor="right"
     >
@@ -120,27 +117,27 @@ const MenuBar = () => {
               <PCSHSMenuItem
                 title="Vision"
                 icon={<VisibilityIcon />}
-                link="/about"
+                link="/about#vision"
               />
               <PCSHSMenuItem
                 title="Mission"
                 icon={<FlagIcon />}
-                link="/about"
+                link="/about#mission"
               />
               <PCSHSMenuItem
                 title="Objectives"
                 icon={<AssignmentTurnedInIcon />}
-                link="/about"
+                link="/about#objectives"
               />
               <PCSHSMenuItem
                 title="History"
                 icon={<HistoryIcon />}
-                link="/about"
+                link="/about#history"
               />
               <PCSHSMenuItem
                 title="Contacts"
                 icon={<CallIcon />}
-                link="/about"
+                link="/about#contacts"
               />
             </List>
           </Collapse>
@@ -220,15 +217,7 @@ const MenuBar = () => {
         )}
       </Container>
 
-      <Box
-        height="80px"
-        sx={{
-          backgroundColor: "#03045e",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <Box height="80px" className={styles.copyright}>
         <Typography align="center" variant="body1" color="white">
           ©2021 by Pasig City Science High School
         </Typography>

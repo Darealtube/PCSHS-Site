@@ -24,7 +24,7 @@ const ApplyProcess = () => {
             <VisibilitySensor partialVisibility>
               {({ isVisible }) => (
                 <>
-                  <Fade timeout={1500} in={isVisible}>
+                  <Fade timeout={1000} in={isVisible}>
                     <Grid item xs={12} xl={6}>
                       <Image
                         src={PSAT}
@@ -35,7 +35,7 @@ const ApplyProcess = () => {
                       />
                     </Grid>
                   </Fade>
-                  <Grow timeout={1000} in={isVisible}>
+                  <Grow timeout={800} in={isVisible}>
                     <Grid
                       item
                       xs={12}
