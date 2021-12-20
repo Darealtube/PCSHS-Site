@@ -23,6 +23,7 @@ const AdmissionInfo = ({
 }) => {
   const theme = useTheme();
   const xl = useMediaQuery(theme.breakpoints.only("xl"));
+  const sm = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
       <VisibilitySensor partialVisibility>
@@ -42,7 +43,7 @@ const AdmissionInfo = ({
               <Divider />
 
               <Typography
-                variant="h6"
+                variant={sm ? "body1" : "h6"}
                 paragraph
                 align="center"
                 mt={2}
@@ -60,6 +61,8 @@ const AdmissionInfo = ({
 };
 
 const Admission = () => {
+  const theme = useTheme();
+  const sm = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
       <Head>
@@ -85,7 +88,7 @@ const Admission = () => {
           <AdmissionInfo title={"Regular Student"}>
             A student who has satisfactorily met the minimum grade as stated
             above is considered student of Regular Status and is automatically
-            qualified for promotion to the next grade level.​
+            qualified for promotion to the next grade level.
           </AdmissionInfo>
           <AdmissionInfo title={"Student on Probation"}>
             A regular student who has no final grade below 80% in any subject
@@ -128,7 +131,12 @@ const Admission = () => {
               {({ isVisible }) => (
                 <>
                   <Grow in={isVisible} timeout={1500}>
-                    <Typography variant="h2" align="center" gutterBottom mt={4}>
+                    <Typography
+                      variant={sm ? "h4" : "h3"}
+                      align="center"
+                      gutterBottom
+                      mt={4}
+                    >
                       Do you have what it takes to be a PASCIAN?
                     </Typography>
                   </Grow>
@@ -139,13 +147,15 @@ const Admission = () => {
                         component="a"
                         variant="outlined"
                         sx={{
-                          width: "480px",
+                          width: sm ? "240px" : "480px",
                           height: "80px",
                           color: "#e9c46a",
                         }}
                         color="warning"
                       >
-                        <Typography variant="h4">Apply Now</Typography>
+                        <Typography variant={sm ? "h6" : "h4"}>
+                          Apply Now
+                        </Typography>
                       </Button>
                     </Grow>
                   </Link>
