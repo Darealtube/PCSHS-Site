@@ -54,7 +54,17 @@ const Main = ({
           </Fade>
 
           <Fade timeout={2000} in={isVisible}>
-            <Grid item xs={12} md={6} className={styles.main}>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                flexDirection: "column",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               {children}
             </Grid>
           </Fade>

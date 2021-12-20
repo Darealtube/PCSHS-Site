@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Markdown from "react-markdown";
 import remarkGFM from "remark-gfm";
+import styles from "../../styles/Announcement.module.css";
 
 type PreviewProps = {
   announcement: AnnouncementType;
@@ -37,13 +38,8 @@ const PreviewAnnouncement = ({
       >
         <Container sx={{ marginTop: "8px", height: "100%" }}>
           <Box
-            width="100%"
-            height={480}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
+            className={styles.mediaContainer}
             sx={{ backgroundColor: "gray" }}
-            position="relative"
           >
             {(announcement.image?.length != 0 || !!announcement.video) && (
               <Grid container sx={{ height: "100%" }} spacing={1}>
@@ -56,13 +52,7 @@ const PreviewAnnouncement = ({
                           (announcement.image as string[]).length > 1 ? 6 : 12
                         }
                       >
-                        <Box
-                          width="100%"
-                          height="100%"
-                          position="relative"
-                          border="1px solid grey"
-                          borderRadius="2%"
-                        >
+                        <Box className={styles.imageContainer}>
                           <Image
                             src={image}
                             layout="fill"
