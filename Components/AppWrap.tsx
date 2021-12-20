@@ -16,16 +16,12 @@ import AppOptions from "./AppOptions";
 import MenuBar from "./Drawers/Menu";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateAdapter from "@mui/lab/AdapterDayjs";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/dist/client/router";
-
-const DynamicBottomNav = dynamic(() => import("./BottomMenu"));
 
 const AppWrap = ({ children }: { children: ReactChild }) => {
   const [openLatest, setOpenLatest] = useState(false);
   const router = useRouter();
   const theme = useTheme();
-  const smMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const aboutPage = router.pathname === "/about";
   const applyPage = router.pathname.startsWith("/apply");
@@ -120,11 +116,6 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
               >
                 {children}
               </Container>
-              {smMobile && (
-                <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}>
-                  <DynamicBottomNav />
-                </Box>
-              )}
             </LocalizationProvider>
           </Box>
         </>

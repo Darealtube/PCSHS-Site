@@ -26,7 +26,7 @@ const IDFront = ({ profile }: { profile: Profile }) => {
           backgroundColor: "#ffe8d6",
           backgroundBlendMode: "screen",
         }}
-        component={Container}
+        component={Container} 
       >
         <Typography align="center" variant={sm ? "h6" : "h4"} gutterBottom>
           Pasig City Science Highschool
