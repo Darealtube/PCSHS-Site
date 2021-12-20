@@ -1,4 +1,11 @@
-import { Typography, Fade, Container, Grid } from "@mui/material";
+import {
+  Typography,
+  Fade,
+  Container,
+  Grid,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import Head from "next/head";
 import Image from "next/image";
 import { Box } from "@mui/system";
@@ -75,6 +82,8 @@ const Main = ({
 };
 
 const About = () => {
+  const theme = useTheme();
+  const sm = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
       <Head>
@@ -96,13 +105,17 @@ const About = () => {
           <Container>
             <Main image={Vision} id="vision">
               <Typography
-                variant="h3"
+                variant={sm ? "h5" : "h3"}
                 align="center"
                 sx={{ marginBottom: "16px" }}
               >
                 Our Vision
               </Typography>
-              <Typography paragraph align="center" variant="h5">
+              <Typography
+                paragraph
+                align="center"
+                variant={sm ? "body1" : "h5"}
+              >
                 PASIG CITY SCIENCE HIGH SCHOOL (PCSHS) is envisioned to be a
                 world class institution that is globally and locally competitive
                 and responsive to the ever-changing needs of the times,
@@ -112,13 +125,17 @@ const About = () => {
 
             <Main image={Mission} reverse={true} id="mission">
               <Typography
-                variant="h3"
+                variant={sm ? "h5" : "h3"}
                 align="center"
                 sx={{ marginBottom: "16px" }}
               >
                 Our Mission
               </Typography>
-              <Typography paragraph align="center" variant="h5">
+              <Typography
+                paragraph
+                align="center"
+                variant={sm ? "body1" : "h5"}
+              >
                 PCSHS&apos; mission is to fully develop well-rounded, science
                 and technology-oriented students, nurturing and gender-sensitive
                 persons, and future leaders with a vision for excellence.
