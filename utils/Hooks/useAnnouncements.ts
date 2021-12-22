@@ -22,12 +22,12 @@ const useAnnouncements = ({
       }
 
       if (pageIndex === 0) {
-        return `/api/announcement/getAnnouncements?type=${type}&limit=${limit}`;
+        return `/api/public/announcements/getAnnouncements?type=${type}&limit=${limit}`;
       }
 
       // add the cursor to the API endpoint
       // EXECUTED IN moreAnnouncement
-      return `/api/announcement/getAnnouncements?type=${type}&cursor=${lastCursor}&limit=${limit}`;
+      return `/api/public/announcements/getAnnouncements?type=${type}&cursor=${lastCursor}&limit=${limit}`;
     },
     {
       fallbackData: initialData,

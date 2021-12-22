@@ -1,16 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getToken } from "next-auth/jwt";
-import prisma from "../../../lib/prisma";
-
-const secret = process.env.AUTH_CLIENT_SECRET;
+import prisma from "../../../../lib/prisma";
 
 const deleteEvents = async (req: NextApiRequest, res: NextApiResponse) => {
-  const token = await getToken({
-    req,
-    secret: secret as string,
-  });
-
-  if (token?.role && token?.role == "Government") {
     try {
       const id = JSON.parse(req.body);
       const newEvent = await prisma.event.delete({
@@ -23,10 +14,6 @@ const deleteEvents = async (req: NextApiRequest, res: NextApiResponse) => {
       res.statusMessage = "Please provide valid information.";
       res.status(400).end();
     }
-  } else {
-    res.statusMessage = "Forbidden Access.";
-    res.status(403).end();
-  }
 };
 
 export default deleteEvents;

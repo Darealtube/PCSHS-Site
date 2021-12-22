@@ -43,7 +43,7 @@ const AddEventDialog = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/event/createEvents`,
+      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/events/createEvents`,
       {
         method: "POST",
         body: JSON.stringify(event),

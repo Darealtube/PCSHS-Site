@@ -33,7 +33,7 @@ type InitialProps = {
 const AnnouncementID = ({ announcement, id }: InitialProps) => {
   const router = useRouter();
   const { data: session } = useSession();
-  const { data } = useSWR(`/api/announcement/${id}/`, {
+  const { data } = useSWR(`/api/public/announcements/${id}/`, {
     fallbackData: announcement,
   });
   const [deleteOpen, setDeleteOpen] = useState(false);

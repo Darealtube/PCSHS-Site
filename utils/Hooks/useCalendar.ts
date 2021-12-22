@@ -18,7 +18,7 @@ const initCalendar = {
 const useCalendar = () => {
   const [calendar, dispatch] = useReducer(calendarReducer, initCalendar);
   const { data: events, mutate } = useSWR(
-    `/api/event/getEvents?month=${calendar.month}&year=${calendar.year}`
+    `/api/public/getEvents?month=${calendar.month}&year=${calendar.year}`
   );
 
   const dayArray: Event[] = useMemo(() => {
