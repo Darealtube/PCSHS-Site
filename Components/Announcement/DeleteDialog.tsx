@@ -14,9 +14,9 @@ import { ErrorContext } from "../ErrorProvider";
 
 // $Inf$ because mutate() works directly with the Cache map built-in. This is the URL in which the getAnnouncements infinite list is in.
 const ANNOUNCEMENTS_CACHE =
-  "$inf$/api/announcement/getAnnouncements?type=normal&limit=10";
+  "$inf$/api/public/announcements/getAnnouncements?type=normal&limit=10";
 const APPLY_ANNOUNCEMENTS_CACHE =
-  "$inf$/api/announcement/getAnnouncements?type=apply&limit=10";
+  "$inf$/api/public/announcements/getAnnouncements?type=apply&limit=10";
 
 type DialogProps = {
   handleClose: () => void;
@@ -29,7 +29,7 @@ const DeleteDialog = ({ handleClose, open }: DialogProps) => {
   const { cache } = useSWRConfig();
   const handleDelete = async () => {
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/announcement/${
+      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/announcements/${
         router.query.id
       }/delete`,
       {

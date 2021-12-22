@@ -48,7 +48,7 @@ export const uploadVideo = async (video: string | File) => {
 
 const getSignature = async () => {
   //Call API which handles the signature and timestamp
-  const response = await fetch("/api/signMedia");
+  const response = await fetch("/api/public/signMedia");
   //Get the response in JSON format
   const data = await response.json();
   //Extract signature and timestamp

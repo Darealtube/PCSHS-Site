@@ -137,7 +137,7 @@ const CreateAnnouncement = () => {
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
-      }/api/announcement/createAnnouncement`,
+      }/api/secure/announcements/createAnnouncement`,
       {
         method: "POST",
         body: JSON.stringify({

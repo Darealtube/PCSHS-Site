@@ -50,7 +50,7 @@ type InitialProps = {
 
 const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
   const handleError = useContext(ErrorContext);
-  const { data } = useSWR(`/api/announcement/${id}/`, {
+  const { data } = useSWR(`/api/public/announcements/${id}/`, {
     fallbackData: initAnnouncement,
   });
   const router = useRouter();
@@ -132,7 +132,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
-      }/api/announcement/${id}/edit`,
+      }/api/secure/announcements/${id}/edit`,
       {
         method: "PUT",
         body: JSON.stringify({

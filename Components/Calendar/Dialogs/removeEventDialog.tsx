@@ -25,7 +25,7 @@ const RemoveEventDialog = ({
   const handleError = useContext(ErrorContext);
   const handleDelete = async () => {
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/event/deleteEvents`,
+      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/events/deleteEvents`,
       {
         method: "DELETE",
         body: JSON.stringify(id),

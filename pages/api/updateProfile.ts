@@ -29,7 +29,7 @@ export default async function updateProfile(
       res.status(400).end();
     }
   } else {
-    res.statusMessage = "Unauthorized Access. Please Log In first.";
+    res.statusMessage = "Unauthorized Access.";
     res.status(401).end();
   }
 }

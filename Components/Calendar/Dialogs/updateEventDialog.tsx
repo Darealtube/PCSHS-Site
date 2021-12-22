@@ -44,7 +44,7 @@ const UpdateEventDialog = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/event/updateEvents`,
+      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/events/updateEvents`,
       {
         method: "PATCH",
         body: JSON.stringify(event),
