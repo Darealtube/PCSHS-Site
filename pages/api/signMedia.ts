@@ -16,14 +16,19 @@ const cloudinaryHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Signature
   if (token) {
-    const signature = cloudinary.v2.utils.api_sign_request(
-      {
-        timestamp: timestamp,
-      },
-      process.env.NEXT_PUBLIC_CLOUDINARY_SECRET as string //API Secret (MUST BE HIDDEN IN ENV)
-    );
+    try {
+      const signature = cloudinary.v2.utils.api_sign_request(
+        {
+          timestamp: timestamp,
+        },
+        process.env.NEXT_PUBLIC_CLOUDINARY_SECRET as string //API Secret (MUST BE HIDDEN IN ENV)
+      );
 
-    res.status(200).json({ signature, timestamp });
+      res.status(200).json({ signature, timestamp });
+    } catch (error) {
+      res.statusMessage = "Please provide valid information.";
+      res.status(400).end();
+    }
   } else {
     res.statusMessage = "Unauthorized Access. Please Log In first.";
     res.status(401).end();

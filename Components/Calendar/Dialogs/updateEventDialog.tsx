@@ -44,18 +44,22 @@ const UpdateEventDialog = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/events/updateEvents`,
+      `${
+        process.env.NEXT_PUBLIC_DEV_URL as string
+      }/api/secure/events/updateEvents`,
       {
         method: "PATCH",
         body: JSON.stringify(event),
       }
     )
-      .then(async (response) => {
-        const res = await response.json();
+      .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-        handleMutate(res);
+        return response.json();
+      })
+      .then((data) => {
+        handleMutate(data);
         handleClose();
       })
       .catch((err: Error) => handleError(err.message));

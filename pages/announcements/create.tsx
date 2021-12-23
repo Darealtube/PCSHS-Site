@@ -155,10 +155,9 @@ const CreateAnnouncement = () => {
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
-        } else {
-          router.push("/");
         }
       })
+      .then(() => router.push("/"))
       .catch((err: Error) => handleError(err.message));
   };
 
@@ -198,6 +197,7 @@ const CreateAnnouncement = () => {
           <input
             type="file"
             multiple
+            accept="image/*"
             hidden={true}
             ref={imageInput}
             onChange={handleImage}
@@ -206,6 +206,7 @@ const CreateAnnouncement = () => {
             type="file"
             multiple
             hidden={true}
+            accept="video/*"
             ref={videoInput}
             onChange={handleVideo}
           />

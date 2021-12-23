@@ -11,13 +11,13 @@ const authenticateUser: NextMiddleware = async (req, _ev) => {
     if (user && user?.role == "Government") {
       return NextResponse.next();
     } else {
-      return new Response(JSON.stringify({}), {
-        status: 401,
-        statusText: "Unauthorized Access.",
+      return new Response(JSON.stringify({message: "403 Forbidden."}), {
+        status: 403,
+        statusText: "Forbidden Access.",
       });
     }
   } catch (error) {
-    return new Response(JSON.stringify({}), {
+    return new Response(JSON.stringify({message: "401 Unauthenticated"}), {
       status: 401,
       statusText: "Unauthenticated Access.",
     });

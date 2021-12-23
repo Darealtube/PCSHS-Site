@@ -25,16 +25,20 @@ const RemoveEventDialog = ({
   const handleError = useContext(ErrorContext);
   const handleDelete = async () => {
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/events/deleteEvents`,
+      `${
+        process.env.NEXT_PUBLIC_DEV_URL as string
+      }/api/secure/events/deleteEvents`,
       {
         method: "DELETE",
         body: JSON.stringify(id),
       }
     )
-      .then(async (response) => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
         }
+      })
+      .then(() => {
         handleDeleteMutate(id);
         handleClose();
       })

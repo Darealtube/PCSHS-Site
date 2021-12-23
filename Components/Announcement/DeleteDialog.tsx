@@ -36,22 +36,23 @@ const DeleteDialog = ({ handleClose, open }: DialogProps) => {
         method: "DELETE",
       }
     )
-      .then(async (response) => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
-        } else {
-          const res = await response.json();
-          handleClose();
-          deleteAnnouncement({
-            cacheURL:
-              res.type == "Apply Announcement"
-                ? APPLY_ANNOUNCEMENTS_CACHE
-                : ANNOUNCEMENTS_CACHE,
-            announcementID: router.query.id as string,
-            cache: cache,
-          });
-          router.push(`/`);
         }
+        return response.json();
+      })
+      .then((data) => {
+        handleClose();
+        deleteAnnouncement({
+          cacheURL:
+            data.type == "Apply Announcement"
+              ? APPLY_ANNOUNCEMENTS_CACHE
+              : ANNOUNCEMENTS_CACHE,
+          announcementID: router.query.id as string,
+          cache: cache,
+        });
+        router.push(`/`);
       })
       .catch((err: Error) => handleError(err.message));
   };

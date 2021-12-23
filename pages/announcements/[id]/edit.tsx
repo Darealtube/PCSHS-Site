@@ -156,10 +156,9 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
-        } else {
-          router.push(`/announcements/${id}/`);
         }
       })
+      .then(() => router.push(`/announcements/${id}/`))
       .catch((err: Error) => handleError(err.message));
   };
 
@@ -204,6 +203,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
             type="file"
             multiple
             hidden={true}
+            accept="image/*"
             ref={imageInput}
             onChange={handleImage}
           />
@@ -211,6 +211,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
             type="file"
             multiple
             hidden={true}
+            accept="video/*"
             ref={videoInput}
             onChange={handleVideo}
           />

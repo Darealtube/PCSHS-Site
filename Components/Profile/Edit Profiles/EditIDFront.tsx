@@ -145,6 +145,7 @@ const EditIDFront = ({
             <input
               type="file"
               hidden={true}
+              accept="image/*"
               ref={imageInput}
               onChange={handleImage}
             />

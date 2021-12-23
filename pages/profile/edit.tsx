@@ -60,10 +60,9 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
-        } else {
-          router.replace("/profile/");
         }
       })
+      .then(() => router.replace("/profile/"))
       .catch((err: Error) => handleError(err.message));
   };
 
