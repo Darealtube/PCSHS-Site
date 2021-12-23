@@ -23,6 +23,10 @@ import _ from "lodash";
 import useCalendar from "../utils/Hooks/useCalendar";
 import { useSession } from "next-auth/react";
 
+const DynamicMobileCalendar = dynamic(
+  () => import("../Components/Calendar/mobileCalendar")
+);
+
 const DynamicEventPopover = dynamic(
   () => import("../Components/Calendar/EventPopover")
 );
@@ -139,7 +143,7 @@ const Calendar = () => {
       </Head>
 
       {mobile || tablet ? (
-        <MobileCalendar
+        <DynamicMobileCalendar
           calendar={calendar}
           dispatch={dispatch}
           day={_.filter(dayArray, ["day", calendar.day])[0]}
