@@ -1,4 +1,10 @@
-import { IconButton, Typography, Divider, Container } from "@mui/material";
+import {
+  IconButton,
+  Typography,
+  Divider,
+  Container,
+  CssBaseline,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -13,6 +19,7 @@ import dynamic from "next/dynamic";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useSession } from "next-auth/react";
 
 const Days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const Months = [
@@ -57,6 +64,7 @@ const MobileCalendar = ({
   update,
   remove,
 }: MobileProps) => {
+  const { data: session } = useSession();
   const noEvent = !day.id;
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
@@ -94,6 +102,7 @@ const MobileCalendar = ({
 
   return (
     <>
+      <CssBaseline />
       <Container
         sx={{
           display: "flex",
@@ -132,36 +141,40 @@ const MobileCalendar = ({
           overflow="auto"
         >
           <Box display="flex" marginTop={2} marginBottom={2}>
-            <IconButton
-              size="small"
-              onClick={day.id ? handleRemoveEvent : handleAddEvent}
-              value={day.day}
-              id={day.id ? day.id : undefined}
-              sx={{
-                flexGrow: 1,
-                border: "1px solid grey",
-                borderRadius: "0%",
-                marginLeft: "2px",
-                marginRight: "2px",
-              }}
-            >
-              {day.id ? <RemoveIcon /> : <AddIcon />}
-            </IconButton>
-            {day.id && (
-              <IconButton
-                size="small"
-                value={day.id ? day.id : undefined}
-                onClick={day.id ? handleUpdateEvent : undefined}
-                sx={{
-                  flexGrow: 1,
-                  border: "1px solid grey",
-                  borderRadius: "0%",
-                  marginLeft: "2px",
-                  marginRight: "2px",
-                }}
-              >
-                <EditIcon />
-              </IconButton>
+            {session?.role == "Government" && (
+              <>
+                <IconButton
+                  size="small"
+                  onClick={day.id ? handleRemoveEvent : handleAddEvent}
+                  value={day.day}
+                  id={day.id ? day.id : undefined}
+                  sx={{
+                    flexGrow: 1,
+                    border: "1px solid grey",
+                    borderRadius: "0%",
+                    marginLeft: "2px",
+                    marginRight: "2px",
+                  }}
+                >
+                  {day.id ? <RemoveIcon /> : <AddIcon />}
+                </IconButton>
+                {day.id && (
+                  <IconButton
+                    size="small"
+                    value={day.id ? day.id : undefined}
+                    onClick={day.id ? handleUpdateEvent : undefined}
+                    sx={{
+                      flexGrow: 1,
+                      border: "1px solid grey",
+                      borderRadius: "0%",
+                      marginLeft: "2px",
+                      marginRight: "2px",
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                )}
+              </>
             )}
           </Box>
           <Box
@@ -208,7 +221,7 @@ const MobileCalendar = ({
           </Box>
         </Box>
       </Container>
-      
+
       {openAddDialog && (
         <DynamicAddEventDialog
           open={openAddDialog}
