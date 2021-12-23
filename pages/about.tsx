@@ -56,6 +56,7 @@ const Main = ({
                 alt="PCSHS School Image"
                 width="600"
                 height="420"
+                className={styles.mainImage}
               />
             </Grid>
           </Fade>

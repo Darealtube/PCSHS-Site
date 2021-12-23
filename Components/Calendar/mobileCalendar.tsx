@@ -1,10 +1,4 @@
-import {
-  IconButton,
-  Typography,
-  Divider,
-  Container,
-  CssBaseline,
-} from "@mui/material";
+import { IconButton, Typography, Divider, Container } from "@mui/material";
 import { Box } from "@mui/system";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -76,7 +70,7 @@ const MobileCalendar = ({
     dispatch({ type: "PREVIOUS_DAY" });
   };
 
-  const handleAddEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddEvent = () => {
     setOpenAddDialog(true);
   };
 
@@ -84,7 +78,7 @@ const MobileCalendar = ({
     setOpenAddDialog(false);
   };
 
-  const handleRemoveEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRemoveEvent = () => {
     setOpenRemoveDialog(true);
   };
 
@@ -92,7 +86,7 @@ const MobileCalendar = ({
     setOpenRemoveDialog(false);
   };
 
-  const handleUpdateEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUpdateEvent = () => {
     setOpenUpdateDialog(true);
   };
 
@@ -102,17 +96,7 @@ const MobileCalendar = ({
 
   return (
     <>
-      <CssBaseline />
-      <Container
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          width: "100%",
-        }}
-      >
+      <Container>
         <Box
           display="flex"
           border="1px solid grey"
@@ -121,7 +105,7 @@ const MobileCalendar = ({
           <IconButton size="large" onClick={handlePreviousDay}>
             <NavigateBeforeIcon />
           </IconButton>
-          <Typography align="center" variant="h2" className={styles.weekDay}>
+          <Typography align="center" className={styles.weekDay}>
             {Days[calendar.dayofWeek]}
           </Typography>
           <IconButton
@@ -148,13 +132,7 @@ const MobileCalendar = ({
                   onClick={day.id ? handleRemoveEvent : handleAddEvent}
                   value={day.day}
                   id={day.id ? day.id : undefined}
-                  sx={{
-                    flexGrow: 1,
-                    border: "1px solid grey",
-                    borderRadius: "0%",
-                    marginLeft: "2px",
-                    marginRight: "2px",
-                  }}
+                  sx={{ ml: 2 }}
                 >
                   {day.id ? <RemoveIcon /> : <AddIcon />}
                 </IconButton>
@@ -163,13 +141,7 @@ const MobileCalendar = ({
                     size="small"
                     value={day.id ? day.id : undefined}
                     onClick={day.id ? handleUpdateEvent : undefined}
-                    sx={{
-                      flexGrow: 1,
-                      border: "1px solid grey",
-                      borderRadius: "0%",
-                      marginLeft: "2px",
-                      marginRight: "2px",
-                    }}
+                    sx={{ ml: 2 }}
                   >
                     <EditIcon />
                   </IconButton>
@@ -177,13 +149,7 @@ const MobileCalendar = ({
               </>
             )}
           </Box>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            width="100%"
-          >
+          <Box className={styles.mobileMain}>
             <Typography
               className={noEvent ? styles.month : styles.eventMonth}
               align="center"
@@ -191,7 +157,6 @@ const MobileCalendar = ({
               {Months[calendar.month - 1]}
             </Typography>
             <Typography
-              variant="h1"
               className={noEvent ? styles.day : styles.eventDay}
               align="center"
             >
@@ -201,7 +166,6 @@ const MobileCalendar = ({
             {day.id && (
               <Container>
                 <Typography
-                  variant="h3"
                   className={styles.eventTitle}
                   gutterBottom
                   align="center"
@@ -209,7 +173,6 @@ const MobileCalendar = ({
                   {day.title}
                 </Typography>
                 <Typography
-                  variant="body1"
                   className={styles.eventDesc}
                   paragraph
                   align="center"

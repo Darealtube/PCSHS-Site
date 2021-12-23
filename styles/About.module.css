@@ -20,6 +20,10 @@
   background-attachment: fixed;
 }
 
+.mainImage {
+  border-radius: 5%;
+}
+
 .historyBgImage {
   background-image: url(/pcshsPictures/vision.jpeg);
   background-size: cover;
