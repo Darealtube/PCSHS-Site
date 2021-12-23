@@ -6,10 +6,13 @@ const secret = process.env.AUTH_CLIENT_SECRET;
 
 const authenticateUser: NextMiddleware = async (req, _ev) => {
   const token = req.cookies["next-auth.session-token"];
-
-  console.log(req.cookies);
+  const secureToken =
+    req.cookies[`__${process.env.AUTH_SECURE_COOKIE}` as string];
   try {
-    const user = await decode({ token, secret: secret as string });
+    const user = await decode({
+      token: token || secureToken,
+      secret: secret as string,
+    });
     if (user && user?.role == "Government") {
       return NextResponse.next();
     } else {
