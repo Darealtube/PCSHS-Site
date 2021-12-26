@@ -54,7 +54,7 @@ const UpdateEventDialog = ({
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error(response.statusText);
+          throw new Error("Please provide valid information.");
         }
         return response.json();
       })

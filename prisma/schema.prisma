@@ -34,10 +34,10 @@ model Profile {
   sex             String?
   date_of_birth   String?
   current_grade   String?
-  current_section String?
+  current_section String?        @db.VarChar(20)
   address         String?
   role            String
-  contact         String?        @db.VarChar(11)
+  contact         String?        @db.Char(11)
   announcements   Announcement[]
 
   @@id([lrn, name])
