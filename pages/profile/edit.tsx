@@ -44,6 +44,10 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
   const [flipped, setFlipped] = useState(false);
   const [prof, dispatch] = useReducer(profileReducer, initState);
   const sameInfo = isEqual(prof, initState);
+  const hasError =
+    prof.current_section.length > 20 ||
+    prof.contact.length > 11 ||
+    prof.about.length > 500;
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -58,8 +62,8 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
       }
     )
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
+        if (response.status >= 200 && response.status < 300) {
+          throw new Error("Please provide valid information.");
         }
       })
       .then(() => router.replace("/profile/"))
@@ -103,7 +107,7 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
         onClick={handleSubmit}
         sx={{ position: "relative", bottom: "10px", mr: 2 }}
         variant="outlined"
-        disabled={sameInfo}
+        disabled={sameInfo || hasError}
       >
         Submit
       </Button>
