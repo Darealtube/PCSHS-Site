@@ -80,7 +80,11 @@ const Media = ({ images, video, dispatch }: Props) => {
                 top: "50%",
                 transform: "translate(-50%, -50%)",
               }}
-            />
+            >
+              <source src="video.webm" type="video/webm" />
+              <source src="video.mp4" type="video/mp4" />
+              <source src="video.ogv" type="video/ogv" />
+            </video>
           )}
         </>
       )}

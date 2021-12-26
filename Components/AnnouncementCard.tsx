@@ -97,7 +97,11 @@ const Announcement = ({ announcement, type }: Props) => {
                       width="100%"
                       height="100%"
                       controls
-                    />
+                    >
+                      <source src="video.webm" type="video/webm" />
+                      <source src="video.mp4" type="video/mp4" />
+                      <source src="video.ogv" type="video/ogv" />
+                    </video>
                   )}
                 </Grid>
               </Container>
