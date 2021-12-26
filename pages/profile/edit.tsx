@@ -62,7 +62,7 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
       }
     )
       .then((response) => {
-        if (response.status >= 200 && response.status < 300) {
+        if (!response.ok) {
           throw new Error("Please provide valid information.");
         }
       })
