@@ -38,7 +38,7 @@ const DeleteDialog = ({ handleClose, open }: DialogProps) => {
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error(response.statusText);
+          throw new Error("An Error Occurred.");
         }
         return response.json();
       })

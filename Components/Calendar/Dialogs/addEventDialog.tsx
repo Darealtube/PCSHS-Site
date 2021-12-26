@@ -32,6 +32,8 @@ const AddEventDialog = ({
     year: day?.year,
     month: day?.month,
   });
+  const hasError =
+    event?.title?.length > 50 || event?.description?.length > 200;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEvent({
@@ -53,7 +55,7 @@ const AddEventDialog = ({
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error(response.statusText);
+          throw new Error("Please provide valid information.");
         }
         return response.json();
       })
@@ -105,7 +107,7 @@ const AddEventDialog = ({
               Cancel
             </Button>
             <Box sx={{ flexGrow: 1 }} />
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" disabled={hasError}>
               Submit
             </Button>
           </Box>

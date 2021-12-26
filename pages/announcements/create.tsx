@@ -154,7 +154,7 @@ const CreateAnnouncement = () => {
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error(response.statusText);
+          throw new Error("Please provide valid information.");
         }
       })
       .then(() => router.push("/"))

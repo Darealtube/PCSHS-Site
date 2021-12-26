@@ -33,6 +33,8 @@ const UpdateEventDialog = ({
     year: day?.year,
     month: day?.month,
   });
+  const hasError =
+    event?.title?.length > 50 || event?.description?.length > 200;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEvent({
@@ -106,7 +108,7 @@ const UpdateEventDialog = ({
               Cancel
             </Button>
             <Box sx={{ flexGrow: 1 }} />
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" disabled={hasError}>
               Submit
             </Button>
           </Box>
