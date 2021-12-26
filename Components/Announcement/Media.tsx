@@ -68,7 +68,6 @@ const Media = ({ images, video, dispatch }: Props) => {
           </IconButton>
           {video && (
             <video
-              src={video}
               autoPlay
               muted
               loop
@@ -81,9 +80,9 @@ const Media = ({ images, video, dispatch }: Props) => {
                 transform: "translate(-50%, -50%)",
               }}
             >
-              <source src="video.webm" type="video/webm" />
-              <source src="video.mp4" type="video/mp4" />
-              <source src="video.ogv" type="video/ogv" />
+              <source src={video} type="video/webm" />
+              <source src={video} type="video/mp4" />
+              <source src={video} type="video/ogv" />
             </video>
           )}
         </>

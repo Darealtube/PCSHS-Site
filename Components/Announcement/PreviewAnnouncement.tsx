@@ -64,15 +64,10 @@ const PreviewAnnouncement = ({
                     </React.Fragment>
                   ))}
                 {announcement.video && (
-                  <video
-                    src={announcement.video}
-                    width="100%"
-                    height="100%"
-                    controls
-                  >
-                    <source src="video.webm" type="video/webm" />
-                    <source src="video.mp4" type="video/mp4" />
-                    <source src="video.ogv" type="video/ogv" />
+                  <video width="100%" height="100%" controls>
+                    <source src={announcement.video} type="video/webm" />
+                    <source src={announcement.video} type="video/mp4" />
+                    <source src={announcement.video} type="video/ogv" />
                   </video>
                 )}
               </Grid>
