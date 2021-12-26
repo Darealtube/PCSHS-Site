@@ -6,17 +6,15 @@ const secret = process.env.AUTH_CLIENT_SECRET;
 
 const cloudinaryHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Must be UNIX format
-
+  const timestamp = Math.round(new Date().getTime() / 1000);
   const token = await getToken({
     req,
     secret: secret as string,
   });
 
-  const timestamp = Math.round(new Date().getTime() / 1000);
-
-  // Signature
   if (token) {
     try {
+      // Signature
       const signature = cloudinary.v2.utils.api_sign_request(
         {
           timestamp: timestamp,

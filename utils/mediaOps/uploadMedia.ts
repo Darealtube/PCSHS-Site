@@ -29,7 +29,7 @@ export const uploadImages = async (images: FileList | string[]) => {
         .then((data) => {
           urls.push(data.secure_url);
         })
-        .catch((err) => console.log(err));
+        .catch((err: Error) => console.log(err.message));
     } else {
       return urls;
     }
@@ -40,12 +40,16 @@ export const uploadImages = async (images: FileList | string[]) => {
 export const uploadVideo = async (video: string | File) => {
   let url: string = "";
   const data = new FormData();
-
+  const file = await fetch(video as string)
+    .then((r) => r.blob())
+    .then(
+      (blobFile) => new File([blobFile], "videoFile", { type: "video/mp4" })
+    );
   const sign = await getSignature(); // Get returned sign and timestamp
 
   if (sign) {
     const { signature, timestamp } = sign;
-    data.append("file", video);
+    data.append("file", file);
     data.append("signature", signature); // Signature
     data.append("timestamp", timestamp); // Timestamp
     data.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_KEY as string);
@@ -66,7 +70,7 @@ export const uploadVideo = async (video: string | File) => {
       .then((data) => {
         url = data.secure_url;
       })
-      .catch((err) => console.log(err));
+      .catch((err: Error) => console.log(err.message));
   } else {
     return url;
   }
