@@ -175,9 +175,11 @@ const Calendar = () => {
               </IconButton>
               <Typography
                 align="center"
-                variant="h2"
+                variant="h3"
                 sx={{ flexGrow: 1, wordBreak: "break-all" }}
                 color="white"
+                pt={1}
+                pb={1}
               >
                 {Months[calendar.month - 1]}
               </Typography>

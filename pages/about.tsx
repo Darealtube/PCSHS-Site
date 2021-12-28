@@ -72,6 +72,8 @@ const Main = ({
                 justifyContent: "center",
                 alignItems: "center",
               }}
+              pr={4}
+              pl={4}
             >
               {children}
             </Grid>

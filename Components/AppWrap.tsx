@@ -42,6 +42,9 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
           alignItems: "center",
           backgroundColor: "white",
           color: "black",
+          backgroundImage: "url(/appbar.png)",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
         }}
       >
         <Box
@@ -95,6 +98,10 @@ const AppWrap = ({ children }: { children: ReactChild }) => {
             <Box
               sx={{
                 marginTop: "80px",
+                backgroundImage: "url(/homebg.png)",
+                backgroundSize: "cover",
+                backgroundAttachment: "fixed",
+                height: "max-content",
               }}
             >
               {children}
