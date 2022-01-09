@@ -59,6 +59,7 @@ const CreateAnnouncement = () => {
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const imageInput = useRef<HTMLInputElement | null>(null);
   const videoInput = useRef<HTMLInputElement | null>(null);
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const [announcement, dispatch] = useReducer(announceReducer, initAnnounce);
   const [openPreview, setOpenPreview] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
@@ -134,6 +135,7 @@ const CreateAnnouncement = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setDisableSubmit(true);
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
@@ -154,10 +156,14 @@ const CreateAnnouncement = () => {
     )
       .then((response) => {
         if (!response.ok) {
+          setDisableSubmit(false);
           throw new Error("Please provide valid information.");
         }
       })
-      .then(() => router.push("/"))
+      .then(() => {
+        setDisableSubmit(false);
+        router.push("/");
+      })
       .catch((err: Error) => handleError(err.message));
   };
 
@@ -345,7 +351,7 @@ const CreateAnnouncement = () => {
                 type="submit"
                 variant="contained"
                 color="info"
-                disabled={hasError}
+                disabled={hasError || disableSubmit}
                 fullWidth
               >
                 Submit

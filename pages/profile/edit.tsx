@@ -41,6 +41,7 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
     about: profile?.about || "",
   };
   const router = useRouter();
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const [prof, dispatch] = useReducer(profileReducer, initState);
   const sameInfo = isEqual(prof, initState);
@@ -51,6 +52,7 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setDisableSubmit(true);
     await fetch(
       `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/updateProfile`,
       {
@@ -63,10 +65,14 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
     )
       .then((response) => {
         if (!response.ok) {
+          setDisableSubmit(false);
           throw new Error("Please provide valid information.");
         }
       })
-      .then(() => router.replace("/profile/"))
+      .then(() => {
+        setDisableSubmit(false);
+        router.replace("/profile/");
+      })
       .catch((err: Error) => handleError(err.message));
   };
 
@@ -107,7 +113,7 @@ const EditProfile = ({ profile }: { profile: Profile }) => {
         onClick={handleSubmit}
         sx={{ position: "relative", bottom: "10px", mr: 2 }}
         variant="outlined"
-        disabled={sameInfo || hasError}
+        disabled={sameInfo || hasError || disableSubmit}
       >
         Submit
       </Button>

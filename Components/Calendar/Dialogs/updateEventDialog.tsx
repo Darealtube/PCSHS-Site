@@ -25,6 +25,7 @@ const UpdateEventDialog = ({
   day,
 }: DialogProps) => {
   const handleError = useContext(ErrorContext);
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const [event, setEvent] = useState({
     id: day?.id,
     title: day?.title,
@@ -45,6 +46,7 @@ const UpdateEventDialog = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setDisableSubmit(true);
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
@@ -56,6 +58,7 @@ const UpdateEventDialog = ({
     )
       .then((response) => {
         if (!response.ok) {
+          setDisableSubmit(false);
           throw new Error("Please provide valid information.");
         }
         return response.json();
@@ -63,6 +66,7 @@ const UpdateEventDialog = ({
       .then((data) => {
         handleMutate(data);
         handleClose();
+        setDisableSubmit(false);
       })
       .catch((err: Error) => handleError(err.message));
   };

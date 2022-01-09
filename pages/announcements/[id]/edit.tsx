@@ -58,6 +58,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const imageInput = useRef<HTMLInputElement | null>(null);
   const videoInput = useRef<HTMLInputElement | null>(null);
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const [announcement, dispatch] = useReducer(
     announceReducer,
     data as Announcement
@@ -129,6 +130,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setDisableSubmit(true);
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
@@ -155,10 +157,14 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
     )
       .then((response) => {
         if (!response.ok) {
+          setDisableSubmit(false);
           throw new Error("Please provide valid information.");
         }
       })
-      .then(() => router.push(`/announcements/${id}/`))
+      .then(() => {
+        setDisableSubmit(false);
+        router.push(`/announcements/${id}/`);
+      })
       .catch((err: Error) => handleError(err.message));
   };
 
@@ -338,7 +344,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
                 type="submit"
                 variant="contained"
                 color="info"
-                disabled={hasError}
+                disabled={hasError || disableSubmit}
                 fullWidth
               >
                 Submit
