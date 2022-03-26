@@ -1,7 +1,7 @@
 import { Grid, GridDirection, Fade, Grow } from "@mui/material";
 import { ResponsiveStyleValue } from "@mui/system";
 import { ReactNode } from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import VisibilitySensor from "react-visibility-sensor";
 
 const Procedure = ({

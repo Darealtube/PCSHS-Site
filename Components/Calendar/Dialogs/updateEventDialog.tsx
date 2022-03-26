@@ -112,7 +112,11 @@ const UpdateEventDialog = ({
               Cancel
             </Button>
             <Box sx={{ flexGrow: 1 }} />
-            <Button variant="contained" type="submit" disabled={hasError}>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={hasError || disableSubmit}
+            >
               Submit
             </Button>
           </Box>

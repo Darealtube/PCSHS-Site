@@ -45,10 +45,11 @@ const Option = ({ title, name, onClick, icon }: OptionComponentProps) => {
 const AppOptions = () => {
   const { data: session } = useSession();
   const [openMenu, setOpenMenu] = useState("");
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.only("xl"));
   const smMobile = useMediaQuery(theme.breakpoints.only("xs"));
-  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget);
     setOpenMenu(event.currentTarget.name);
