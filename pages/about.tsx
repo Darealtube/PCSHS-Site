@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import Head from "next/head";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { Box } from "@mui/system";
 import History from "../Components/About/Parts/History";
 import VisibilitySensor from "react-visibility-sensor";
