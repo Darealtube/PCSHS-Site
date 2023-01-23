@@ -6,9 +6,7 @@ export default async function getOneAnnouncement(
   res: NextApiResponse
 ) {
   const announcement = await prisma.announcement.findUnique({
-    where: {
-      id: req.query.id as string,
-    },
+    where: { id: req.query.id as string },
     select: {
       id: true,
       header: true,

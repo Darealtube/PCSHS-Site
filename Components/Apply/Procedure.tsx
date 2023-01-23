@@ -17,7 +17,7 @@ const Procedure = ({
     <>
       <Grid container spacing={4} pb={14} direction={direction}>
         <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
+          {({ isVisible }: { isVisible: boolean }) => (
             <>
               <Fade in={isVisible} timeout={1000}>
                 <Grid item xs={12} xl={6}>

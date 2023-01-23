@@ -1,5 +1,4 @@
-import { IconButton, Typography, Divider, Container } from "@mui/material";
-import { Box } from "@mui/system";
+import { IconButton, Typography, Divider, Container, Box } from "@mui/material";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Dispatch, useState } from "react";

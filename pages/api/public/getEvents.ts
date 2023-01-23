@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
-
 export default async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse
@@ -9,8 +8,8 @@ export default async function getEvents(
   const params = req.query;
   const events = await prisma.event.findMany({
     where: {
-      month: +params.month,
-      year: +params.year,
+      month: req.query.month ? +req.query.month : 1,
+      year: req.query.year ? +req.query.year : 1999,
     },
     select: {
       id: true,

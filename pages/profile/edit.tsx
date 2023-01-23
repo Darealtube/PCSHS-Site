@@ -10,9 +10,8 @@ import { useRouter } from "next/dist/client/router";
 import { uploadImages } from "../../utils/mediaOps/uploadMedia";
 import EditIDFront from "../../Components/Profile/Edit Profiles/EditIDFront";
 import EditIDBack from "../../Components/Profile/Edit Profiles/EditIDBack";
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import styles from "../../styles/Profile.module.css";
-import { Box } from "@mui/system";
 import FlipIcon from "@mui/icons-material/Flip";
 import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -140,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = async (
   if (session) {
     const profile = await prisma.profile.findUnique({
       where: {
-        name: (session?.user as Session).name as string | undefined,
+        name: session?.user.name as string | undefined,
       },
       select: {
         name: true,

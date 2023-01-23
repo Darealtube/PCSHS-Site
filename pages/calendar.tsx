@@ -7,8 +7,8 @@ import {
   GridSize,
   useMediaQuery,
   useTheme,
+  Box,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import Head from "next/head";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";

@@ -32,12 +32,8 @@ export default async function applyAnnouncements(
         },
       },
     },
-    orderBy: [
-      {
-        id: "desc",
-      },
-    ],
-    take: +req.query.limit,
+    orderBy: [{ id: "desc" }],
+    take: req.query.limit ? +req.query.limit : 10,
   });
 
   res.status(200).json(announcements);

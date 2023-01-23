@@ -2,10 +2,10 @@ import {
   Typography,
   Grid,
   Slide,
+  Box,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -48,7 +48,7 @@ const ContactUs = () => {
         </Typography>
 
         <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
+          {({ isVisible }: { isVisible: boolean }) => (
             <Grid
               container
               spacing={1}

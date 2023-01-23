@@ -1,5 +1,12 @@
-import { Container, Fade, Grid, Grow, Typography, Zoom } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+  Container,
+  Fade,
+  Grid,
+  Grow,
+  Typography,
+  Zoom,
+  Box,
+} from "@mui/material";
 import Head from "next/head";
 import VisibilitySensor from "react-visibility-sensor";
 import PSAT from "../../public/pcshsPictures/PSATest.jpg";
@@ -22,7 +29,7 @@ const ApplyProcess = () => {
         <Container>
           <Grid container spacing={2}>
             <VisibilitySensor partialVisibility>
-              {({ isVisible }) => (
+              {({ isVisible }: { isVisible: boolean }) => (
                 <>
                   <Fade timeout={1000} in={isVisible}>
                     <Grid item xs={12} xl={6}>
@@ -71,7 +78,7 @@ const ApplyProcess = () => {
         </Container>
 
         <VisibilitySensor partialVisibility>
-          {({ isVisible }) => (
+          {({ isVisible }: { isVisible: boolean }) => (
             <Box
               sx={{ backgroundColor: "#03045e" }}
               pt={8}

@@ -57,7 +57,7 @@ const Objectives = () => {
     >
       {ObjectiveList.map(({ objective, image }) => (
         <VisibilitySensor partialVisibility key={objective}>
-          {({ isVisible }) => (
+          {({ isVisible }: { isVisible: boolean }) => (
             <Grow in={isVisible} timeout={1200}>
               <Grid item xs={12} md={6}>
                 <Card elevation={16}>

@@ -5,8 +5,8 @@ import {
   DialogTitle,
   TextField,
   Button,
+  Box,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { useContext, useState } from "react";
 import { Event } from "../../../types/PrismaTypes";
 import { ErrorContext } from "../../ErrorProvider";

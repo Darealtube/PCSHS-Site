@@ -8,6 +8,7 @@ import {
   ListItemIcon,
   Collapse,
   Typography,
+  Box,
 } from "@mui/material";
 import styles from "../../styles/AppWrap.module.css";
 import InfoIcon from "@mui/icons-material/Info";
@@ -27,7 +28,6 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
-import { Box } from "@mui/system";
 import { useSession } from "next-auth/react";
 
 type ItemProps = {

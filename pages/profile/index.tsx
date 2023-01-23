@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
@@ -8,7 +8,6 @@ import { Profile as ProfileType } from "../../types/PrismaTypes";
 import IDBack from "../../Components/Profile/Profiles/idBack";
 import IDFront from "../../Components/Profile/Profiles/idFront";
 import styles from "../../styles/Profile.module.css";
-import { Box } from "@mui/system";
 import { useState } from "react";
 import FlipIcon from "@mui/icons-material/Flip";
 import EditIcon from "@mui/icons-material/Edit";
@@ -73,7 +72,7 @@ export const getServerSideProps: GetServerSideProps = async (
   if (session) {
     const profile = await prisma.profile.findUnique({
       where: {
-        name: (session?.user as Session).name as string | undefined,
+        name: session?.user.name as string | undefined,
       },
       select: {
         name: true,

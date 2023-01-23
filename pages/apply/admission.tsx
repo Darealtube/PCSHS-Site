@@ -7,8 +7,8 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Box,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import { ReactNode } from "react";
 import Head from "next/head";
 import VisibilitySensor from "react-visibility-sensor";
@@ -27,7 +27,7 @@ const AdmissionInfo = ({
   return (
     <>
       <VisibilitySensor partialVisibility>
-        {({ isVisible }) => (
+        {({ isVisible }: { isVisible: boolean }) => (
           <Fade in={isVisible} timeout={1500}>
             <Box display="flex" flexDirection="column" width="100%" mb={4}>
               <Typography
@@ -128,7 +128,7 @@ const Admission = () => {
             }}
           >
             <VisibilitySensor>
-              {({ isVisible }) => (
+              {({ isVisible }: { isVisible: boolean }) => (
                 <>
                   <Grow in={isVisible} timeout={1500}>
                     <Typography

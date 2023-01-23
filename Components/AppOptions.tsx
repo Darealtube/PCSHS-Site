@@ -4,10 +4,10 @@ import {
   useTheme,
   useMediaQuery,
   Typography,
+  Box,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
-import { Box } from "@mui/system";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import { ReactNode, useState } from "react";
 import dynamic from "next/dynamic";

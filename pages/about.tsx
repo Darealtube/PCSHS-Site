@@ -5,10 +5,10 @@ import {
   Grid,
   useTheme,
   useMediaQuery,
+  Box,
 } from "@mui/material";
 import Head from "next/head";
 import Image, { StaticImageData } from "next/image";
-import { Box } from "@mui/system";
 import History from "../Components/About/Parts/History";
 import VisibilitySensor from "react-visibility-sensor";
 import Vision from "../public/pcshsPictures/vision.jpeg";
@@ -31,7 +31,7 @@ const Main = ({
 }) => {
   return (
     <VisibilitySensor partialVisibility>
-      {({ isVisible }) => (
+      {({ isVisible }: { isVisible: boolean }) => (
         <Grid
           container
           spacing={1}
@@ -172,7 +172,7 @@ const About = () => {
             </Typography>
 
             <VisibilitySensor partialVisibility>
-              {({ isVisible }) => (
+              {({ isVisible }: { isVisible: boolean }) => (
                 <Fade in={isVisible} timeout={1000}>
                   <Box overflow="auto">
                     <History />

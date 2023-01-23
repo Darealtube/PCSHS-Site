@@ -1,5 +1,11 @@
-import { Container, Paper, TextField, Typography, Button } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+  Container,
+  Paper,
+  TextField,
+  Typography,
+  Button,
+  Box,
+} from "@mui/material";
 import PCSHSLogo from "../../public/pcshslogo.png";
 import Head from "next/head";
 import Image from "next/image";
@@ -16,7 +22,7 @@ const SignIn = () => {
   const [disabled, setDisabled] = useState(false);
   const [credentials, setCredentials] = useState({
     lrn: "",
-    username: "",
+    name: "",
     password: "",
   });
 
@@ -117,12 +123,12 @@ const SignIn = () => {
               onChange={handleChange}
             />
             <TextField
-              id="username"
+              id="name"
               label="Username"
               variant="outlined"
-              name="username"
+              name="name"
               type="text"
-              value={credentials.username}
+              value={credentials.name}
               sx={{ marginBottom: "16px" }}
               fullWidth
               onChange={handleChange}
@@ -144,9 +150,7 @@ const SignIn = () => {
               fullWidth
               sx={{ marginBottom: "16px" }}
               onClick={handleSignIn}
-              disabled={
-                disabled || !credentials.username || !credentials.password
-              }
+              disabled={disabled || !credentials.name || !credentials.password}
             >
               Log In
             </Button>
@@ -155,9 +159,7 @@ const SignIn = () => {
               onClick={handleSignUp}
               fullWidth
               sx={{ marginBottom: "16px" }}
-              disabled={
-                disabled || !credentials.username || !credentials.password
-              }
+              disabled={disabled || !credentials.name || !credentials.password}
             >
               Sign Up
             </Button>

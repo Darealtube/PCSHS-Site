@@ -18,7 +18,13 @@ const History = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Year 2004
       </Typography>
-      <Timeline position="alternate" sx={{ paddingBottom: "64px" }}>
+      <Timeline
+        position="alternate"
+        sx={{ paddingBottom: "64px" }}
+        nonce={undefined}
+        onResize={undefined}
+        onResizeCapture={undefined}
+      >
         <TimelineItem>
           <TimelineOppositeContent
             sx={{ m: "auto 0" }}
@@ -44,8 +50,8 @@ const History = () => {
               </Typography>
             ) : (
               <Typography variant="body1" paragraph>
-                PCSHS was founded with the support of
-                the former mayor and the City Council.
+                PCSHS was founded with the support of the former mayor and the
+                City Council.
               </Typography>
             )}
           </TimelineContent>

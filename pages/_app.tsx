@@ -9,22 +9,15 @@ import { start, done } from "nprogress";
 import "../styles/global.css";
 import ErrorProvider from "../Components/ErrorProvider";
 import { useRouter } from "next/router";
+import { Session } from "next-auth";
 
 const theme = createTheme({
   typography: {
     fontFamily: "Open Sans, sans-serif",
-    h1: {
-      fontWeight: 1200,
-    },
-    h2: {
-      fontWeight: 1000,
-    },
-    h3: {
-      fontWeight: 800,
-    },
-    h4: {
-      fontWeight: 600,
-    },
+    h1: { fontWeight: 1200 },
+    h2: { fontWeight: 1000 },
+    h3: { fontWeight: 800 },
+    h4: { fontWeight: 600 },
   },
   components: {
     MuiBottomNavigationAction: {
@@ -38,31 +31,32 @@ const theme = createTheme({
     },
   },
 });
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-const handleRouteStart = () => {
-  start();
-};
-const handleRouteEnd = () => {
-  done();
-};
 
-function MyApp({ Component, pageProps }: AppProps) {
+interface PageProps {
+  session?: Session | null;
+}
+
+function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<PageProps>) {
   const router = useRouter();
-
   useEffect(() => {
-    router.events.on("routeChangeStart", handleRouteStart);
-    router.events.on("routeChangeComplete", handleRouteEnd);
-    router.events.on("routeChangeError", handleRouteEnd);
+    router.events.on("routeChangeStart", start);
+    router.events.on("routeChangeComplete", done);
+    router.events.on("routeChangeError", done);
     return () => {
-      router.events.off("routeChangeStart", handleRouteStart);
-      router.events.off("routeChangeComplete", handleRouteEnd);
-      router.events.off("routeChangeError", handleRouteEnd);
+      router.events.off("routeChangeStart", start);
+      router.events.off("routeChangeComplete", done);
+      router.events.off("routeChangeError", done);
     };
-  }, []);
+  }, [router]);
 
   return (
     <>
-      <SessionProvider session={pageProps.session}>
+      <SessionProvider session={session}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <ErrorProvider>

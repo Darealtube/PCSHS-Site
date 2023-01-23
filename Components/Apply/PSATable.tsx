@@ -68,7 +68,7 @@ const PSATable = () => {
         </TableHead>
         <TableBody>
           <VisibilitySensor partialVisibility>
-            {({ isVisible }) => (
+            {({ isVisible }: { isVisible: boolean }) => (
               <>
                 {PSATRows.map((row) => (
                   <Grow in={isVisible} timeout={500} key={row.subject}>

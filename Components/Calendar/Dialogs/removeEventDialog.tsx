@@ -4,8 +4,8 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  Box,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { useContext } from "react";
 import { ErrorContext } from "../../ErrorProvider";
 

@@ -25,6 +25,7 @@ model Announcement {
 }
 
 model Profile {
+  id              String         @unique @default(cuid())
   lrn             String         @unique @db.VarChar(12)
   name            String         @unique @db.VarChar(40)
   email           String?        @unique
@@ -40,7 +41,7 @@ model Profile {
   contact         String?        @db.Char(11)
   announcements   Announcement[]
 
-  @@id([lrn, name])
+  @@id([id, lrn, name])
 }
 
 model Event {
