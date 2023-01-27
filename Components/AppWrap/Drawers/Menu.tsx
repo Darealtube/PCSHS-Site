@@ -10,7 +10,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import styles from "../../styles/AppWrap.module.css";
+import styles from "../../../styles/AppWrap.module.css";
 import InfoIcon from "@mui/icons-material/Info";
 import EventIcon from "@mui/icons-material/Event";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -25,70 +25,35 @@ import EditIcon from "@mui/icons-material/Edit";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
 
-type ItemProps = {
-  title: string;
-  icon: ReactNode;
-  link?: string;
-};
+// prettier-ignore
+const aboutItems = [
+  { title: "Vision", icon: <VisibilityIcon />, link: "/about#vision" },
+  { title: "Mission", icon: <FlagIcon />, link: "/about#vision" },
+  { title: "Objectives", icon: <AssignmentTurnedInIcon />, link: "/about#vision" },
+  { title: "History", icon: <HistoryIcon />, link: "/about#vision" },
+  { title: "Contacts", icon: <CallIcon />, link: "/about#vision" },
+];
 
-interface MenuProps extends ItemProps {
-  onClick: () => void;
-  open: boolean;
-}
-
-const PCSHSMenuItem = ({ title, icon, link }: ItemProps) => {
-  const router = useRouter();
-  const focused = router.asPath == link;
-  return (
-    <>
-      <Link passHref href={link as string}>
-        <ListItemButton
-          sx={{
-            pl: 4,
-            backgroundColor: focused ? "#94d2bd" : "inherit",
-          }}
-          component="a"
-        >
-          <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText primary={title} />
-        </ListItemButton>
-      </Link>
-      <Divider variant="inset" component="li" />
-    </>
-  );
-};
-
-const PCSHSMenu = ({ onClick, open, title, icon }: MenuProps) => {
-  return (
-    <>
-      <ListItemButton onClick={onClick} divider>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={title} />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-    </>
-  );
-};
+const applyItems = [
+  { title: "Admission", icon: <AssignmentIcon />, link: "/apply/admission" },
+  { title: "Apply", icon: <PersonAddIcon />, link: "/apply/process" },
+];
 
 const MenuBar = () => {
-  const { data: session } = useSession();
   const router = useRouter();
+  const currRoute = router.asPath;
   const drawerWidth = "24%";
+  const { data: session } = useSession();
   const [aboutOpen, setAboutOpen] = useState(true);
   const [admitOpen, setAdmitOpen] = useState(true);
 
-  const handleAboutClick = () => {
-    setAboutOpen(!aboutOpen);
-  };
-
-  const handleAdmitClick = () => {
-    setAdmitOpen(!admitOpen);
-  };
+  const handleAboutClick = () => {setAboutOpen(!aboutOpen);};
+  const handleAdmitClick = () => {setAdmitOpen(!admitOpen);};
 
   return (
     <Drawer
@@ -106,49 +71,37 @@ const MenuBar = () => {
     >
       <Container className={styles.menuBar}>
         <List sx={{ width: "100%" }} component="nav">
-          <PCSHSMenu
-            open={aboutOpen}
-            onClick={handleAboutClick}
-            title="About PCSHS"
-            icon={<InfoIcon />}
-          />
+          <ListItemButton onClick={handleAboutClick} divider>
+            <ListItemIcon>{<InfoIcon />}</ListItemIcon>
+            <ListItemText primary={"About PCSHS"} />
+            {aboutOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
           <Collapse in={aboutOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <PCSHSMenuItem
-                title="Vision"
-                icon={<VisibilityIcon />}
-                link="/about#vision"
-              />
-              <PCSHSMenuItem
-                title="Mission"
-                icon={<FlagIcon />}
-                link="/about#mission"
-              />
-              <PCSHSMenuItem
-                title="Objectives"
-                icon={<AssignmentTurnedInIcon />}
-                link="/about#objectives"
-              />
-              <PCSHSMenuItem
-                title="History"
-                icon={<HistoryIcon />}
-                link="/about#history"
-              />
-              <PCSHSMenuItem
-                title="Contacts"
-                icon={<CallIcon />}
-                link="/about#contacts"
-              />
+              {aboutItems.map(({ title, icon, link }) => (
+                <React.Fragment key={title}>
+                  <Link href={link as string}>
+                    <ListItemButton
+                      style={{
+                        paddingLeft: "32px",
+                        backgroundColor:
+                          currRoute == link ? "#94d2bd" : "inherit",
+                      }}
+                    >
+                      <ListItemIcon>{icon}</ListItemIcon>
+                      <ListItemText primary={title} />
+                    </ListItemButton>
+                  </Link>
+                  <Divider variant="inset" component="li" />
+                </React.Fragment>
+              ))}
             </List>
           </Collapse>
 
-          <Link passHref href="/calendar">
+          <Link href="/calendar">
             <ListItemButton
-              component="a"
               sx={
-                router.pathname == "/calendar"
-                  ? { backgroundColor: "#94d2bd" }
-                  : {}
+                currRoute == "/calendar" ? { backgroundColor: "#94d2bd" } : {}
               }
               divider
             >
@@ -159,24 +112,30 @@ const MenuBar = () => {
             </ListItemButton>
           </Link>
 
-          <PCSHSMenu
-            title="Applications"
-            icon={<AssignmentIndIcon />}
-            onClick={handleAdmitClick}
-            open={admitOpen}
-          />
+          <ListItemButton onClick={handleAdmitClick} divider>
+            <ListItemIcon>{<AssignmentIndIcon />}</ListItemIcon>
+            <ListItemText primary={"Applications"} />
+            {admitOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
           <Collapse in={admitOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <PCSHSMenuItem
-                title="Admission"
-                icon={<AssignmentIcon />}
-                link="/apply/admission"
-              />
-              <PCSHSMenuItem
-                title="Apply"
-                icon={<PersonAddIcon />}
-                link="/apply/process"
-              />
+              {applyItems.map(({ title, icon, link }) => (
+                <React.Fragment key={title}>
+                  <Link href={link as string}>
+                    <ListItemButton
+                      style={{
+                        paddingLeft: "32px",
+                        backgroundColor:
+                          currRoute == link ? "#94d2bd" : "inherit",
+                      }}
+                    >
+                      <ListItemIcon>{icon}</ListItemIcon>
+                      <ListItemText primary={title} />
+                    </ListItemButton>
+                  </Link>
+                  <Divider variant="inset" component="li" />
+                </React.Fragment>
+              ))}
             </List>
           </Collapse>
 
@@ -186,7 +145,7 @@ const MenuBar = () => {
             rel="noopener noreferrer"
             style={{ color: "inherit", textDecoration: "none" }}
           >
-            <ListItemButton component="a" divider>
+            <ListItemButton divider>
               <ListItemIcon>
                 <MenuBookIcon />
               </ListItemIcon>
@@ -197,11 +156,10 @@ const MenuBar = () => {
 
         {session?.role == "Government" && (
           <>
-            <Link passHref href="/announcements/create">
+            <Link href="/announcements/create">
               <ListItemButton
-                component="a"
                 sx={
-                  router.pathname == "/announcements/create"
+                  currRoute == "/announcements/create"
                     ? { backgroundColor: "#94d2bd" }
                     : {}
                 }

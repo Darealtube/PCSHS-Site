@@ -1,8 +1,11 @@
 .pcshsVideo {
   width: 100%;
-  height: 100vh;
+  height: 400;
   object-fit: cover;
-  filter: brightness(50%);
+  margin-bottom: 80px;
+  box-shadow: -1px -1px 65px 0px #000;
+  -webkit-box-shadow: -1px -1px 65px 0px #000;
+  -moz-box-shadow: -1px -1px 65px 0px #000;
 }
 
 .contactUs {

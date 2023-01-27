@@ -11,78 +11,20 @@ import Head from "next/head";
 import Image, { StaticImageData } from "next/image";
 import History from "../Components/About/Parts/History";
 import VisibilitySensor from "react-visibility-sensor";
-import Vision from "../public/pcshsPictures/vision.jpeg";
-import Mission from "../public/pcshsPictures/mission.jpg";
-import { ReactNode } from "react";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import EmailIcon from "@mui/icons-material/Email";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import CallIcon from "@mui/icons-material/Call";
+import RoomIcon from "@mui/icons-material/Room";
 import ContactUs from "../Components/About/Parts/Contact";
-import Objectives from "../Components/About/Parts/Objective";
 import styles from "../styles/About.module.css";
-
-const Main = ({
-  image,
-  children,
-  reverse = false,
-  id,
-}: {
-  image: string | StaticImageData;
-  children: ReactNode;
-  id?: string;
-  reverse?: boolean;
-}) => {
-  return (
-    <VisibilitySensor partialVisibility>
-      {({ isVisible }: { isVisible: boolean }) => (
-        <Grid
-          container
-          spacing={1}
-          sx={{ paddingTop: "120px", paddingBottom: "120px" }}
-          direction={reverse ? "row-reverse" : "row"}
-          id={id}
-        >
-          <Fade timeout={2000} in={isVisible}>
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                src={image}
-                placeholder="blur"
-                alt="PCSHS School Image"
-                width="600"
-                height="420"
-                className={styles.mainImage}
-              />
-            </Grid>
-          </Fade>
-
-          <Fade timeout={2000} in={isVisible}>
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{
-                flexDirection: "column",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              pr={4}
-              pl={4}
-            >
-              {children}
-            </Grid>
-          </Fade>
-        </Grid>
-      )}
-    </VisibilitySensor>
-  );
-};
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FlagIcon from "@mui/icons-material/Flag";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
+import PanToolIcon from "@mui/icons-material/PanTool";
+import SchoolIcon from "@mui/icons-material/School";
+import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 
 const About = () => {
   const theme = useTheme();
@@ -103,88 +45,209 @@ const About = () => {
         Your browser does not support HTML5 video.
       </video>
 
-      <Box className={styles.mainBgImage}>
-        <Box className={styles.blurBox}>
-          <Container>
-            <Main image={Vision} id="vision">
-              <Typography
-                variant={sm ? "h5" : "h3"}
-                align="center"
-                sx={{ marginBottom: "16px" }}
-              >
-                Our Vision
-              </Typography>
-              <Typography
-                paragraph
-                align="center"
-                variant={sm ? "body1" : "h5"}
-              >
-                PASIG CITY SCIENCE HIGH SCHOOL (PCSHS) is envisioned to be a
-                world class institution that is globally and locally competitive
-                and responsive to the ever-changing needs of the times,
-                especially in the fields of Science and Technology.
-              </Typography>
-            </Main>
-
-            <Main image={Mission} reverse={true} id="mission">
-              <Typography
-                variant={sm ? "h5" : "h3"}
-                align="center"
-                sx={{ marginBottom: "16px" }}
-              >
-                Our Mission
-              </Typography>
-              <Typography
-                paragraph
-                align="center"
-                variant={sm ? "body1" : "h5"}
-              >
-                PCSHS&apos; mission is to fully develop well-rounded, science
-                and technology-oriented students, nurturing and gender-sensitive
-                persons, and future leaders with a vision for excellence.
-              </Typography>
-            </Main>
-          </Container>
+      <Container>
+        <Box mb={16}>
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <VisibilityIcon fontSize="large" />
+          </Box>
+          <Typography
+            variant="h3"
+            fontWeight={800}
+            align="center"
+            sx={{ marginBottom: "16px" }}
+          >
+            Our Vision
+          </Typography>
+          <Typography paragraph align="justify" variant={"h5"}>
+            PASIG CITY SCIENCE HIGH SCHOOL (PCSHS) is envisioned to be a world
+            class institution that is globally and locally competitive and
+            responsive to the ever-changing needs of the times, especially in
+            the fields of Science and Technology.
+          </Typography>
         </Box>
-      </Box>
+
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <FlagIcon fontSize="large" />
+        </Box>
+        <Typography
+          variant={"h3"}
+          fontWeight={800}
+          align="center"
+          sx={{ marginBottom: "16px" }}
+        >
+          Our Mission
+        </Typography>
+        <Typography paragraph align="justify" variant={"h5"}>
+          PCSHS&apos; mission is to fully develop well-rounded, science and
+          technology-oriented students, nurturing and gender-sensitive persons,
+          and future leaders with a vision for excellence.
+        </Typography>
+      </Container>
 
       <Box id="objectives">
-        <Container>
+        <Typography
+          align="center"
+          fontWeight={800}
+          variant="h3"
+          pt={16}
+          mb={4}
+          sx={{ color: "black" }}
+        >
+          Our Objectives
+        </Typography>
+
+        <Box display="flex" alignItems="center" mb={4}>
+          <FavoriteIcon fontSize="large" sx={{ mr: 2 }} />
           <Typography
-            align="center"
-            variant="h3"
-            pt={24}
-            mb={16}
-            sx={{ color: "black" }}
+            paragraph
+            textAlign="justify"
+            variant={"body1"}
+            sx={{ m: 0 }}
           >
-            Our Objectives
+            To inculcate among the students the values and virtues in life
+            necessary in their interrelationships with selves, others, country,
+            and God.
           </Typography>
+        </Box>
 
-          <Objectives />
-        </Container>
-      </Box>
+        <Box display="flex" alignItems="center" mb={4}>
+          <PsychologyAltIcon fontSize="large" sx={{ mr: 2 }} />
+          <Typography
+            paragraph
+            textAlign="justify"
+            variant={"body1"}
+            sx={{ m: 0 }}
+          >
+            To emphasize high standards of learning and high levels of learning
+            skills such as critical and creative thinking and problem solving.
+          </Typography>
+        </Box>
 
-      <Box className={styles.historyBgImage} id="history">
-        <Box className={styles.blurBox}>
-          <Container>
-            <Typography align="center" variant="h3" pt={24} mb={8}>
-              Our History
-            </Typography>
+        <Box display="flex" alignItems="center" mb={4}>
+          <PanToolIcon fontSize="large" sx={{ mr: 2 }} />
+          <Typography
+            paragraph
+            textAlign="justify"
+            variant={"body1"}
+            sx={{ m: 0 }}
+          >
+            To provide state-of-the-art facilities that enhance interactive and
+            hands-on learning experiences.
+          </Typography>
+        </Box>
 
-            <VisibilitySensor partialVisibility>
-              {({ isVisible }: { isVisible: boolean }) => (
-                <Fade in={isVisible} timeout={1000}>
-                  <Box overflow="auto">
-                    <History />
-                  </Box>
-                </Fade>
-              )}
-            </VisibilitySensor>
-          </Container>
+        <Box display="flex" alignItems="center" mb={4}>
+          <SchoolIcon fontSize="large" sx={{ mr: 2 }} />
+          <Typography
+            paragraph
+            textAlign="justify"
+            variant={"body1"}
+            sx={{ m: 0 }}
+          >
+            To harness to the fullest the artistic, athletic, managerial and
+            leadership skills of the students.
+          </Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" mb={4}>
+          <LocalAtmIcon fontSize="large" sx={{ mr: 2 }} />
+          <Typography
+            paragraph
+            textAlign="justify"
+            variant={"body1"}
+            sx={{ m: 0 }}
+          >
+            To offer scholarship grants to deserving, gifted students.
+          </Typography>
         </Box>
       </Box>
 
-      <ContactUs />
+      <Container>
+        <Typography align="center" variant="h3" fontWeight={800} pt={16} mb={8}>
+          Our History
+        </Typography>
+
+        <VisibilitySensor partialVisibility>
+          {({ isVisible }: { isVisible: boolean }) => (
+            <Fade in={isVisible} timeout={1000}>
+              <Box overflow="auto">
+                <History />
+              </Box>
+            </Fade>
+          )}
+        </VisibilitySensor>
+      </Container>
+
+      <Box className={styles.contactUs} id="contacts">
+        <Typography
+          variant="h2"
+          gutterBottom
+          color="#e9c46a"
+          mt={8}
+          fontWeight={800}
+        >
+          Contact Us
+        </Typography>
+        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
+          <TwitterIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
+          <Typography
+            variant={"h5"}
+            align="center"
+            gutterBottom
+            color="#e9c46a"
+          >
+            @ssgpasigsci
+          </Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
+          <EmailIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
+          <Typography
+            variant={"h5"}
+            align="center"
+            gutterBottom
+            color="#e9c46a"
+          >
+            pasigcitysciencehs05@gmail.com
+          </Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
+          <FacebookIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
+          <Typography
+            variant={"h5"}
+            align="center"
+            gutterBottom
+            color="#e9c46a"
+          >
+            https://www.facebook.com/pcshs.edu
+          </Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
+          <CallIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
+          <Typography
+            variant={"h5"}
+            align="center"
+            gutterBottom
+            color="#e9c46a"
+          >
+            {"628-2177 / 628-2226 / 83548658"}
+          </Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
+          <RoomIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
+          <Typography
+            variant={"h5"}
+            align="center"
+            gutterBottom
+            color="#e9c46a"
+          >
+            RAVE Park, Maybunga, Pasig City
+          </Typography>
+        </Box>
+      </Box>
     </>
   );
 };

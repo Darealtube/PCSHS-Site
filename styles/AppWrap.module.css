@@ -1,4 +1,5 @@
 .appBar {
+  position: fixed;
   display: flex;
   flex-direction: row;
   z-index: 10000;
@@ -6,6 +7,23 @@
   align-items: center;
   background-color: white;
   color: black;
+  background-image: url(/appbar.png);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.appBarLogoBox {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.appBarLogo {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
 }
 
 .avatar {
@@ -20,6 +38,12 @@
   background-image: url(/homebg.png);
   background-size: cover;
   background-attachment: fixed;
+}
+
+.mainContainer {
+  margin-top: 80px;
+  backdrop-filter: blur(4px);
+  height: max-content;
 }
 
 .applyMain {
