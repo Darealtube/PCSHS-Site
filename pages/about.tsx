@@ -1,34 +1,23 @@
+import { Typography, Container, Box, Link, IconButton } from "@mui/material";
 import {
-  Typography,
-  Fade,
-  Container,
-  Grid,
-  useTheme,
-  useMediaQuery,
-  Box,
-} from "@mui/material";
+  Timeline,
+  TimelineItem,
+  TimelineOppositeContent,
+  TimelineSeparator,
+  TimelineConnector,
+  TimelineDot,
+  TimelineContent,
+} from "@mui/lab";
 import Head from "next/head";
-import Image, { StaticImageData } from "next/image";
-import History from "../Components/About/Parts/History";
-import VisibilitySensor from "react-visibility-sensor";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import EmailIcon from "@mui/icons-material/Email";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import CallIcon from "@mui/icons-material/Call";
-import RoomIcon from "@mui/icons-material/Room";
-import ContactUs from "../Components/About/Parts/Contact";
 import styles from "../styles/About.module.css";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FlagIcon from "@mui/icons-material/Flag";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
-import PanToolIcon from "@mui/icons-material/PanTool";
-import SchoolIcon from "@mui/icons-material/School";
-import LocalAtmIcon from "@mui/icons-material/LocalAtm";
+import DomainIcon from "@mui/icons-material/Domain";
+import PeopleIcon from "@mui/icons-material/People";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import { Contacts, Objectives } from "../utils/staticResource";
 
 const About = () => {
-  const theme = useTheme();
-  const sm = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
       <Head>
@@ -50,12 +39,7 @@ const About = () => {
           <Box display="flex" alignItems="center" justifyContent="center">
             <VisibilityIcon fontSize="large" />
           </Box>
-          <Typography
-            variant="h3"
-            fontWeight={800}
-            align="center"
-            sx={{ marginBottom: "16px" }}
-          >
+          <Typography variant="h3" fontWeight={800} align="center" mb={2}>
             Our Vision
           </Typography>
           <Typography paragraph align="justify" variant={"h5"}>
@@ -84,168 +68,134 @@ const About = () => {
         </Typography>
       </Container>
 
-      <Box id="objectives">
-        <Typography
-          align="center"
-          fontWeight={800}
-          variant="h3"
-          pt={16}
-          mb={4}
-          sx={{ color: "black" }}
-        >
-          Our Objectives
-        </Typography>
-
-        <Box display="flex" alignItems="center" mb={4}>
-          <FavoriteIcon fontSize="large" sx={{ mr: 2 }} />
+      <Container>
+        <Box id="objectives">
           <Typography
-            paragraph
-            textAlign="justify"
-            variant={"body1"}
-            sx={{ m: 0 }}
+            variant="h3"
+            fontWeight={800}
+            align="center"
+            mt={16}
+            mb={2}
+            sx={{ color: "black" }}
           >
-            To inculcate among the students the values and virtues in life
-            necessary in their interrelationships with selves, others, country,
-            and God.
+            Our Objectives
           </Typography>
-        </Box>
 
-        <Box display="flex" alignItems="center" mb={4}>
-          <PsychologyAltIcon fontSize="large" sx={{ mr: 2 }} />
-          <Typography
-            paragraph
-            textAlign="justify"
-            variant={"body1"}
-            sx={{ m: 0 }}
-          >
-            To emphasize high standards of learning and high levels of learning
-            skills such as critical and creative thinking and problem solving.
-          </Typography>
+          {Objectives.map(({ icon, description }) => (
+            <Box display="flex" alignItems="center" mb={4} key={description}>
+              {icon}
+              <Typography
+                paragraph
+                textAlign="justify"
+                variant={"body1"}
+                sx={{ m: 0 }}
+              >
+                {description}
+              </Typography>
+            </Box>
+          ))}
         </Box>
-
-        <Box display="flex" alignItems="center" mb={4}>
-          <PanToolIcon fontSize="large" sx={{ mr: 2 }} />
-          <Typography
-            paragraph
-            textAlign="justify"
-            variant={"body1"}
-            sx={{ m: 0 }}
-          >
-            To provide state-of-the-art facilities that enhance interactive and
-            hands-on learning experiences.
-          </Typography>
-        </Box>
-
-        <Box display="flex" alignItems="center" mb={4}>
-          <SchoolIcon fontSize="large" sx={{ mr: 2 }} />
-          <Typography
-            paragraph
-            textAlign="justify"
-            variant={"body1"}
-            sx={{ m: 0 }}
-          >
-            To harness to the fullest the artistic, athletic, managerial and
-            leadership skills of the students.
-          </Typography>
-        </Box>
-
-        <Box display="flex" alignItems="center" mb={4}>
-          <LocalAtmIcon fontSize="large" sx={{ mr: 2 }} />
-          <Typography
-            paragraph
-            textAlign="justify"
-            variant={"body1"}
-            sx={{ m: 0 }}
-          >
-            To offer scholarship grants to deserving, gifted students.
-          </Typography>
-        </Box>
-      </Box>
+      </Container>
 
       <Container>
         <Typography align="center" variant="h3" fontWeight={800} pt={16} mb={8}>
           Our History
         </Typography>
 
-        <VisibilitySensor partialVisibility>
-          {({ isVisible }: { isVisible: boolean }) => (
-            <Fade in={isVisible} timeout={1000}>
-              <Box overflow="auto">
-                <History />
-              </Box>
-            </Fade>
-          )}
-        </VisibilitySensor>
+        <Typography variant="h4" align="center" gutterBottom>
+          Year 2004
+        </Typography>
+        <Timeline position="alternate" sx={{ paddingBottom: "64px" }}>
+          <TimelineItem>
+            <TimelineOppositeContent
+              sx={{ m: "auto 0" }}
+              variant="body2"
+              fontWeight={600}
+            >
+              October 7, 2004
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineConnector />
+              <TimelineDot color="success">
+                <FmdGoodIcon />
+              </TimelineDot>
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent sx={{ py: "12px", px: 2 }}>
+              <Typography variant="h6" paragraph>
+                Pasig City Science Highschool was founded with the support and
+                determination of former Mayor Soledad C. Eusebio, Hon. Mayor
+                Vicente P. Eusebio, and the members of the City Council.
+              </Typography>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineOppositeContent
+              sx={{ m: "auto 0" }}
+              fontWeight={600}
+              variant="body2"
+            >
+              Year 2005
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineConnector />
+              <TimelineDot color="primary">
+                <PeopleIcon />
+              </TimelineDot>
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent sx={{ py: "12px", px: 2 }}>
+              <Typography variant="h6" paragraph>
+                Faculties enrolled, entrance exams administered, grading
+                standards set, and scholarship programs.
+              </Typography>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineOppositeContent
+              sx={{ m: "auto 0" }}
+              fontWeight={600}
+              variant="body2"
+            >
+              Summer of 2006
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineConnector />
+              <TimelineDot color="secondary">
+                <DomainIcon />
+              </TimelineDot>
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent sx={{ py: "12px", px: 2 }}>
+              <Typography variant="h6" paragraph>
+                Upgraded facilities, establishing the dream school, and the
+                creation of the PCSHS Logo and Hymn.
+              </Typography>
+            </TimelineContent>
+          </TimelineItem>
+        </Timeline>
       </Container>
 
       <Box className={styles.contactUs} id="contacts">
         <Typography
-          variant="h2"
-          gutterBottom
-          color="#e9c46a"
-          mt={8}
+          variant="h3"
           fontWeight={800}
+          align="center"
+          mt={4}
+          mb={2}
+          color="#e9c46a"
         >
           Contact Us
         </Typography>
-        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
-          <TwitterIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
-          <Typography
-            variant={"h5"}
-            align="center"
-            gutterBottom
-            color="#e9c46a"
-          >
-            @ssgpasigsci
-          </Typography>
-        </Box>
 
-        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
-          <EmailIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
-          <Typography
-            variant={"h5"}
-            align="center"
-            gutterBottom
-            color="#e9c46a"
-          >
-            pasigcitysciencehs05@gmail.com
-          </Typography>
-        </Box>
-
-        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
-          <FacebookIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
-          <Typography
-            variant={"h5"}
-            align="center"
-            gutterBottom
-            color="#e9c46a"
-          >
-            https://www.facebook.com/pcshs.edu
-          </Typography>
-        </Box>
-
-        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
-          <CallIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
-          <Typography
-            variant={"h5"}
-            align="center"
-            gutterBottom
-            color="#e9c46a"
-          >
-            {"628-2177 / 628-2226 / 83548658"}
-          </Typography>
-        </Box>
-
-        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
-          <RoomIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} />
-          <Typography
-            variant={"h5"}
-            align="center"
-            gutterBottom
-            color="#e9c46a"
-          >
-            RAVE Park, Maybunga, Pasig City
-          </Typography>
+        <Box display="flex" justifyContent="space-evenly">
+          {Contacts.map(({ icon, link }) => (
+            <Box mr={2} key={link}>
+              <Link href={link} target="_blank">
+                <IconButton size="large">{icon}</IconButton>
+              </Link>
+            </Box>
+          ))}
         </Box>
       </Box>
     </>

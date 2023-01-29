@@ -52,7 +52,7 @@ const AppWrap = ({ children }: { children: ReactNode }) => {
       <PCSHSMenu />
       <Box className={styles.main} id="scrollable">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Container className={styles.mainContainer}>{children}</Container>
+          <Box className={styles.mainContainer}>{children}</Box>
         </LocalizationProvider>
       </Box>
     </>
