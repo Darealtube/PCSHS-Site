@@ -8,8 +8,6 @@ import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import CallIcon from "@mui/icons-material/Call";
 
-/* <TwitterIcon fontSize="large" sx={{ color: "#e9c46a", mr: 2 }} /> */
-
 export const Contacts = [
   {
     icon: <TwitterIcon fontSize="large" sx={{ color: "#e9c46a" }} />,
@@ -52,5 +50,28 @@ export const Objectives = [
   {
     icon: <LocalAtmIcon sx={{ mr: 2 }} />,
     description: "To offer scholarship grants to deserving, gifted students.",
+  },
+];
+
+export const PSATRows = [
+  {
+    subject: "Mathematics",
+    time: "30 minutes",
+    items: "20 items",
+  },
+  {
+    subject: "Science",
+    time: "30 minutes",
+    items: "20 items",
+  },
+  {
+    subject: "English",
+    time: "30 minutes",
+    items: "20 items",
+  },
+  {
+    subject: "Abstract Reasoning",
+    time: "20 minutes",
+    items: "10 items",
   },
 ];

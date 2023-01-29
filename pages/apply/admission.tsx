@@ -1,17 +1,6 @@
-import {
-  Button,
-  Container,
-  Divider,
-  Fade,
-  Grow,
-  Typography,
-  useMediaQuery,
-  useTheme,
-  Box,
-} from "@mui/material";
+import { Button, Container, Divider, Typography, Box } from "@mui/material";
 import { ReactNode } from "react";
 import Head from "next/head";
-import VisibilitySensor from "react-visibility-sensor";
 import Link from "next/link";
 
 const AdmissionInfo = ({
@@ -21,48 +10,22 @@ const AdmissionInfo = ({
   children: ReactNode;
   title: string;
 }) => {
-  const theme = useTheme();
-  const xl = useMediaQuery(theme.breakpoints.only("xl"));
-  const sm = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
-      <VisibilitySensor partialVisibility>
-        {({ isVisible }: { isVisible: boolean }) => (
-          <Fade in={isVisible} timeout={1500}>
-            <Box display="flex" flexDirection="column" width="100%" mb={4}>
-              <Typography
-                variant="h5"
-                gutterBottom
-                align="center"
-                mr={xl ? 16 : 2}
-                ml={xl ? 16 : 2}
-              >
-                {title}
-              </Typography>
-
-              <Divider />
-
-              <Typography
-                variant={sm ? "body1" : "h6"}
-                paragraph
-                align="center"
-                mt={2}
-                mr={xl ? 16 : 2}
-                ml={xl ? 16 : 2}
-              >
-                {children}
-              </Typography>
-            </Box>
-          </Fade>
-        )}
-      </VisibilitySensor>
+      <Box display="flex" flexDirection="column" width="100%" mb={4}>
+        <Typography variant="h5" align="center" fontWeight={700}>
+          {title}
+        </Typography>
+        <Divider />
+        <Typography variant="h6" paragraph align="justify" mt={2}>
+          {children}
+        </Typography>
+      </Box>
     </>
   );
 };
 
 const Admission = () => {
-  const theme = useTheme();
-  const sm = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
       <Head>
@@ -127,41 +90,19 @@ const Admission = () => {
               color: "white",
             }}
           >
-            <VisibilitySensor>
-              {({ isVisible }: { isVisible: boolean }) => (
-                <>
-                  <Grow in={isVisible} timeout={1500}>
-                    <Typography
-                      variant={sm ? "h4" : "h3"}
-                      align="center"
-                      gutterBottom
-                      mt={4}
-                    >
-                      Do you have what it takes to be a PASCIAN?
-                    </Typography>
-                  </Grow>
+            <Typography variant="h3" align="center" fontWeight={800} mb={4}>
+              Do you have what it takes to be a PASCIAN?
+            </Typography>
 
-                  <Link passHref href="/apply/process">
-                    <Grow in={isVisible} timeout={2000}>
-                      <Button
-                        component="a"
-                        variant="outlined"
-                        sx={{
-                          width: sm ? "240px" : "480px",
-                          height: "80px",
-                          color: "#e9c46a",
-                        }}
-                        color="warning"
-                      >
-                        <Typography variant={sm ? "h6" : "h4"}>
-                          Apply Now
-                        </Typography>
-                      </Button>
-                    </Grow>
-                  </Link>
-                </>
-              )}
-            </VisibilitySensor>
+            <Link href="/apply/process">
+              <Button
+                variant="outlined"
+                sx={{ width: "480px", height: "80px", color: "#e9c46a" }}
+                color="warning"
+              >
+                <Typography variant="h4">Apply Now</Typography>
+              </Button>
+            </Link>
           </Container>
         </Box>
       </Box>
