@@ -1,3 +1,23 @@
+.calendarHeader {
+  padding: 8;
+  width: 100%;
+  color: black;
+  background-image: url(/appbar.png);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.eventAccordion {
+  width: 100%;
+  background: transparent;
+  border: 0px;
+  box-shadow: 0px;
+}
+
+.eventAccordion::before {
+  height: 0px;
+}
+
 .mobileMain {
   display: flex;
   flex-direction: column;

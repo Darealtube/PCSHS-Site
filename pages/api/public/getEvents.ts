@@ -5,11 +5,13 @@ export default async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const params = req.query;
+  const { d = 1, y = 1999, m = 1, c, l = 10 } = req.query;
   const events = await prisma.event.findMany({
     where: {
-      month: req.query.month ? +req.query.month : 1,
-      year: req.query.year ? +req.query.year : 1999,
+      day: +d,
+      month: +m,
+      year: +y,
+      id: { lt: c as string },
     },
     select: {
       id: true,
@@ -19,6 +21,8 @@ export default async function getEvents(
       month: true,
       year: true,
     },
+    orderBy: [{ id: "desc" }],
+    take: +l,
   });
 
   res.status(200).json(events);

@@ -65,7 +65,7 @@ export type Profile = {
   role: string;
 } | null;
 
-export type Event = {
+export type PCSHSEvent = {
   id: string;
   title: string;
   description: string;

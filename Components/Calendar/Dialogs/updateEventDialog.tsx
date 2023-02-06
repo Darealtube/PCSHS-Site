@@ -1,21 +1,26 @@
 import {
   Dialog,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   TextField,
   Button,
   Box,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
-import { Event } from "../../../types/PrismaTypes";
+import { PCSHSEvent } from "../../../types/PrismaTypes";
 import { ErrorContext } from "../../ErrorProvider";
+
+type UpdatePCSHSEvent = {
+  id: string;
+  description: string;
+  title: string;
+};
 
 type DialogProps = {
   open: boolean;
   handleClose: () => void;
-  handleMutate: (newEvent: Event) => void;
-  day: Event;
+  handleMutate: (newEvent: PCSHSEvent) => void;
+  day: UpdatePCSHSEvent;
 };
 
 const UpdateEventDialog = ({
@@ -27,13 +32,10 @@ const UpdateEventDialog = ({
   const handleError = useContext(ErrorContext);
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [event, setEvent] = useState({
-    id: day?.id,
-    title: day?.title,
-    description: day?.description,
-    day: day?.day,
-    year: day?.year,
-    month: day?.month,
+    title: day.title,
+    description: day.description,
   });
+
   const hasError =
     event?.title?.length > 50 || event?.description?.length > 200;
 
@@ -53,15 +55,19 @@ const UpdateEventDialog = ({
       }/api/secure/events/updateEvents`,
       {
         method: "PATCH",
-        body: JSON.stringify(event),
+        body: JSON.stringify({ ...event, id: day.id }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }
     )
-      .then((response) => {
-        if (!response.ok) {
+      .then((res) => {
+        if (!res.ok) {
           setDisableSubmit(false);
           throw new Error("Please provide valid information.");
         }
-        return response.json();
+        return res.json();
       })
       .then((data) => {
         handleMutate(data);
@@ -72,14 +78,9 @@ const UpdateEventDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} maxWidth={"sm"} fullWidth>
       <DialogTitle>Update an event.</DialogTitle>
-
       <DialogContent>
-        <DialogContentText>
-          * Take note: You cannot use markdown in creating events. Make the
-          header of the markdown and the description as brief as possible.
-        </DialogContentText>
         <form onSubmit={handleSubmit}>
           <Box display="flex" flexDirection="column">
             <TextField

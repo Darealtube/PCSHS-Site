@@ -31,12 +31,14 @@ const RemoveEventDialog = ({
       {
         method: "DELETE",
         body: JSON.stringify(id),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }
     )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("An Error Occured.");
-        }
+      .then((res) => {
+        if (!res.ok) throw new Error("An Error Occured.");
       })
       .then(() => {
         handleDeleteMutate(id);
@@ -54,7 +56,7 @@ const RemoveEventDialog = ({
           Are you sure you want to delete this event from the calendar?
         </DialogContentText>
 
-        <Box display="flex">
+        <Box display="flex" mt={2}>
           <Button variant="contained" onClick={handleClose}>
             Cancel
           </Button>

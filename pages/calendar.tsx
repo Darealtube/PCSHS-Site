@@ -1,137 +1,121 @@
-import {
-  Grid,
-  Paper,
-  IconButton,
-  Typography,
-  Container,
-  GridSize,
-  useMediaQuery,
-  useTheme,
-  Box,
-} from "@mui/material";
 import Head from "next/head";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
-import MobileCalendar from "../Components/Calendar/mobileCalendar";
+import styles from "../styles/Calendar.module.css";
+import dayjs, { Dayjs } from "dayjs";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  AppBar,
+  Box,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { PCSHSEvent } from "../types/PrismaTypes";
+import { GetStaticProps } from "next";
+import prisma from "../lib/prisma";
+import useSWR from "swr";
+import AddEventForm from "../Components/Calendar/addEventForm";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import { Event } from "../types/PrismaTypes";
+import EventIcon from "@mui/icons-material/Event";
 import dynamic from "next/dynamic";
-import _ from "lodash";
-import useCalendar from "../utils/Hooks/useCalendar";
-import { useSession } from "next-auth/react";
 
-const DynamicMobileCalendar = dynamic(
-  () => import("../Components/Calendar/mobileCalendar")
-);
-
-const DynamicEventPopover = dynamic(
-  () => import("../Components/Calendar/EventPopover")
-);
-const DynamicAddEventDialog = dynamic(
-  () => import("../Components/Calendar/Dialogs/addEventDialog")
-);
-const DynamicRemoveEventDialog = dynamic(
+const DeleteDialog = dynamic(
   () => import("../Components/Calendar/Dialogs/removeEventDialog")
 );
-const DynamicUpdateEventDialog = dynamic(
+
+const UpdateDialog = dynamic(
   () => import("../Components/Calendar/Dialogs/updateEventDialog")
 );
 
-const Days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const initState = {
+  day: dayjs().date(),
+  month: dayjs().month() + 1,
+  year: dayjs().year(),
+};
 
-const Months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+const Calendar = ({ initialData }: { initialData: PCSHSEvent[] }) => {
+  const [calendar, setCalendar] = useState<Dayjs | null>(dayjs());
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [expanded, setExpanded] = useState("");
+  const [eventClicked, setEventClicked] = useState({
+    id: "",
+    description: "",
+    title: "",
+  });
 
-const Calendar = () => {
-  const { data: session } = useSession();
-  const theme = useTheme();
-  const tablet = useMediaQuery("(min-width: 900px) and (max-width: 1200px)");
-  const mobile = useMediaQuery(theme.breakpoints.only("xs"));
-  const { calendar, dispatch, dayArray, events, mutate } = useCalendar();
-  const [openAddDialog, setOpenAddDialog] = useState(false);
-  const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
-  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
-  const [dayClicked, setDayClicked] = useState<number | string | null>(null);
-  const [dayHovered, setDayHovered] = useState<number | null>(null);
-  const [eventAnchor, setEventAnchor] = useState<null | HTMLElement>(null);
+  const { data: events, mutate } = useSWR(
+    calendar
+      ? `/api/public/getEvents?d=${calendar.date()}&m=${
+          calendar.month() + 1
+        }&y=${calendar.year()}`
+      : "/api/public/getEvents",
+    { fallbackData: initialData }
+  );
 
-  const handleAddMutate = (newEvent: Event) => {
-    mutate([...events, newEvent]);
+  const handleOpenEvent =
+    (eventId: string) => (_e: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? eventId : "");
+    };
+
+  const handleDateChange = (newValue: Dayjs | null) => {
+    setCalendar(newValue);
+    setExpanded("");
+  };
+
+  const handleAddEvent = (newEvent: PCSHSEvent) => {
+    mutate([...(events ?? []), newEvent]);
+  };
+
+  const handleDeleteEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setEventClicked({ ...eventClicked, id: e.currentTarget.id });
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelEvent = () => {
+    setEventClicked({ id: "", description: "", title: "" });
+    setOpenDelete(false);
   };
 
   const handleDeleteMutate = (id: string) => {
-    const newEvents = events?.filter((event: Event) => event.id != id);
-    mutate([...newEvents]);
-  };
-
-  const handleUpdateMutate = (newEvent: Event) => {
-    const updatedEvents = events.map((event: Event) =>
-      event.id == newEvent.id ? (event = newEvent) : event
-    );
-    mutate([...updatedEvents]);
-  };
-
-  const handleEventOpen = (e: React.MouseEvent<HTMLElement>) => {
-    setDayHovered(+e.currentTarget.id);
-    setEventAnchor(e.currentTarget);
-  };
-
-  const handleEventClose = () => {
-    setDayHovered(null);
-    setEventAnchor(null);
-  };
-
-  const handleNextDate = () => {
-    dispatch({ type: "NEXT_MONTH" });
-  };
-
-  const handlePreviousDate = () => {
-    dispatch({ type: "PREVIOUS_MONTH" });
-  };
-
-  const handleAddEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setDayClicked(+e.currentTarget.value);
-    setOpenAddDialog(true);
-  };
-
-  const handleCloseAddEvent = () => {
-    setDayClicked(null);
-    setOpenAddDialog(false);
-  };
-
-  const handleRemoveEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setDayClicked(e.currentTarget.id);
-    setOpenRemoveDialog(true);
-  };
-
-  const handleCloseRemoveEvent = () => {
-    setDayClicked(null);
-    setOpenRemoveDialog(false);
+    const newEvents = events?.filter((event: PCSHSEvent) => event.id != id);
+    mutate(newEvents ?? []);
   };
 
   const handleUpdateEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setDayClicked(e.currentTarget.value);
-    setOpenUpdateDialog(true);
+    const description = e.currentTarget.getAttribute("data-event-desc");
+    const title = e.currentTarget.getAttribute("data-event-title");
+    setEventClicked({
+      id: e.currentTarget.id,
+      description: description ?? "",
+      title: title ?? "",
+    });
+    setOpenUpdate(true);
   };
 
   const handleCloseUpdateEvent = () => {
-    setDayClicked(null);
-    setOpenUpdateDialog(false);
+    setEventClicked({ id: "", description: "", title: "" });
+    setOpenUpdate(false);
+  };
+
+  const handleUpdateMutate = (newEvent: PCSHSEvent) => {
+    if (!events) {
+      mutate([]);
+      return;
+    }
+    const updateIndex = events.findIndex((event) => event.id == newEvent.id);
+    events[updateIndex] = newEvent;
+    mutate(events);
   };
 
   return (
@@ -142,166 +126,150 @@ const Calendar = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {mobile || tablet ? (
-        <DynamicMobileCalendar
-          calendar={calendar}
-          dispatch={dispatch}
-          day={_.filter(dayArray, ["day", calendar.day])[0]}
-          add={handleAddMutate}
-          update={handleUpdateMutate}
-          remove={handleDeleteMutate}
-        />
-      ) : (
-        <Paper
-          elevation={6}
-          sx={{
-            height: "720px",
-            backgroundColor: "#e9ecef",
-            marginBottom: "24px",
-          }}
-        >
-          <Container>
-            <Box
-              display="flex"
-              border="1px solid grey"
-              sx={{ backgroundColor: "#495057" }}
-            >
-              <IconButton
-                size="large"
-                onClick={handlePreviousDate}
-                sx={{ color: "white" }}
-              >
-                <NavigateBeforeIcon />
-              </IconButton>
-              <Typography
-                align="center"
-                variant="h3"
-                sx={{ flexGrow: 1, wordBreak: "break-all" }}
-                color="white"
-                pt={1}
-                pb={1}
-              >
-                {Months[calendar.month - 1]}
-              </Typography>
-              <IconButton
-                size="large"
-                sx={{ color: "white" }}
-                onClick={handleNextDate}
-              >
-                <NavigateNextIcon />
-              </IconButton>
-            </Box>
+      <Box height="100%" width="100%">
+        <AppBar position="sticky" className={styles.calendarHeader}>
+          <Toolbar>
+            <Typography variant="h4" fontWeight={800} sx={{ flexGrow: 1 }}>
+              PCSHS Events
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DesktopDatePicker
+                value={calendar}
+                minDate={dayjs(`${calendar!.year() - 1}-01-01`)}
+                maxDate={dayjs(`${calendar!.year() + 1}-01-01`)}
+                onChange={handleDateChange}
+                renderInput={(params) => (
+                  <Box sx={{ width: "120px" }}>
+                    <TextField {...params} variant="standard" />
+                  </Box>
+                )}
+              />
+            </LocalizationProvider>
+          </Toolbar>
+        </AppBar>
 
-            <Grid container spacing={2} columns={14}>
-              {Days.map((day) => (
-                <Grid
-                  item
-                  xs={2}
-                  key={day}
-                  sx={{
-                    textAlign: "center",
-                    marginBottom: "32px",
-                    marginTop: "16px",
-                  }}
-                >
-                  {day}
-                </Grid>
-              ))}
-
-              <Grid
-                item
-                xs={
-                  calendar.dayStart * 2 == 0
-                    ? false
-                    : ((calendar.dayStart * 2) as GridSize)
-                }
+        <List>
+          {events?.map(({ id, title, description, day }) => (
+            <ListItem key={id} divider>
+              <ListItemAvatar sx={{ textAlign: "center" }}>
+                <EventIcon />
+              </ListItemAvatar>
+              <Accordion
+                expanded={expanded == id}
+                onChange={handleOpenEvent(id)}
                 sx={{
-                  display: calendar.dayStart * 2 == 0 ? "none" : "block",
+                  width: "100%",
+                  background: "transparent",
+                  border: 0,
+                  boxShadow: 0,
+                  "&::before": {
+                    height: 0,
+                  },
                 }}
-              ></Grid>
-
-              {dayArray.map((day) => (
-                <Grid
-                  item
-                  xs={2}
-                  id={`${day.day}`}
-                  key={day.day}
-                  sx={{
-                    border: "1px solid grey",
-                    backgroundColor: day.id ? "#0466C8" : "inherit",
-                  }}
-                  onMouseEnter={day.id ? handleEventOpen : undefined}
-                  onMouseLeave={day.id ? handleEventClose : undefined}
-                >
-                  {session?.role == "Government" && (
-                    <>
-                      <IconButton
-                        size="small"
-                        onClick={day.id ? handleRemoveEvent : handleAddEvent}
-                        value={day.day}
-                        id={day.id ?? undefined}
-                      >
-                        {day.id ? <RemoveIcon /> : <AddIcon />}
-                      </IconButton>
-                      {day.id && (
-                        <IconButton
-                          size="small"
-                          value={day.id ? day.id : undefined}
-                          onClick={day.id ? handleUpdateEvent : undefined}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      )}
-                    </>
-                  )}
-                  <Typography variant="h4" align="center">
-                    {day.day}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography
+                    variant="h6"
+                    fontWeight={600}
+                    sx={{ flexGrow: 1 }}
+                  >
+                    {title}
                   </Typography>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Paper>
-      )}
 
-      {openAddDialog && (
-        <DynamicAddEventDialog
-          open={openAddDialog}
-          handleClose={handleCloseAddEvent}
-          handleMutate={handleAddMutate}
-          day={_.filter(dayArray, ["day", dayClicked])[0]}
+                  <IconButton
+                    id={id}
+                    onClick={handleDeleteEvent}
+                    sx={{ mr: 1 }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+
+                  <IconButton
+                    id={id}
+                    data-event-desc={description}
+                    data-event-title={title}
+                    onClick={handleUpdateEvent}
+                    sx={{ mr: 1 }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </AccordionSummary>
+                <AccordionDetails
+                  sx={{
+                    background: "#e4e4e4",
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
+                  <Typography variant="body1" fontWeight={400}>
+                    {description}
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            </ListItem>
+          ))}
+          <ListItem divider>
+            <Accordion
+              expanded={expanded == "add"}
+              onChange={handleOpenEvent("add")}
+              sx={{
+                width: "100%",
+                background: "transparent",
+                border: 0,
+                boxShadow: 0,
+                "&::before": {
+                  height: 0,
+                },
+              }}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="h6" fontWeight={600}>
+                  Add an Event
+                </Typography>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                <AddEventForm
+                  handleMutate={handleAddEvent}
+                  calendar={calendar}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </ListItem>
+        </List>
+      </Box>
+
+      {openDelete && (
+        <DeleteDialog
+          open={openDelete}
+          handleClose={handleCloseDelEvent}
+          handleDeleteMutate={handleDeleteMutate}
+          id={eventClicked.id}
         />
       )}
 
-      {openUpdateDialog && (
-        <DynamicUpdateEventDialog
-          open={openUpdateDialog}
+      {openUpdate && (
+        <UpdateDialog
+          open={openUpdate}
           handleClose={handleCloseUpdateEvent}
           handleMutate={handleUpdateMutate}
-          day={_.filter(dayArray, ["id", dayClicked])[0]}
-        />
-      )}
-
-      {openRemoveDialog && (
-        <DynamicRemoveEventDialog
-          open={openRemoveDialog}
-          handleClose={handleCloseRemoveEvent}
-          handleDeleteMutate={handleDeleteMutate}
-          id={dayClicked as string}
-        />
-      )}
-
-      {events && Boolean(eventAnchor) == true && (
-        <DynamicEventPopover
-          open={Boolean(eventAnchor)}
-          handleOpen={handleEventOpen}
-          handleClose={handleEventClose}
-          anchor={eventAnchor}
-          event={events?.find((event: Event) => event.day == dayHovered)}
+          day={eventClicked}
         />
       )}
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const pcshsEvents = await prisma.event.findMany({
+    where: initState,
+    select: { id: true, title: true, description: true },
+  });
+  return {
+    props: { initialData: pcshsEvents },
+    revalidate: 10,
+  };
 };
 
 export default Calendar;
