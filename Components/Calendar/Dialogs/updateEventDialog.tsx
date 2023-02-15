@@ -50,9 +50,7 @@ const UpdateEventDialog = ({
     e.preventDefault();
     setDisableSubmit(true);
     await fetch(
-      `${
-        process.env.NEXT_PUBLIC_DEV_URL as string
-      }/api/secure/events/updateEvents`,
+      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/events/update`,
       {
         method: "PATCH",
         body: JSON.stringify({ ...event, id: day.id }),

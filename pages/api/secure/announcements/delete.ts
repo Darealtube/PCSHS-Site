@@ -1,15 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../../../lib/prisma";
+import xss from "xss";
+import prisma from "../../../../lib/prisma";
 
 export default async function editAnnouncement(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const id = req.body;
+  xss(id);
   try {
     const deletedAnnouncement = await prisma.announcement.delete({
-      where: {
-        id: req.query.id as string,
-      },
+      where: { id },
     });
     res.status(200).json({ type: deletedAnnouncement.type });
   } catch (error) {

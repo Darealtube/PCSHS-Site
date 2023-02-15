@@ -59,13 +59,13 @@ export default NextAuth({
       },
     }),
   ],
-  secret: process.env.AUTH_CLIENT_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   pages: { signIn: "/auth/signin" },
   session: {
     maxAge: 30 * 24 * 60 * 60,
     strategy: "jwt",
   },
-  jwt: { secret: process.env.AUTH_CLIENT_SECRET },
+  jwt: { secret: process.env.NEXTAUTH_SECRET },
   callbacks: {
     // Getting the JWT token from API response
     jwt({ token, user }) {

@@ -139,9 +139,13 @@ const CreateAnnouncement = () => {
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
-      }/api/secure/announcements/createAnnouncement`,
+      }/api/secure/announcements/create`,
       {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           ...announcement,
           image: announcement.image

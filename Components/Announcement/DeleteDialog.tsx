@@ -29,11 +29,18 @@ const DeleteDialog = ({ handleClose, open }: DialogProps) => {
   const { cache } = useSWRConfig();
   const handleDelete = async () => {
     await fetch(
-      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/announcements/${
-        router.query.id
-      }/delete`,
+      `${
+        process.env.NEXT_PUBLIC_DEV_URL as string
+      }/api/secure/announcements/delete`,
       {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          id: router.query.id,
+        }),
       }
     )
       .then((response) => {

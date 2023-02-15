@@ -134,11 +134,16 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
-      }/api/secure/announcements/${id}/edit`,
+      }/api/secure/announcements/edit`,
       {
         method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           ...announcement,
+          id,
           image:
             announcement.image == data?.image
               ? announcement.image

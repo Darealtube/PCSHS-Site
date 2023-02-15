@@ -28,9 +28,7 @@ const AddEventForm = ({ handleMutate, calendar }: FormProps) => {
     e.preventDefault();
     setDisableSubmit(true);
     await fetch(
-      `${
-        process.env.NEXT_PUBLIC_DEV_URL as string
-      }/api/secure/events/createEvents`,
+      `${process.env.NEXT_PUBLIC_DEV_URL as string}/api/secure/events/create`,
       {
         method: "POST",
         headers: {
@@ -46,6 +44,12 @@ const AddEventForm = ({ handleMutate, calendar }: FormProps) => {
       }
     )
       .then((res) => {
+        // HANDLE REDIRECT WHEN USER NOT SIGNED IN.
+        if (res.redirected) {
+          window.location.href = res.url;
+          return;
+        }
+
         if (!res.ok) {
           setDisableSubmit(false);
           throw new Error("Please provide valid information.");

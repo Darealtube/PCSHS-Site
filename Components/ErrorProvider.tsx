@@ -5,9 +5,10 @@ import dynamic from "next/dynamic";
 const DynamicError = dynamic(() => import("../Components/ErrorSnack"));
 type ErrorHandler = (message: string) => void;
 
-export const ErrorContext = React.createContext<ErrorHandler>((message) =>
-  console.log(message)
-);
+export const ErrorContext = React.createContext<ErrorHandler>((message) => {
+  console.log(message);
+  console.error(message);
+});
 
 const ErrorProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState({

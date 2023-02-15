@@ -36,12 +36,12 @@ export type CardAnnouncement = {
 };
 
 export type Announcement = {
-  id?: string;
+  id: string;
   header: string;
   body: string;
   footer: string;
   image: string[];
-  video: string | null;
+  video: string;
   date?: string;
   author?: {
     image: string | null;
