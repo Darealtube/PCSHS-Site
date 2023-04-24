@@ -7,6 +7,9 @@ import {
   useMediaQuery,
   Typography,
   Container,
+  Snackbar,
+  Alert,
+  AlertColor,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
@@ -36,6 +39,14 @@ interface AnnouncementState {
   video: string;
 }
 
+type Status = "pending" | "success" | "failure";
+
+interface StatusState {
+  open: boolean;
+  statusMessage: string;
+  status: Status;
+}
+
 const initAnnounce: AnnouncementState = {
   header: "",
   body: "",
@@ -43,6 +54,14 @@ const initAnnounce: AnnouncementState = {
   image: [],
   video: "",
 };
+
+const initStatus: StatusState = {
+  open: false,
+  statusMessage: "",
+  status: "pending",
+};
+
+const severityMap = { pending: "info", success: "success", failure: "error" };
 
 const CreateAnnouncement = () => {
   const handleError = useContext(ErrorContext);
@@ -54,11 +73,23 @@ const CreateAnnouncement = () => {
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [announcement, setAnnouncement] = useState(initAnnounce);
   const [openGuide, setOpenGuide] = useState(false);
+  const [createStatus, setCreateStatus] = useState(initStatus);
   const { data: session } = useSession();
   const hasError =
     announcement.header.length > 50 ||
     announcement.body.length > 1500 ||
     announcement.footer.length > 800;
+
+  const handleStatusClose = (
+    _e?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setCreateStatus({ status: "pending", open: false, statusMessage: "" });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAnnouncement({
@@ -105,6 +136,11 @@ const CreateAnnouncement = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setDisableSubmit(true);
+    setCreateStatus({
+      ...createStatus,
+      open: true,
+      statusMessage: "Creating Announcement...",
+    });
     await fetch(
       `${
         process.env.NEXT_PUBLIC_DEV_URL as string
@@ -125,11 +161,21 @@ const CreateAnnouncement = () => {
     )
       .then((response) => {
         if (!response.ok) {
+          setCreateStatus({
+            status: "failure",
+            open: true,
+            statusMessage: "Failed to create announcement.",
+          });
           setDisableSubmit(false);
           throw new Error("Please provide valid information.");
         }
       })
       .then(() => {
+        setCreateStatus({
+          status: "success",
+          open: true,
+          statusMessage: "Announcement created successfully.",
+        });
         setDisableSubmit(false);
         router.push("/");
       })
@@ -326,6 +372,18 @@ const CreateAnnouncement = () => {
       </Container>
 
       <DynamicGuide open={openGuide} handleClose={handleGuide} />
+      <Snackbar
+        open={createStatus.open}
+        autoHideDuration={6000}
+        onClose={handleStatusClose}
+      >
+        <Alert
+          severity={severityMap[createStatus.status] as AlertColor}
+          sx={{ width: "100%" }}
+        >
+          {createStatus.statusMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
