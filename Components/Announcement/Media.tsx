@@ -2,32 +2,20 @@ import Image from "next/image";
 import { Grid, Box, IconButton } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import React from "react";
-import { AnnounceAction } from "../../utils/Reducers/announceReducer";
 
 type Props = {
   images: string[];
   video: string | null;
-  dispatch: React.Dispatch<AnnounceAction>;
+  handleDeleteImages: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleDeleteVideo: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Media = ({ images, video, dispatch }: Props) => {
-  const handleDeleteMedia = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch({
-      type: "CHANGE",
-      field: "image",
-      payload: images.filter((image) => image != e.currentTarget.value),
-    });
-  };
-
-  const handleDeleteVideo = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch({
-      type: "CHANGE",
-      field: "video",
-      payload: "",
-    });
-    URL.revokeObjectURL(e.currentTarget.value);
-  };
-
+const Media = ({
+  images,
+  video,
+  handleDeleteImages,
+  handleDeleteVideo,
+}: Props) => {
   return (
     <Grid container sx={{ height: "100%", width: "100%" }} spacing={1}>
       {images.map((image) => (
@@ -43,7 +31,7 @@ const Media = ({ images, video, dispatch }: Props) => {
               <IconButton
                 sx={{ zIndex: 1 }}
                 value={image}
-                onClick={handleDeleteMedia}
+                onClick={handleDeleteImages}
               >
                 <CancelIcon />
               </IconButton>

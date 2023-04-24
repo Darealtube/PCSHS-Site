@@ -1,10 +1,10 @@
 export const uploadImages = async (images: FileList | string[]) => {
-  let urls: string[] = [];
+  const urls: string[] = [];
   const data = new FormData();
+  const sign = await getSignature(); // Get returned sign and timestamp
 
   for (let i = 0; i < images.length; i++) {
     let image = images[i];
-    const sign = await getSignature(); // Get returned sign and timestamp
 
     if (sign) {
       const { signature, timestamp } = sign;
@@ -26,10 +26,8 @@ export const uploadImages = async (images: FileList | string[]) => {
           }
           return response.json();
         })
-        .then((data) => {
-          urls.push(data.secure_url);
-        })
-        .catch((err: Error) => console.log(err.message));
+        .then((data) => urls.push(data.secure_url))
+        .catch((err: Error) => console.error(err.message));
     } else {
       return urls;
     }
@@ -38,14 +36,14 @@ export const uploadImages = async (images: FileList | string[]) => {
 };
 
 export const uploadVideo = async (video: string | File) => {
-  let url: string = "";
+  let url = "";
   const data = new FormData();
+  const sign = await getSignature(); // Get returned sign and timestamp
   const file = await fetch(video as string)
     .then((r) => r.blob())
     .then(
       (blobFile) => new File([blobFile], "videoFile", { type: "video/mp4" })
     );
-  const sign = await getSignature(); // Get returned sign and timestamp
 
   if (sign) {
     const { signature, timestamp } = sign;
@@ -67,9 +65,7 @@ export const uploadVideo = async (video: string | File) => {
         }
         return response.json();
       })
-      .then((data) => {
-        url = data.secure_url;
-      })
+      .then((data) => (url = data.secure_url))
       .catch((err: Error) => console.log(err.message));
   } else {
     return url;
@@ -78,9 +74,9 @@ export const uploadVideo = async (video: string | File) => {
   return url;
 };
 
-const getSignature = async () => {
+export const getSignature = async () => {
   //Call API which handles the signature and timestamp
-  const response = await fetch("/api/signMedia")
+  const response = await fetch("/api/secure/signMedia")
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -92,7 +88,7 @@ const getSignature = async () => {
       return { signature, timestamp };
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
       return null;
     });
   return response;

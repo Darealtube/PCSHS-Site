@@ -13,7 +13,6 @@ const createAnnouncement = async (
   xss(announcement.body);
   xss(announcement.footer);
   xss(announcement.header);
-  xss(announcement.type);
   xss(announcement.video);
   for (let i = 0; i < announcement.image.length - 1; ++i) {
     xss(announcement.image[i]);
@@ -27,7 +26,7 @@ const createAnnouncement = async (
       .split("T")[0];
 
     const newAnnouncement = await prisma.announcement.create({
-      data: { ...announcement, date: dateToday },
+      data: { ...announcement, type: "Apply Announcement", date: dateToday },
     });
     res.status(200).json(newAnnouncement);
   } catch (error) {

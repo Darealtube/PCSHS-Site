@@ -4,7 +4,6 @@ export type AnnounceState = {
   footer: string;
   image: string[];
   video: string;
-  type: string;
 };
 
 type AnnounceOptions = "CHANGE";
