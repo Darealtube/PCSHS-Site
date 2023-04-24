@@ -10,7 +10,7 @@ export default withAuth(
         EventSchema.validateAsync(pcshsEvent);
       } catch (error) {
         console.error(error);
-        return new NextResponse(JSON.stringify({}), {
+        return new NextResponse(null, {
           status: 400,
           statusText: "Invalid information has been provided.",
         });
@@ -23,7 +23,7 @@ export default withAuth(
         AnnouncementSchema.validateAsync(pcshsAnnouncement);
       } catch (error) {
         console.error(error);
-        return new NextResponse(JSON.stringify({}), {
+        return new NextResponse(null, {
           status: 400,
           statusText: "Invalid information has been provided.",
         });
