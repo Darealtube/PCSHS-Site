@@ -8,6 +8,7 @@ import {
   useTheme,
   useMediaQuery,
   Typography,
+  Container,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
@@ -35,6 +36,7 @@ import { Announcement } from "../../../types/PrismaTypes";
 import Fallback from "../../../Components/Announcement/Fallback";
 import useSWR from "swr";
 import { ErrorContext } from "../../../Components/ErrorProvider";
+import MarkdownInput from "../../../Components/Announcement/MarkdownInput";
 
 const DynamicPreview = dynamic(
   () => import("../../../Components/Announcement/PreviewAnnouncement")
@@ -48,6 +50,22 @@ type InitialProps = {
   id: string;
 };
 
+interface AnnouncementState {
+  header: string;
+  body: string;
+  footer: string;
+  image: string[];
+  video: string;
+}
+
+const initAnnounce: AnnouncementState = {
+  header: "",
+  body: "",
+  footer: "",
+  image: [],
+  video: "",
+};
+
 const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
   const handleError = useContext(ErrorContext);
   const { data } = useSWR(`/api/public/announcements/${id}/`, {
@@ -59,10 +77,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
   const imageInput = useRef<HTMLInputElement | null>(null);
   const videoInput = useRef<HTMLInputElement | null>(null);
   const [disableSubmit, setDisableSubmit] = useState(false);
-  const [announcement, dispatch] = useReducer(
-    announceReducer,
-    data as Announcement
-  );
+  const [announcement, setAnnouncement] = useState(initAnnounce);
   const [openPreview, setOpenPreview] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
   const { data: session } = useSession();
@@ -73,10 +88,9 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
       announcement.footer.length > 800);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: "CHANGE",
-      field: e.currentTarget.name as keyof typeof announcement,
-      payload: e.currentTarget.value,
+    setAnnouncement({
+      ...announcement,
+      [e.currentTarget.name]: e.currentTarget.value,
     });
   };
 
@@ -106,10 +120,9 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
       valid
     ) {
       getImages(e.currentTarget.files as FileList, (result) => {
-        dispatch({
-          type: "CHANGE",
-          field: "image",
-          payload: [...new Set([...announcement.image, ...result])],
+        setAnnouncement({
+          ...announcement,
+          image: [...new Set([...announcement.image, ...result])],
         });
       });
     }
@@ -118,14 +131,24 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
   const handleVideo = (e: React.ChangeEvent<HTMLInputElement>) => {
     if ((e.currentTarget.files as FileList)?.length != 0) {
       getVideo((e.currentTarget.files as FileList)[0], (result) => {
-        dispatch({
-          type: "CHANGE",
-          field: "video",
-          payload: result,
-        });
+        setAnnouncement({ ...announcement, video: result });
       });
       e.currentTarget.value = "";
     }
+  };
+
+  const handleDeleteImages = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnnouncement({
+      ...announcement,
+      image: announcement.image.filter(
+        (image) => image != e.currentTarget.value
+      ),
+    });
+  };
+
+  const handleDeleteVideo = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnnouncement({ ...announcement, video: "" });
+    URL.revokeObjectURL(e.currentTarget.value);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -177,7 +200,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
     return <Fallback />;
   }
 
-  if (session?.role != "Government") {
+  /* if (session?.role != "Government") {
     return (
       <>
         <Head>
@@ -190,7 +213,7 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
         </Typography>
       </>
     );
-  }
+  } */
 
   return (
     <>
@@ -200,170 +223,158 @@ const EditAnnouncement = ({ initAnnouncement, id }: InitialProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <form onSubmit={handleSubmit}>
-        <Box
-          width="100%"
-          height={480}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ backgroundColor: "gray" }}
-          position="relative"
-        >
-          <input
-            type="file"
-            multiple
-            hidden={true}
-            accept="image/*"
-            ref={imageInput}
-            onChange={handleImage}
-          />
-          <input
-            type="file"
-            multiple
-            hidden={true}
-            accept="video/*"
-            ref={videoInput}
-            onChange={handleVideo}
-          />
-          {(announcement.image.length != 0 || !!announcement.video) && (
-            <Media
-              images={announcement.image}
-              video={announcement.video}
-              dispatch={dispatch}
+      <Container>
+        <form onSubmit={handleSubmit}>
+          <Box
+            width="100%"
+            height={480}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ backgroundColor: "gray" }}
+            position="relative"
+          >
+            <input
+              type="file"
+              multiple
+              hidden={true}
+              accept="image/*"
+              ref={imageInput}
+              onChange={handleImage}
             />
-          )}
-          <Box position="absolute">
-            <IconButton
-              name="IMAGE"
-              onClick={handleImageClick}
-              disabled={!!announcement.video || announcement.image.length == 4}
-              sx={{ zIndex: 1 }}
-            >
-              <AddPhotoAlternateIcon />
-            </IconButton>
-            <IconButton
-              name="VIDEO"
-              onClick={handleVideoClick}
-              disabled={!!announcement.video || announcement.image.length != 0}
-            >
-              <VideocamIcon />
-            </IconButton>
-          </Box>
-        </Box>
-
-        <Typography variant="subtitle1" sx={{ flexGrow: 1 }} gutterBottom>
-          Published by {data?.author?.name} on {data?.date}
-        </Typography>
-
-        <TextField
-          id="header"
-          name="header"
-          label="Header"
-          placeholder="Header/Title"
-          fullWidth
-          onChange={handleChange}
-          value={announcement.header}
-          required
-          variant="standard"
-          InputProps={{ style: { fontSize: "2.4rem" } }}
-          error={announcement.header.length > 150}
-          multiline
-          sx={{ mb: 4 }}
-        />
-
-        <TextField
-          id="body"
-          name="body"
-          label="Body"
-          placeholder="Body/Content. Read the markdown guide (question icon) to style your text."
-          fullWidth
-          multiline
-          rows={16}
-          onChange={handleChange}
-          value={announcement.body}
-          required
-          error={announcement.body.length > 1500}
-          sx={{ mb: 4 }}
-          InputProps={{ style: { fontSize: "1.2rem" } }}
-        />
-
-        <Divider />
-
-        <TextField
-          id="footer"
-          name="footer"
-          label="Footer"
-          placeholder="Footer/Credits"
-          fullWidth
-          multiline
-          rows={2}
-          onChange={handleChange}
-          value={announcement.footer}
-          InputProps={{ style: { fontSize: ".8rem" } }}
-          error={announcement.footer.length > 800}
-          sx={{ mb: 4 }}
-        />
-
-        <Grid
-          container
-          spacing={2}
-          pb={8}
-          sx={{ display: "flex", alignItems: "center" }}
-        >
-          <Grid item xs={12} sm={6}>
-            <Typography variant="h5" align="center">
-              Type: {data?.type}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={1}
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
-            <IconButton onClick={handleGuide} sx={{ marginRight: "8px" }}>
-              <HelpIcon />
-            </IconButton>
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            sm={1}
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
-            <IconButton
-              onClick={handlePreview}
-              sx={{ marginRight: "8px", flexGrow: 1 }}
-            >
-              <VisibilityIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={4} sx={{ display: "flex", justifyContent: "center" }}>
-            {mobile ? (
-              <IconButton type="submit">
-                <SendIcon />
-              </IconButton>
-            ) : (
-              <Button
-                type="submit"
-                variant="contained"
-                color="info"
-                disabled={hasError || disableSubmit}
-                fullWidth
-              >
-                Submit
-              </Button>
+            <input
+              type="file"
+              multiple
+              hidden={true}
+              accept="video/*"
+              ref={videoInput}
+              onChange={handleVideo}
+            />
+            {(announcement.image.length != 0 || !!announcement.video) && (
+              <Media
+                images={announcement.image}
+                video={announcement.video}
+                handleDeleteImages={handleDeleteImages}
+                handleDeleteVideo={handleDeleteVideo}
+              />
             )}
-          </Grid>
-        </Grid>
-      </form>
+            <Box position="absolute">
+              <IconButton
+                name="IMAGE"
+                onClick={handleImageClick}
+                disabled={
+                  !!announcement.video || announcement.image.length == 4
+                }
+                sx={{ zIndex: 1 }}
+              >
+                <AddPhotoAlternateIcon />
+              </IconButton>
+              <IconButton
+                name="VIDEO"
+                onClick={handleVideoClick}
+                disabled={
+                  !!announcement.video || announcement.image.length != 0
+                }
+              >
+                <VideocamIcon />
+              </IconButton>
+            </Box>
+          </Box>
 
-      <DynamicPreview
-        open={openPreview}
-        handleClose={handlePreview}
-        announcement={announcement}
-      />
+          <Typography variant="subtitle1" sx={{ flexGrow: 1 }} gutterBottom>
+            Published by {data?.author?.name} on {data?.date}
+          </Typography>
+
+          <MarkdownInput
+            id="header"
+            name="header"
+            label="Header"
+            placeholder="Header/Title"
+            fullWidth
+            onChange={handleChange}
+            value={announcement.header}
+            required
+            variant="standard"
+            InputProps={{ style: { fontSize: "32px" } }}
+            error={announcement.header.length > 150}
+            multiline
+            maxRows={2}
+            sx={{ mb: 2 }}
+          />
+
+          <MarkdownInput
+            id="body"
+            name="body"
+            label="Body"
+            placeholder="Body/Content."
+            fullWidth
+            multiline
+            rows={16}
+            onChange={handleChange}
+            value={announcement.body}
+            required
+            error={announcement.body.length > 1500}
+            sx={{ mb: 2 }}
+            InputProps={{ style: { fontSize: "16px" } }}
+          />
+
+          <MarkdownInput
+            id="footer"
+            name="footer"
+            label="Footer"
+            placeholder="Footer/Credits"
+            fullWidth
+            multiline
+            rows={2}
+            onChange={handleChange}
+            value={announcement.footer}
+            InputProps={{ style: { fontSize: ".8rem" } }}
+            error={announcement.footer.length > 800}
+            sx={{ mb: 2 }}
+          />
+
+          <Grid
+            container
+            spacing={2}
+            pb={8}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <Grid
+              item
+              xs={4}
+              sm={1}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <IconButton onClick={handleGuide} sx={{ marginRight: "8px" }}>
+                <HelpIcon />
+              </IconButton>
+            </Grid>
+
+            <Grid
+              item
+              xs={6}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              {mobile ? (
+                <IconButton type="submit">
+                  <SendIcon />
+                </IconButton>
+              ) : (
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="info"
+                  disabled={hasError || disableSubmit}
+                  fullWidth
+                >
+                  Submit
+                </Button>
+              )}
+            </Grid>
+          </Grid>
+        </form>
+      </Container>
+
       <DynamicGuide open={openGuide} handleClose={handleGuide} />
     </>
   );
