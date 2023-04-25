@@ -20,9 +20,8 @@ const LatestAnnouncements = ({
 }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
-  const tablet = useMediaQuery(theme.breakpoints.only("md"));
-  const desktop = useMediaQuery(theme.breakpoints.only("lg"));
-  const drawerWidth = tablet || desktop ? "40%" : "24%";
+  const desktopLg = useMediaQuery(theme.breakpoints.up("lg"));
+  const drawerWidth = desktopLg ? "24%" : "40%";
   const { announcements, moreAnnouncements, noMore } = useAnnouncements({
     limit: 8,
     type: "apply",

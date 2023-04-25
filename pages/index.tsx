@@ -7,10 +7,7 @@ import Announcement from "../Components/AnnouncementCard";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useAnnouncements from "../utils/Hooks/useAnnouncements";
-import dynamic from "next/dynamic";
 import { useTheme } from "@mui/system";
-
-const DynamicBottomNav = dynamic(() => import("../Components/BottomMenu"));
 
 type ListProps = {
   announcements: CardAnnouncement[];
@@ -58,7 +55,6 @@ const AnnouncementList = ({
 
 const Home = ({ initAnnouncements }: Props) => {
   const theme = useTheme();
-  const smMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const { announcements, moreAnnouncements, noMore } = useAnnouncements({
     limit: 10,
     type: "normal",
@@ -79,20 +75,6 @@ const Home = ({ initAnnouncements }: Props) => {
           noMore={noMore}
           moreAnnouncements={moreAnnouncements}
         />
-      )}
-      {smMobile && (
-        <Box
-          sx={{
-            position: "sticky",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            ml: -2,
-            mr: -2,
-          }}
-        >
-          <DynamicBottomNav />
-        </Box>
       )}
     </>
   );

@@ -4,7 +4,6 @@ import {
   useMediaQuery,
   useTheme,
   Box,
-  Container,
 } from "@mui/material";
 import { ReactNode, useState } from "react";
 import Image from "next/image";
@@ -16,11 +15,15 @@ import styles from "../../styles/AppWrap.module.css";
 import AppOptions from "../AppOptions";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dynamic from "next/dynamic";
+
+const DynamicBottomNav = dynamic(() => import("../BottomMenu"));
 
 const AppWrap = ({ children }: { children: ReactNode }) => {
   const [openLatest, setOpenLatest] = useState(false);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
+  const smMobile = useMediaQuery(theme.breakpoints.only("xs"));
 
   const handleLatest = () => {
     setOpenLatest(!openLatest);
@@ -50,11 +53,25 @@ const AppWrap = ({ children }: { children: ReactNode }) => {
 
       <LatestAnnouncements open={openLatest} handleOpen={handleLatest} />
       <PCSHSMenu />
+
       <Box className={styles.main} id="scrollable">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Box className={styles.mainContainer}>{children}</Box>
         </LocalizationProvider>
       </Box>
+
+      {smMobile && (
+        <Box
+          sx={{
+            position: "sticky",
+            bottom: 0,
+            left: 0,
+            right: 0,
+          }}
+        >
+          <DynamicBottomNav />
+        </Box>
+      )}
     </>
   );
 };

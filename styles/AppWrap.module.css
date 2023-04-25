@@ -68,7 +68,7 @@
   justify-content: center;
 }
 
-@media all and (max-width: 1535px) {
+@media all and (max-width: 1200px) {
   .main {
     margin-left: 40%;
     margin-right: 0%;
@@ -81,16 +81,13 @@
   }
 }
 
-@media all and (min-width: 1536px) {
+@media all and (min-width: 1201px) {
   .main {
     margin-right: 24%;
   }
 }
 
 @media all and (max-width: 899.99px) {
-  .latestSidebar {
-    display: none;
-  }
   .main {
     margin-left: 0%;
     margin-right: 0%;
