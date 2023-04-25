@@ -14,8 +14,8 @@ export const AnnouncementSchema = Joi.object({
   header: Joi.string().min(1).max(150),
   body: Joi.string().min(1).max(1500),
   footer: Joi.string().min(1).max(800),
-  image: Joi.array().items(Joi.string()),
-  video: Joi.string(),
+  image: Joi.array().items(Joi.string().allow("").optional()).optional(),
+  video: Joi.string().allow("").optional(),
   authorName: Joi.string().min(1).max(40),
   type: Joi.string().valid(
     "Apply Announcement",
